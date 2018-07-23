@@ -1,6 +1,7 @@
 package com.huobi.api.client.constant;
 
-import okhttp3.MediaType;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * created by jacky. 2018/7/20 8:56 PM
@@ -8,7 +9,6 @@ import okhttp3.MediaType;
 public interface HuobiConsts {
     String API_HOST = "api.huobi.pro";
     String API_URL = "https://" + API_HOST;
-    MediaType JSON = MediaType.parse("application/json");
 
     String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
 
@@ -21,4 +21,8 @@ public interface HuobiConsts {
 
     String SIGNATURE_METHOD = "HmacSHA256";
     String SIGNATURE_VERSION = "2";
+
+    DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
+    ZoneId ZONE_GMT = ZoneId.of("Z");
+
 }

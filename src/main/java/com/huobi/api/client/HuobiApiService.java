@@ -4,10 +4,8 @@ import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
-import com.huobi.api.client.domain.resp.TradeResp;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 

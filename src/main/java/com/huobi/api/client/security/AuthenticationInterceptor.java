@@ -10,9 +10,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.TreeSet;
 
 /**
  * A request interceptor that injects the API Key into requests, and signs messages, whenever required.
@@ -20,10 +19,6 @@ import java.util.*;
 public class AuthenticationInterceptor implements Interceptor {
     private final String apiKey;
     private final String secret;
-
-
-    static final DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
-    static final ZoneId ZONE_GMT = ZoneId.of("Z");
 
     public AuthenticationInterceptor(String apiKey, String secret) {
         this.apiKey = apiKey;
@@ -41,42 +36,59 @@ public class AuthenticationInterceptor implements Interceptor {
 
         //add headers
         newRequestBuilder.addHeader("User-Agent", HuobiConsts.USER_AGENT);
-        newRequestBuilder.addHeader("Content-Type", "application/json");
-
+        if (original.method().equalsIgnoreCase("post")) {
+            newRequestBuilder.addHeader("Content-Type", "application/json");
+        } else if (original.method().equalsIgnoreCase("get")) {
+            newRequestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
+        newRequestBuilder.addHeader("Language", "zh-cn");
+        String gmtNow = gmtNow();
 
         //add params if required
         if (isApiKeyRequired || isSignatureRequired) {
+            String signature = createSignature(original.method(), original.url(), gmtNow);
             HttpUrl signedUrl = original.url().newBuilder()
                     .addQueryParameter("AccessKeyId", apiKey)
                     .build();
             if (isSignatureRequired) {
+                //append signature
                 signedUrl = signedUrl.newBuilder()
                         .addQueryParameter("SignatureMethod", HuobiConsts.SIGNATURE_METHOD)
                         .addQueryParameter("SignatureVersion", HuobiConsts.SIGNATURE_VERSION)
-                        .addEncodedQueryParameter("Timestamp", gmtNow())
-                        .build();
-
-                //append signature
-                signedUrl = signedUrl.newBuilder()
-                        .addQueryParameter("Signature", createSign(original.method(), signedUrl))
+                        .addQueryParameter("Timestamp", gmtNow)
+                        .addQueryParameter("Signature", signature)
                         .build();
             }
             newRequestBuilder.url(signedUrl);
         }
-
         // Build new request after adding the necessary authentication information
         Request newRequest = newRequestBuilder.build();
         return chain.proceed(newRequest);
     }
 
-    private String createSign(String method, HttpUrl request) {
+
+    /**
+     *  创建签名.
+     *  https://github.com/huobiapi/API_Docs/wiki/REST_authentication
+     * @param method
+     * @param request
+     * @param gmtNow
+     * @return
+     */
+    private String createSignature(String method, HttpUrl request, String gmtNow) {
 
         StringBuilder sb = new StringBuilder(1024);
         sb.append(method.toUpperCase()).append('\n') // GET
                 .append(HuobiConsts.API_HOST.toLowerCase()).append('\n') // Host
-                .append(request.uri().getPath()).append('\n'); // /path
+                .append(request.uri().getPath()).append('\n') // /path
+                .append("AccessKeyId=" + apiKey + "&")
+                .append("SignatureMethod=" + HuobiConsts.SIGNATURE_METHOD + "&")
+                .append("SignatureVersion=" + HuobiConsts.SIGNATURE_VERSION + "&")
+                .append("Timestamp=" + gmtNow + "&");
         //参数排序
         TreeSet<String> names = new TreeSet(request.queryParameterNames());
+
+
         //拼接
         for (String key : names) {
             String value = request.queryParameter(key);
@@ -100,15 +112,9 @@ public class AuthenticationInterceptor implements Interceptor {
         }
     }
 
-    /**
-     * Return epoch seconds
-     */
-    private long epochNow() {
-        return Instant.now().getEpochSecond();
-    }
 
     private String gmtNow() {
-        return Instant.ofEpochSecond(epochNow()).atZone(ZONE_GMT).format(DT_FORMAT);
+        return Instant.now().atZone(HuobiConsts.ZONE_GMT).format(HuobiConsts.DT_FORMAT);
     }
 
     @Override
