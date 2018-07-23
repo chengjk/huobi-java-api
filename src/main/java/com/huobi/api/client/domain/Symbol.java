@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,14 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Symbol {
+    @JsonProperty("base-currency")
     private String baseCurrency;
+    @JsonProperty("quote-currency")
     private String quoteCurrency;
+    @JsonProperty("price-precision")
     private String pricePrecision;
+    @JsonProperty("amount-precision")
     private String amountPrecision;
+    @JsonProperty("symbol-partition")
     private String symbolPartition;
 }

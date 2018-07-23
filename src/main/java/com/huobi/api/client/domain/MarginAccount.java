@@ -1,20 +1,18 @@
 package com.huobi.api.client.domain;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 /**
  * created by jacky. 2018/7/23 4:08 PM
  */
-public class MarginAccount {
-
-
-    String id;
-    String type;
-    String state;
-    List<Asset> list;
-
-    String symbol;
-    String fl_price;
-    String fl_type;
-    String risk_rate;
+@Getter
+public class MarginAccount  extends  Account{
+    private String symbol;
+    @JsonProperty("fl-price")
+    private String flPrice;
+    @JsonProperty("fl-type")
+    private String flType;
+    @JsonProperty("risk-rate")
+    private String riskRate;
 }
