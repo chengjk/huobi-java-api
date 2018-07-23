@@ -15,16 +15,22 @@ import java.util.Set;
 public interface HuobiApiService {
 
 
+    /**
+     * 获取K线数据
+     */
     @GET("/market/history/kline")
-    Call<RespBody<Set<Kline>>> kline(@Query("symbol") String symbol, @Query("period") String period, @Query("size") int size);
-
-
+    Call<RespBody<Set<Candle>>> kline(@Query("symbol") String symbol, @Query("period") String period, @Query("size") int size);
+    /**
+     * 获取聚合行情(Ticker)
+     */
     @GET("/market/detail/merged")
     Call<RespBody<Merged>> merged(@Query("symbol") String symbol);
 
+    /**获取市场行情*/
     @GET("/market/tickers")
-    Call<RespBody<Set<Kline>>> tickers();
+    Call<RespBody<Set<Candle>>> tickers();
 
+    /**获取 Market Depth 数据*/
     @GET("/market/depth")
     Call<RespBody<Depth>> depth(@Query("symbol") String symbol, @Query("type") String type);
 
@@ -36,7 +42,7 @@ public interface HuobiApiService {
     Call<RespBody<Trade>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
 
     @GET("/market/detail")
-    Call<RespBody<Kline>> detail(@Query("symbol") String symbol);
+    Call<RespBody<Candle>> detail(@Query("symbol") String symbol);
 
 
     @GET("/v1/common/symbols")
@@ -84,7 +90,7 @@ public interface HuobiApiService {
 
 
     @GET("/v1/order/orders/{order-id}")
-    Call<RespBody<Order>> order(@Query("order-id") String orderId);
+    Call<RespBody<Order>> get(@Query("order-id") String orderId);
 
     @POST("/v1/order/orders/{order-id}/submitcancel")
     Call<RespBody<Long>> cancel(@Query("order-id") String orderId);

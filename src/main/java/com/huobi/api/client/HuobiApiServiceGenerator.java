@@ -18,7 +18,7 @@ import java.lang.annotation.Annotation;
  * created by jacky. 2018/7/20 9:07 PM
  */
 @Slf4j
-public class HuobiApiServiceGenerater {
+public class HuobiApiServiceGenerator {
 
 
     static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -27,7 +27,6 @@ public class HuobiApiServiceGenerater {
             new Retrofit.Builder()
                     .baseUrl(HuobiConsts.API_URL)
                     .addConverterFactory(JacksonConverterFactory.create());
-
 
 
     private static Retrofit retrofit = builder.build();
@@ -57,23 +56,19 @@ public class HuobiApiServiceGenerater {
             if (response.isSuccessful()) {
                 return response.body();
             } else {
-                log.error(response.message());
-
-//                BinanceApiError apiError = getBinanceApiError(response);
-//                throw new BinanceApiException(apiError);
+                parseError(response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | HuobiApiException e) {
+            log.error(e.getMessage(), e);
         }
-
-        return null;
+        throw new IllegalStateException("invalid response from server.");
     }
 
     /**
      * Extracts and converts the response error body into an object.
      */
-    public static HuobiApiException getBinanceApiError(Response<?> response) throws IOException, HuobiApiException {
-        return (HuobiApiException)retrofit.responseBodyConverter(HuobiApiException.class, new Annotation[0])
+    public static HuobiApiException parseError(Response<?> response) throws IOException, HuobiApiException {
+        throw (HuobiApiException) retrofit.responseBodyConverter(HuobiApiException.class, new Annotation[0])
                 .convert(response.errorBody());
     }
 

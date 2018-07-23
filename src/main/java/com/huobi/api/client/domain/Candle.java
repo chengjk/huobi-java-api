@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Kline {
+public class Candle {
     private double open;
     private double close;
     private double low;

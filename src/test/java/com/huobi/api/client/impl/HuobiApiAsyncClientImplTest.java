@@ -1,10 +1,7 @@
 package com.huobi.api.client.impl;
 
 import com.huobi.api.client.HuobiApiRestClient;
-import com.huobi.api.client.domain.Kline;
-import com.huobi.api.client.domain.Order;
-import com.huobi.api.client.domain.OrderStatus;
-import com.huobi.api.client.domain.Trade;
+import com.huobi.api.client.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -26,13 +23,13 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void tickers() {
-        Set<Kline> tickers = client.tickers();
+        Set<Candle> tickers = client.tickers();
         assert tickers.size() > 0;
     }
 
     @Test
     public void kline() {
-        Set<Kline> btcusdt = client.kline("btcusdt", "1min", 150);
+        Set<Candle> btcusdt = client.kline("btcusdt", Resolution.M1, 150);
         assert btcusdt.size() > 0;
     }
 
@@ -45,7 +42,7 @@ public class HuobiApiAsyncClientImplTest {
     }
     @Test
     public void orders() {
-        Set<Order> orders = client.orders("btcusdt",OrderStatus.SUBMITTED);
+        Set<Order> orders = client.orders("btcusdt",OrderState.SUBMITTED);
         assert orders != null;
     }
 }

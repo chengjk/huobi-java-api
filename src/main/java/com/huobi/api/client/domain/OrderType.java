@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum OrderTypes {
+public enum OrderType {
     BUY_MARKET("buy-market"),
     SELL_MARKET("sell-market"),
     BUY_LIMIT("buy-limit"),

@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum OrderStatus {
+public enum OrderState {
     SUBMITTED("submitted"),
     PARTIAL_FILLED("partial-filled"),
     PARTIAL_CANCELED("partial-canceled"),
