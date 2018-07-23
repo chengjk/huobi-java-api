@@ -19,12 +19,23 @@ public class Order {
     @JsonProperty(value = "created-at")
     private String created_at;
     private String type;
+
+    //region deprecate
     @JsonProperty(value = "field-amount")
     private String field_amount;
     @JsonProperty(value = "field-cash-amount")
     private String field_cash_amount;
     @JsonProperty(value = "field-fees")
     private String field_fees;
+    //endregion
+
+    @JsonProperty(value = "filled-amount")
+    private String filled_amount;
+    @JsonProperty(value = "filled-cash-amount")
+    private String filled_cash_amount;
+    @JsonProperty(value = "filled-fees")
+    private String filled_fees;
+
     @JsonProperty(value = "finished-at")
     private String finished_at;
     @JsonProperty(value = "user-id")

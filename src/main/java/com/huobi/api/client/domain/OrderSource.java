@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * created by jacky. 2018/7/21 2:35 PM
+ * created by jacky. 2018/7/23 3:34 PM
  */
-@Getter
 @AllArgsConstructor
-public enum OrderSide {
-    BUY("buy"), SELL("sell");
+@Getter
+public enum OrderSource {
+    API("api"), MARGIN_API("margin-api");
     private String code;
 }
