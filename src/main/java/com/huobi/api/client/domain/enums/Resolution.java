@@ -18,6 +18,6 @@ public enum Resolution {
     MN1("1mon"),
     W1("1week"),
     Y1("1year");
-    String name;
+    String code;
 
 }

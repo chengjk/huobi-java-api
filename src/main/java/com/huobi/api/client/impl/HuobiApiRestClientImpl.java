@@ -31,7 +31,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Candle> kline(String symbol, Resolution period, int size) {
-        return executeSync(service.kline(symbol,period.getName(),size)).getData();
+        return executeSync(service.kline(symbol,period.getCode(),size)).getData();
     }
 
     @Override
@@ -86,15 +86,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, String size) {
-
-
         StringJoiner typeJoiner = new StringJoiner(",");
         for (OrderType type : types) {
             typeJoiner.add(type.getCode());
         }
         StringJoiner stateJoiner = new StringJoiner(",");
         for (OrderState state : states) {
-
             stateJoiner.add(state.getCode());
         }
         return executeSync(service.orders(symbol, typeJoiner.toString(), startDate, endDate, stateJoiner.toString(), from, direct, size)).getData();

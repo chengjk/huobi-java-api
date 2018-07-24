@@ -9,6 +9,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AccountType {
-    spot("spot");//现货账户
+    SPOT("spot");//现货账户
     String code;
 }
