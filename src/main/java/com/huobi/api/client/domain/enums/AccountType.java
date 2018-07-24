@@ -1,8 +1,14 @@
 package com.huobi.api.client.domain.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * created by jacky. 2018/7/23 8:21 PM
  */
-public enum  AccountType {
-    spot//现货账户
+@Getter
+@AllArgsConstructor
+public enum AccountType {
+    spot("spot");//现货账户
+    String code;
 }

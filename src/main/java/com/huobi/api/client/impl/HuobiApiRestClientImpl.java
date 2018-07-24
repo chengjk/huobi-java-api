@@ -56,22 +56,22 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Trade historyTrade(String symbol, int size) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.historyTrade(symbol,size)).getData();
     }
 
     @Override
     public Candle detail(String symbol) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.detail(symbol)).getData();
     }
 
     @Override
     public Set<Symbol> symbols() {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.symbols()).getData();
     }
 
     @Override
     public Set<String> currencys() {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.currencys()).getData();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<AccountStates> accounts(String id, AccountStates state, AccountType type) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.accounts(id, state.getCode(), type.getCode())).getData();
     }
 
     @Override
@@ -108,37 +108,37 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Account balance(String accountId) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.balance(accountId)).getData();
     }
 
     @Override
     public Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.place(accountId,amount,price,source.getCode(),symbol,type.getCode())).getData();
     }
 
     @Override
     public Set<Order> openOrders(String accountId, String symbol, OrderSide side, int size) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.openOrders(accountId,symbol,side.getCode(),size)).getData();
     }
 
     @Override
     public Order get(String orderId) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.get(orderId)).getData();
     }
 
     @Override
     public Long cancel(String orderId) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.cancel(orderId)).getData();
     }
 
     @Override
-    public Set<Order> matchresults(String orderId) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+    public Set<Order> matchResults(String orderId) {
+        return executeSync(service.matchResults(orderId)).getData();
     }
 
     @Override
     public Set<Order> marginBalance(String symbol) {
-        throw new RuntimeException("not impl yet!"); //TODO impl.
+        return executeSync(service.marginBalance(symbol)).getData();
     }
 
 

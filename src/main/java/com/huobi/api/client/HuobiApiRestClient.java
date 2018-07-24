@@ -11,7 +11,6 @@ import java.util.Set;
  */
 public interface HuobiApiRestClient {
 
-
     /**
      * 获取K线数据
      */
@@ -32,14 +31,13 @@ public interface HuobiApiRestClient {
      */
     Depth depth(String symbol, MergeLevel type);
 
-
     /**
      * 单个symbol最新成交记录
      *
      * @param symbol
      * @return
      */
-    Set<Trade>trade(String symbol);
+    Set<Trade> trade(String symbol);
 
     /**
      * 单个symbol批量成交记录
@@ -57,7 +55,6 @@ public interface HuobiApiRestClient {
      * @return
      */
     Candle detail(String symbol);
-
 
     /**
      * 交易品种的计价货币和报价精度
@@ -92,6 +89,7 @@ public interface HuobiApiRestClient {
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
+     *
      * @param symbol    交易对
      * @param types     查询的订单类型组合，使用','分割
      * @param startDate yyyy-mm-dd
@@ -102,10 +100,8 @@ public interface HuobiApiRestClient {
      * @param size
      * @return
      */
-    Set<Order> orders(String symbol, List<OrderType> types,
-                      String startDate, String endDate,
-                      List<OrderState> states,
-                      String from, String direct, String size);
+    Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
+                      List<OrderState> states, String from, String direct, String size);
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
@@ -122,7 +118,6 @@ public interface HuobiApiRestClient {
      */
     Account balance(String accountId);
 
-
     /**
      * 下单
      *
@@ -134,9 +129,7 @@ public interface HuobiApiRestClient {
      * @param type
      * @return
      */
-    Long place(String accountId, String amount, String price,
-               OrderSource source, String symbol, OrderType type);
-
+    Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type);
 
     /**
      * 查询用户当前未成交订单 (up to 500)
@@ -148,7 +141,6 @@ public interface HuobiApiRestClient {
      * @return
      */
     Set<Order> openOrders(String accountId, String symbol, OrderSide side, int size);
-
 
     /**
      * 获取指定订单
@@ -166,12 +158,10 @@ public interface HuobiApiRestClient {
      */
     Long cancel(String orderId);
 
-
     /**
      * 根据order-id查询订单的成交明细
      */
-    Set<Order> matchresults(String orderId);
-
+    Set<Order> matchResults(String orderId);
 
     /**
      * 借贷账户详情

@@ -96,8 +96,8 @@ public interface HuobiApiService {
     @POST("/v1/order/orders/{order-id}/submitcancel")
     Call<RespBody<Long>> cancel(@Query("order-id") String orderId);
 
-    @GET("/v1/order/orders/{order-id}/matchresults")
-    Call<RespBody<Set<Order>>> matchresults(@Query("order-id") String orderId);
+    @GET("/v1/order/orders/{order-id}/matchResults")
+    Call<RespBody<Set<Order>>> matchResults(@Query("order-id") String orderId);
 
 
     @GET("/v1/margin/accounts/balance")
