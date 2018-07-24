@@ -2,6 +2,8 @@ package com.huobi.api.client.impl;
 
 import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.domain.*;
+import com.huobi.api.client.domain.enums.OrderState;
+import com.huobi.api.client.domain.enums.Resolution;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

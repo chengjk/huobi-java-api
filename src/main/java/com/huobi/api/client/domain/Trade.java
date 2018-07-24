@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain;
 
+import com.huobi.api.client.domain.enums.OrderSide;
 import lombok.Data;
 
 /**

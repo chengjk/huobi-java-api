@@ -1,7 +1,7 @@
 package com.huobi.api.client;
 
 import com.huobi.api.client.domain.*;
-import com.huobi.api.client.domain.resp.RespTick;
+import com.huobi.api.client.domain.enums.*;
 
 import java.util.List;
 import java.util.Set;

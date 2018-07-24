@@ -1,4 +1,4 @@
-package com.huobi.api.client.domain;
+package com.huobi.api.client.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

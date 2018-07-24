@@ -3,6 +3,7 @@ package com.huobi.api.client.impl;
 import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
+import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.RespBody;
 
 import java.util.List;
