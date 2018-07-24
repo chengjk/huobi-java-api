@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class KlineEvent implements WsEvent {
-    String symbol;
-    Resolution period;
+    private String symbol;
+    private Resolution period;
 
     @Override
     public String toSubscribe()  {
