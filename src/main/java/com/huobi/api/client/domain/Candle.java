@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Candle {
+    private long id;
     private double open;
     private double close;
     private double low;
@@ -18,5 +19,4 @@ public class Candle {
     private int count;
     private String symbol;
     private long ts;
-    private long id;
 }

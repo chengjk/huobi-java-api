@@ -10,6 +10,11 @@ public interface HuobiConsts {
     String API_HOST = "api.huobi.pro";
     String API_URL = "https://" + API_HOST;
 
+
+    String WS_API_BASE_URL_PRO = "wss://api.huobi.pro/ws";
+    String WS_API_BASE_URL_HADAX = "wss://api.hadax.com/ws";
+
+
     String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
 
 
