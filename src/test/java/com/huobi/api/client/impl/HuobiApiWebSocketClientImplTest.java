@@ -3,6 +3,7 @@ package com.huobi.api.client.impl;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.Closeable;
@@ -15,32 +16,33 @@ import static org.junit.Assert.*;
  */
 public class HuobiApiWebSocketClientImplTest {
     private HuobiApiWebSocketClientImpl ws = new HuobiApiWebSocketClientImpl();
-    @Test
-    public void onKlineTick() throws InterruptedException, IOException {
+    Closeable stream;
 
-        Closeable klineStream = ws.onKlineTick("BTCUSDT", Resolution.M1, data -> {
+    @Test
+    public void onKlineTick() {
+        stream = ws.onKlineTick("BTCUSDT", Resolution.M1, data -> {
             if (StringUtils.isNotEmpty(data.getSubbed())) {
                 System.out.println(data.getSubbed());
-            }else {
+            } else {
                 System.out.println(data.getTick().getClose());
             }
         });
-        for (int i = 0; i < 100; i++) {
-            Thread.sleep(1000L);
-        }
-        klineStream.close();
+
     }
 
     @Test
-    public void onDepthTick() throws InterruptedException, IOException {
-        Closeable depthStream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, data -> {
+    public void onDepthTick() {
+        stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, data -> {
             System.out.println(data.getRep());
         });
-        for (int i = 0; i < 100; i++) {
-            Thread.sleep(1000L);
-        }
-        depthStream.close();
     }
 
 
+    @After
+    public void after() throws InterruptedException, IOException {
+        for (int i = 0; i < 100; i++) {
+            Thread.sleep(1000L);
+        }
+        stream.close();
+    }
 }

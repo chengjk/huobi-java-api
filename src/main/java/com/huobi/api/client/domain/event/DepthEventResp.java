@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DepthEventResp {
-   private String id;
-   private String rep;
-   private String status;
-   private  Long ts;
-   private Object data; //todo
+    private String id;
+    private String rep;
+    private String status;
+    private long ts;
+    private Object data; //todo
 }
