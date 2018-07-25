@@ -55,7 +55,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Trade historyTrade(String symbol, int size) {
+    public Set<Trade> historyTrade(String symbol, int size) {
         return executeSync(service.historyTrade(symbol,size)).getData();
     }
 

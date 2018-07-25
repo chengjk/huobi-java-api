@@ -40,7 +40,7 @@ public interface HuobiApiService {
     Call<RespBody<RespTick<Set<Trade>>>> trade(@Query("symbol") String symbol);
 
     @GET("/market/history/trade")
-    Call<RespBody<Trade>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
+    Call<RespBody<Set<Trade>>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
 
     @GET("/market/detail")
     Call<RespBody<Candle>> detail(@Query("symbol") String symbol);

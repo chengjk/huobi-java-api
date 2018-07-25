@@ -46,7 +46,7 @@ public interface HuobiApiRestClient {
      * @param size
      * @return
      */
-    Trade historyTrade(String symbol, int size);
+    Set<Trade> historyTrade(String symbol, int size);
 
     /**
      * 滚动24小时交易聚合行情(单个symbol)
