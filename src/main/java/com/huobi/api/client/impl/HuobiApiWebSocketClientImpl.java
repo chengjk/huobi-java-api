@@ -41,7 +41,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, KlineEventResp.class));
     }
 
-
+    @Override
     public Closeable onDepthTick(String symbol, MergeLevel level, ApiCallback<DepthEventResp> callback) {
         DepthEvent event = new DepthEvent();
         event.setSymbol(symbol);

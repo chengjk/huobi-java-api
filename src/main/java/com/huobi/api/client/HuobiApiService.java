@@ -21,17 +21,22 @@ public interface HuobiApiService {
      */
     @GET("/market/history/kline")
     Call<RespBody<Set<Candle>>> kline(@Query("symbol") String symbol, @Query("period") String period, @Query("size") int size);
+
     /**
      * 获取聚合行情(Ticker)
      */
     @GET("/market/detail/merged")
     Call<RespBody<Merged>> merged(@Query("symbol") String symbol);
 
-    /**获取市场行情*/
+    /**
+     * 获取市场行情
+     */
     @GET("/market/tickers")
     Call<RespBody<Set<Candle>>> tickers();
 
-    /**获取 Market Depth 数据*/
+    /**
+     * 获取 Market Depth 数据
+     */
     @GET("/market/depth")
     Call<RespBody<Depth>> depth(@Query("symbol") String symbol, @Query("type") String type);
 
@@ -59,6 +64,7 @@ public interface HuobiApiService {
     Call<RespBody<Set<AccountStates>>> accounts(@Query("id") String id, @Query("state") String state, @Query("type") String type);
 
     /**
+     * 查询用户当前委托、或历史委托订单 (up to 100)
      * @param symbol
      * @param types
      * @param startDate
@@ -66,15 +72,15 @@ public interface HuobiApiService {
      * @param states
      * @param from
      * @param direct    prev,next
-     * @param size
+     * @param size      nullable
      * @return
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders")
     Call<RespBody<Set<Order>>> orders(@Query("symbol") String symbol, @Query("types") String types,
-                                      @Query("startDate") String startDate, @Query("endDate") String endDate,
+                                      @Query("start-date") String startDate, @Query("end-date") String endDate,
                                       @Query("states") String states,
-                                      @Query("from") String from, @Query("direct") String direct, @Query("states") String size);
+                                      @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
 
     @GET("/v1/account/accounts/{account-id}/balance")

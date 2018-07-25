@@ -97,11 +97,11 @@ public interface HuobiApiRestClient {
      * @param states    查询的订单状态组合，使用','分割
      * @param from      查询起始 ID
      * @param direct    prev,next
-     * @param size
+     * @param size      [0,100]
      * @return
      */
     Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
-                      List<OrderState> states, String from, String direct, String size);
+                      List<OrderState> states, String from, String direct, Integer size);
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)

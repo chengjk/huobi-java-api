@@ -85,7 +85,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, String size) {
+    public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, Integer size) {
         StringJoiner typeJoiner = new StringJoiner(",");
         for (OrderType type : types) {
             typeJoiner.add(type.getCode());
