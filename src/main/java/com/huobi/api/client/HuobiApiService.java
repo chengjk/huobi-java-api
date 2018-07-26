@@ -61,7 +61,7 @@ public interface HuobiApiService {
     Call<Long> timestamp();
 
     @GET("/v1/account/accounts")
-    Call<RespBody<Set<AccountState>>> accounts(@Query("id") String id, @Query("state") String state, @Query("type") String type);
+    Call<RespBody<Set<Account>>> accounts();
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)

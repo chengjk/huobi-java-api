@@ -6,6 +6,7 @@ import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.RespBody;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -80,8 +81,8 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<AccountState> accounts(String id, AccountState state, AccountType type) {
-        return executeSync(service.accounts(id, state.getCode(), type.getCode())).getData();
+    public Set<Account> accounts() {
+        return executeSync(service.accounts()).getData();
     }
 
     @Override
@@ -97,11 +98,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return executeSync(service.orders(symbol, typeJoiner.toString(), startDate, endDate, stateJoiner.toString(), from, direct, size)).getData();
     }
 
-    @Override
-    public Set<Order> orders(String symbol, OrderState status) {
-        RespBody<Set<Order>> resp = executeSync(service.orders(symbol, null, null, null, status.getCode(), null, null, null));
-        return resp.getData();
-    }
+
 
     @Override
     public Account balance(String accountId) {

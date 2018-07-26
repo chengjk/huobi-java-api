@@ -7,6 +7,7 @@ import com.huobi.api.client.domain.enums.Resolution;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -44,7 +45,7 @@ public class HuobiApiAsyncClientImplTest {
     }
     @Test
     public void orders() {
-        Set<Order> orders = client.orders("btcusdt",OrderState.SUBMITTED);
+        Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.values()), null, null, null);
         assert orders != null;
     }
 }

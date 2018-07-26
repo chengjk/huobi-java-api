@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Account {
-    private String id;
+    private long id;
     private String type;
     private String state;
     @JsonProperty("user-id")

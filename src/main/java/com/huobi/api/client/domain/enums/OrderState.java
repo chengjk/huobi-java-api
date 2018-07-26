@@ -11,6 +11,7 @@ import lombok.Getter;
 public enum OrderState {
     SUBMITTED("submitted"),
     PARTIAL_FILLED("partial-filled"),
+    FILLED("filled"),
     PARTIAL_CANCELED("partial-canceled"),
     CANCELED("canceled");
     private String code;

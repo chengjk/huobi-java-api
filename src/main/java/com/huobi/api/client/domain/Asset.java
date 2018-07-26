@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Setter
 public class Asset {
     private String currency;
+    //AssetType
     private String type;
     private BigDecimal balance;
 }

@@ -86,12 +86,9 @@ public interface HuobiApiRestClient {
     /**
      * 查询用户的所有账户状态
      *
-     * @param id
-     * @param state
-     * @param type
      * @return
      */
-    Set<AccountState> accounts(String id, AccountState state, AccountType type);
+    Set<Account> accounts();
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
@@ -109,14 +106,6 @@ public interface HuobiApiRestClient {
     Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
                       List<OrderState> states, String from, String direct, Integer size);
 
-    /**
-     * 查询用户当前委托、或历史委托订单 (up to 100)
-     *
-     * @param symbol
-     * @param status
-     * @return
-     */
-    Set<Order> orders(String symbol, OrderState status);
 
     /**
      * @param accountId
@@ -127,8 +116,8 @@ public interface HuobiApiRestClient {
     /**
      * 下单
      *
-     * @param accountId
-     * @param amount
+     * @param accountId 账户 ID，使用accounts方法获得。币币交易使用‘spot’账户的accountid；借贷资产交易，请使用‘margin’账户的accountid
+     * @param amount    限价单表示下单数量，市价买单时表示买多少钱，市价卖单时表示卖多少币
      * @param price     optional
      * @param source    optional
      * @param symbol
