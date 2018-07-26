@@ -1,6 +1,7 @@
 package com.huobi.api.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.huobi.api.client.domain.enums.AccountState;
 import lombok.Getter;
 import lombok.Setter;
 

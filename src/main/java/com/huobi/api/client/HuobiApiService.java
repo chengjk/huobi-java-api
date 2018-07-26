@@ -2,7 +2,7 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
-import com.huobi.api.client.domain.enums.AccountStates;
+import com.huobi.api.client.domain.enums.AccountState;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 import retrofit2.Call;
@@ -61,7 +61,7 @@ public interface HuobiApiService {
     Call<Long> timestamp();
 
     @GET("/v1/account/accounts")
-    Call<RespBody<Set<AccountStates>>> accounts(@Query("id") String id, @Query("state") String state, @Query("type") String type);
+    Call<RespBody<Set<AccountState>>> accounts(@Query("id") String id, @Query("state") String state, @Query("type") String type);
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
@@ -103,11 +103,11 @@ public interface HuobiApiService {
     Call<RespBody<Long>> cancel(@Query("order-id") String orderId);
 
     @GET("/v1/order/orders/{order-id}/matchResults")
-    Call<RespBody<Set<Order>>> matchResults(@Query("order-id") String orderId);
+    Call<RespBody<Set<MatchResult>>> matchResults(@Query("order-id") String orderId);
 
 
     @GET("/v1/margin/accounts/balance")
-    Call<RespBody<Set<Order>>> marginBalance(@Query("symbol") String symbol);
+    Call<RespBody<MarginAccount>> marginBalance(@Query("symbol") String symbol);
 
 
 }

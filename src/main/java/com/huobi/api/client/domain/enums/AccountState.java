@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum  AccountStates {
+public enum AccountState {
     WORKING("working"),
     LOCK("lock");
     String code;

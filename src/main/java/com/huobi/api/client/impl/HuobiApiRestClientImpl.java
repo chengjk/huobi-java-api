@@ -30,7 +30,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
 
     @Override
-    public Set<Candle> kline(String symbol, Resolution period, int size) {
+    public Set<Candle> kline(String symbol, Resolution period, Integer size) {
         return executeSync(service.kline(symbol,period.getCode(),size)).getData();
     }
 
@@ -55,7 +55,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Trade> historyTrade(String symbol, int size) {
+    public Set<Trade> historyTrade(String symbol, Integer size) {
         return executeSync(service.historyTrade(symbol,size)).getData();
     }
 
@@ -80,7 +80,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<AccountStates> accounts(String id, AccountStates state, AccountType type) {
+    public Set<AccountState> accounts(String id, AccountState state, AccountType type) {
         return executeSync(service.accounts(id, state.getCode(), type.getCode())).getData();
     }
 
@@ -114,7 +114,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Order> openOrders(String accountId, String symbol, OrderSide side, int size) {
+    public Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size) {
         return executeSync(service.openOrders(accountId,symbol,side.getCode(),size)).getData();
     }
 
@@ -129,15 +129,13 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Order> matchResults(String orderId) {
+    public Set<MatchResult> matchResults(String orderId) {
         return executeSync(service.matchResults(orderId)).getData();
     }
 
     @Override
-    public Set<Order> marginBalance(String symbol) {
+    public MarginAccount marginBalance(String symbol) {
         return executeSync(service.marginBalance(symbol)).getData();
     }
-
-
 
 }

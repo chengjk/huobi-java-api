@@ -13,8 +13,14 @@ public interface HuobiApiRestClient {
 
     /**
      * 获取K线数据
+     *
+     * @param symbol
+     * @param period
+     * @param size   optional default 150. [1.2000]
+     * @return
      */
-    Set<Candle> kline(String symbol, Resolution period, int size);
+
+    Set<Candle> kline(String symbol, Resolution period, Integer size);
 
     /**
      * 获取聚合行情(Ticker)
@@ -43,10 +49,10 @@ public interface HuobiApiRestClient {
      * 单个symbol批量成交记录
      *
      * @param symbol
-     * @param size
+     * @param size   optional default 1 [1,2000]
      * @return
      */
-    Set<Trade> historyTrade(String symbol, int size);
+    Set<Trade> historyTrade(String symbol, Integer size);
 
     /**
      * 滚动24小时交易聚合行情(单个symbol)
@@ -85,19 +91,19 @@ public interface HuobiApiRestClient {
      * @param type
      * @return
      */
-    Set<AccountStates> accounts(String id, AccountStates state, AccountType type);
+    Set<AccountState> accounts(String id, AccountState state, AccountType type);
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
      *
      * @param symbol    交易对
-     * @param types     查询的订单类型组合，使用','分割
-     * @param startDate yyyy-mm-dd
-     * @param endDate   yyyy-mm-dd
+     * @param types     optional, 查询的订单类型组合，使用','分割
+     * @param startDate optional ,yyyy-mm-dd
+     * @param endDate   optional,yyyy-mm-dd
      * @param states    查询的订单状态组合，使用','分割
-     * @param from      查询起始 ID
-     * @param direct    prev,next
-     * @param size      [0,100]
+     * @param from      optional, 查询起始 ID
+     * @param direct    optional, prev,next
+     * @param size      optional, [0,100]
      * @return
      */
     Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
@@ -123,8 +129,8 @@ public interface HuobiApiRestClient {
      *
      * @param accountId
      * @param amount
-     * @param price
-     * @param source
+     * @param price     optional
+     * @param source    optional
      * @param symbol
      * @param type
      * @return
@@ -136,11 +142,11 @@ public interface HuobiApiRestClient {
      *
      * @param accountId
      * @param symbol
-     * @param side
-     * @param size      [0,500]
+     * @param side      optional
+     * @param size      optional default 150. [0,500]
      * @return
      */
-    Set<Order> openOrders(String accountId, String symbol, OrderSide side, int size);
+    Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size);
 
     /**
      * 获取指定订单
@@ -161,12 +167,10 @@ public interface HuobiApiRestClient {
     /**
      * 根据order-id查询订单的成交明细
      */
-    Set<Order> matchResults(String orderId);
+    Set<MatchResult> matchResults(String orderId);
 
     /**
      * 借贷账户详情
      */
-    Set<Order> marginBalance(String symbol);
-
-
+    MarginAccount marginBalance(String symbol);
 }

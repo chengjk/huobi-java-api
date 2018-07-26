@@ -2,11 +2,13 @@ package com.huobi.api.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * created by jacky. 2018/7/23 4:08 PM
  */
 @Getter
+@Setter
 public class MarginAccount  extends  Account{
     private String symbol;
     @JsonProperty("fl-price")
