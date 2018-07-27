@@ -40,14 +40,14 @@ public class HuobiApiWebSocketClientImplTest {
     @Test
     public void onTradeDetailTick(){
         stream = ws.onTradeDetailTick("BTCUSDT", data -> {
-            System.out.println(data.getCh());
+            System.out.println(data.getTs());
         });
     }
 
 
     @After
     public void after() throws InterruptedException, IOException {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             Thread.sleep(1000L);
         }
         stream.close();

@@ -77,7 +77,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Long timestamp() {
-        return executeSync(service.timestamp());
+        return executeSync(service.timestamp()).getData();
     }
 
     @Override

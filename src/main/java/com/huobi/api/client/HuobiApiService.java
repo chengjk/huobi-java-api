@@ -58,7 +58,7 @@ public interface HuobiApiService {
     Call<RespBody<Set<String>>> currencys();
 
     @GET("/v1/common/timestamp")
-    Call<Long> timestamp();
+    Call<RespBody<Long>> timestamp();
 
     @GET("/v1/account/accounts")
     Call<RespBody<Set<Account>>> accounts();
