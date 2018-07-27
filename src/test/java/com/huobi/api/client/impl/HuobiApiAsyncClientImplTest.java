@@ -16,7 +16,10 @@ import java.util.Set;
 @Slf4j
 public class HuobiApiAsyncClientImplTest {
 
-    private HuobiApiRestClient client = new HuobiApiRestClientImpl("a", "s");
+
+    private final String apiKey = "a";
+    private final String apiSecret = "s";
+    private HuobiApiRestClient client = new HuobiApiRestClientImpl(apiKey, apiSecret);
 
     @Test
     public void timestamp() {
@@ -48,4 +51,11 @@ public class HuobiApiAsyncClientImplTest {
         Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.values()), null, null, null);
         assert orders != null;
     }
+
+    @Test
+    public void getAccounts() {
+        Set<Account> accounts = client.accounts();
+        assert accounts != null;
+    }
+
 }

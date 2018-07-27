@@ -60,6 +60,7 @@ public interface HuobiApiService {
     @GET("/v1/common/timestamp")
     Call<RespBody<Long>> timestamp();
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/account/accounts")
     Call<RespBody<Set<Account>>> accounts();
 
@@ -82,35 +83,40 @@ public interface HuobiApiService {
                                       @Query("states") String states,
                                       @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
-
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/account/accounts/{account-id}/balance")
     Call<RespBody<Account>> balance(@Path("account-id") String accountId);
 
-
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/order/orders/place")
     Call<RespBody<Long>> place(@Query("account-id") String accountId, @Query("amount") String amount, @Query("price") String price,
                                @Query("source") String source, @Query("symbol") String symbol, @Query("type") String type);
 
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/openOrders")
     Call<RespBody<Set<Order>>> openOrders(@Query("account-id") String accountId, @Query("symbol") String symbol, @Query("side") String side, @Query("size") int size);
 
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/{order-id}")
     Call<RespBody<Order>> get(@Query("order-id") String orderId);
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/order/orders/{order-id}/submitcancel")
     Call<RespBody<Long>> cancel(@Query("order-id") String orderId);
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/{order-id}/matchResults")
     Call<RespBody<Set<MatchResult>>> matchResults(@Query("order-id") String orderId);
 
 
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/matchResults")
     Call<RespBody<Set<MatchResult>>> matchResults(@Query("symbol") String symbol, @Query("types") String types,
                                                   @Query("start-date") String startDate, @Query("end-date") String endDate,
                                                   @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
-
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/margin/accounts/balance")
     Call<RespBody<MarginAccount>> marginBalance(@Query("symbol") String symbol);
 

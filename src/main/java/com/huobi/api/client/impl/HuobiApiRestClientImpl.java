@@ -4,12 +4,12 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
-import com.huobi.api.client.domain.resp.RespBody;
+import jdk.nashorn.internal.ir.IfNode;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import static com.huobi.api.client.HuobiApiServiceGenerator.createService;
 import static com.huobi.api.client.HuobiApiServiceGenerator.executeSync;
@@ -87,15 +87,24 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, Integer size) {
-        StringJoiner typeJoiner = new StringJoiner(",");
-        for (OrderType type : types) {
-            typeJoiner.add(type.getCode());
+        String typesStr = null;
+        String stateStr = null;
+        if (types != null&& !types.isEmpty()) {
+            StringJoiner typeJoiner = new StringJoiner(",");
+            for (OrderType type : types) {
+                typeJoiner.add(type.getCode());
+            }
+            typesStr = typeJoiner.toString();
         }
-        StringJoiner stateJoiner = new StringJoiner(",");
-        for (OrderState state : states) {
-            stateJoiner.add(state.getCode());
+
+        if (states!=null && !states.isEmpty()){
+            StringJoiner stateJoiner = new StringJoiner(",");
+            for (OrderState state : states) {
+                stateJoiner.add(state.getCode());
+            }
+            stateStr = stateJoiner.toString();
         }
-        return executeSync(service.orders(symbol, typeJoiner.toString(), startDate, endDate, stateJoiner.toString(), from, direct, size)).getData();
+        return executeSync(service.orders(symbol, typesStr, startDate, endDate, stateStr, from, direct, size)).getData();
     }
 
 
