@@ -112,7 +112,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size) {
-        return executeSync(service.openOrders(accountId,symbol,side.getCode(),size)).getData();
+        return executeSync(service.openOrders(accountId,symbol,side.name(),size)).getData();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +9,6 @@ import lombok.Getter;
  * （合并深度0-5）；step0时，不合并深度
  */
 
-@Getter
 @AllArgsConstructor
 public enum MergeLevel {
     STEP0("step0"),
@@ -17,5 +17,10 @@ public enum MergeLevel {
     STEP3("step3"),
     STEP4("step4"),
     STEP5("step5");
-    String code;
+    private String code;
+
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
 }

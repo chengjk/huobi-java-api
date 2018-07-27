@@ -1,6 +1,9 @@
 package com.huobi.api.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.huobi.api.client.domain.enums.OrderSource;
+import com.huobi.api.client.domain.enums.OrderState;
+import com.huobi.api.client.domain.enums.OrderType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +21,7 @@ public class Order {
     private String price;
     @JsonProperty(value = "created-at")
     private String createdAt;
-    private String type;
+    private OrderType type;
 
     //region deprecate
     @JsonProperty(value = "field-amount")
@@ -40,8 +43,8 @@ public class Order {
     private String finishedAt;
     @JsonProperty(value = "user-id")
     private String userId;
-    private String source;
-    private String state;
+    private OrderSource source;
+    private OrderState state;
     @JsonProperty(value = "canceled-at")
     private String canceledAt;
     private String exchange;

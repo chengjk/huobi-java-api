@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -28,4 +29,10 @@ public enum OrderType {
     SELL_LIMIT_MAKER("sell-limit-maker");
 
     private String code;
+
+
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
 }

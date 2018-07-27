@@ -1,8 +1,12 @@
 package com.huobi.api.client.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huobi.api.client.domain.enums.AssetType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
@@ -12,7 +16,6 @@ import java.math.BigDecimal;
 @Setter
 public class Asset {
     private String currency;
-    //AssetType
-    private String type;
+    private AssetType type;
     private BigDecimal balance;
 }
