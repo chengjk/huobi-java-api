@@ -2,7 +2,12 @@ package com.huobi.api.client.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.lang.reflect.Parameter;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +18,8 @@ import java.util.Map;
 public class Depth {
     private long id;
     private long ts;
-    private Map<Long, Double> bids;
-    private Map<Long, Double> asks;
+    private List<List<BigDecimal>> bids;
+    private List<List<BigDecimal>> asks;
+
+    private long version;
 }

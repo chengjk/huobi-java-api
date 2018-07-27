@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain.event;
 
+import com.huobi.api.client.domain.Depth;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,5 @@ public class DepthEventResp {
     private String rep;
     private String status;
     private long ts;
-    private Object data; //todo
+    private Depth data;
 }

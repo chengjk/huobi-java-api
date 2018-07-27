@@ -9,8 +9,6 @@ import org.junit.Test;
 import java.io.Closeable;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
 /**
  * created by jacky. 2018/7/24 8:30 PM
  */
@@ -34,6 +32,15 @@ public class HuobiApiWebSocketClientImplTest {
     public void onDepthTick() {
         stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, data -> {
             System.out.println(data.getRep());
+        });
+    }
+
+
+
+    @Test
+    public void onTradeDetailTick(){
+        stream = ws.onTradeDetailTick("BTCUSDT", data -> {
+            System.out.println(data.getCh());
         });
     }
 

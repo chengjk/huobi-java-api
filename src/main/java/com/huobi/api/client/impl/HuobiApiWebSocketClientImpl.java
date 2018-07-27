@@ -5,10 +5,7 @@ import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.Candle;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
-import com.huobi.api.client.domain.event.DepthEvent;
-import com.huobi.api.client.domain.event.DepthEventResp;
-import com.huobi.api.client.domain.event.KlineEvent;
-import com.huobi.api.client.domain.event.KlineEventResp;
+import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import com.huobi.api.client.domain.resp.RespBody;
 import okhttp3.Dispatcher;
@@ -49,6 +46,13 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, DepthEventResp.class));
     }
 
+
+    @Override
+    public Closeable onTradeDetailTick(String symbol, ApiCallback<TradeDetailResp> callback) {
+        TradeDetailEvent event=new TradeDetailEvent();
+        event.setSymbol(symbol);
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, TradeDetailResp.class));
+    }
 
     private Closeable createNewWebSocket(String sub, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_BASE_URL_PRO;
