@@ -106,6 +106,11 @@ public interface HuobiApiService {
     Call<RespBody<Set<MatchResult>>> matchResults(@Query("order-id") String orderId);
 
 
+    @GET("/v1/order/orders/matchResults")
+    Call<RespBody<Set<MatchResult>>> matchResults(@Query("symbol") String symbol, @Query("types") String types,
+                                                  @Query("start-date") String startDate, @Query("end-date") String endDate,
+                                                  @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
+
     @GET("/v1/margin/accounts/balance")
     Call<RespBody<MarginAccount>> marginBalance(@Query("symbol") String symbol);
 

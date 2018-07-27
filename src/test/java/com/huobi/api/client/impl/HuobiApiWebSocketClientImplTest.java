@@ -44,10 +44,17 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+    @Test
+    public void onMarketDetailTick(){
+        stream = ws.onMarketDetailTick("BTCUSDT", data -> {
+            System.out.println(data.getTick().getClose());
+        });
+    }
+
 
     @After
     public void after() throws InterruptedException, IOException {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             Thread.sleep(1000L);
         }
         stream.close();

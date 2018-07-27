@@ -19,4 +19,6 @@ public class Candle {
     private int count;
     private String symbol;
     private long ts;
+    private long version;
+
 }

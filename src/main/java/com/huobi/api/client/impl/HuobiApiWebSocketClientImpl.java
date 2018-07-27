@@ -54,6 +54,14 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, TradeDetailResp.class));
     }
 
+
+    @Override
+    public Closeable onMarketDetailTick(String symbol, ApiCallback<MarketDetailResp> callback) {
+        MarketDetailEvent event =new MarketDetailEvent();
+        event.setSymbol(symbol);
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, MarketDetailResp.class));
+    }
+
     private Closeable createNewWebSocket(String sub, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_BASE_URL_PRO;
         Request request = new Request.Builder().url(streamingUrl).build();

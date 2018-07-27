@@ -2,10 +2,7 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
-import com.huobi.api.client.domain.event.DepthEventResp;
-import com.huobi.api.client.domain.event.KlineEventResp;
-import com.huobi.api.client.domain.event.TradeDetailEvent;
-import com.huobi.api.client.domain.event.TradeDetailResp;
+import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
 
 import java.io.Closeable;
@@ -19,4 +16,6 @@ public interface HuobiApiWebSocketClient {
     Closeable onDepthTick(String symbol, MergeLevel level, ApiCallback<DepthEventResp> callback);
 
     Closeable onTradeDetailTick(String symbol, ApiCallback<TradeDetailResp> callback);
+
+    Closeable onMarketDetailTick(String symbol, ApiCallback<MarketDetailResp> callback);
 }

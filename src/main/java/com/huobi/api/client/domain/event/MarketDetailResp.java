@@ -1,19 +1,20 @@
 package com.huobi.api.client.domain.event;
 
+import com.huobi.api.client.domain.Candle;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * created by jacky. 2018/7/26 6:08 PM
+ * created by jacky. 2018/7/27 7:50 PM
  */
 @Getter
 @Setter
-public class TradeDetailResp {
-    private String id;
+public class MarketDetailResp {
     private String status;
-    private String subbed;
+    private String id;
     private String ch;
     private long ts;
-    private TradeTick tick;
-}
 
+    private Candle tick;
+
+}
