@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.TreeSet;
 
 /**
@@ -68,23 +69,28 @@ public class AuthenticationInterceptor implements Interceptor {
 
 
     /**
-     *  创建签名.
-     *  https://github.com/huobiapi/API_Docs/wiki/REST_authentication
+     * 创建签名.
+     * https://github.com/huobiapi/API_Docs/wiki/REST_authentication
+     *
      * @param method
      * @param request
      * @param gmtNow
      * @return
      */
     private String createSignature(String method, HttpUrl request, String gmtNow) {
-
         StringBuilder sb = new StringBuilder(1024);
         sb.append(method.toUpperCase()).append('\n') // GET
                 .append(HuobiConsts.API_HOST.toLowerCase()).append('\n') // Host
-                .append(request.uri().getPath()).append('\n') // /path
-                .append("AccessKeyId=" + apiKey + "&")
-                .append("SignatureMethod=" + HuobiConsts.SIGNATURE_METHOD + "&")
-                .append("SignatureVersion=" + HuobiConsts.SIGNATURE_VERSION + "&")
-                .append("Timestamp=" + gmtNow + "&");
+                .append(request.uri().getPath()).append('\n'); // /path
+
+
+        StringJoiner joiner = new StringJoiner("&");
+        joiner.add("AccessKeyId=" + apiKey)
+                .add("SignatureMethod=" + HuobiConsts.SIGNATURE_METHOD)
+                .add("SignatureVersion=" + HuobiConsts.SIGNATURE_VERSION)
+                .add("Timestamp=" + urlEncode(gmtNow));
+
+
         //参数排序
         TreeSet<String> names = new TreeSet(request.queryParameterNames());
 
@@ -92,9 +98,9 @@ public class AuthenticationInterceptor implements Interceptor {
         //拼接
         for (String key : names) {
             String value = request.queryParameter(key);
-            sb.append(key).append('=').append(urlEncode(value)).append('&');
+            joiner.add(key + '=' + urlEncode(value));
         }
-        return HmacSHA256Signer.sign(sb.toString(), secret);
+        return HmacSHA256Signer.sign(sb.toString() + joiner.toString(), secret);
     }
 
 

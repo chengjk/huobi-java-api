@@ -57,5 +57,4 @@ public class HuobiApiAsyncClientImplTest {
         Set<Account> accounts = client.accounts();
         assert accounts != null;
     }
-
 }
