@@ -64,4 +64,10 @@ public class HuobiApiAsyncClientImplTest {
         Account balance = client.balance("2265332");
         assert balance != null;
     }
+
+    @Test
+    public void openOrders(){
+        Set<Order> openOrders = client.openOrders("2265332", "btcusdt", null, 100);
+        assert openOrders != null;
+    }
 }

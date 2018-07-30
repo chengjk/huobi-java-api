@@ -4,12 +4,10 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
-import jdk.nashorn.internal.ir.IfNode;
 
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 import static com.huobi.api.client.HuobiApiServiceGenerator.createService;
 import static com.huobi.api.client.HuobiApiServiceGenerator.executeSync;
@@ -32,7 +30,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Candle> kline(String symbol, Resolution period, Integer size) {
-        return executeSync(service.kline(symbol,period.getCode(),size)).getData();
+        return executeSync(service.kline(symbol, period == null ? null : period.getCode(), size)).getData();
     }
 
     @Override
@@ -47,7 +45,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Depth depth(String symbol, MergeLevel type) {
-        return executeSync(service.depth(symbol,type.name())).getData();
+        return executeSync(service.depth(symbol, type == null ? null : type.name())).getData();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Trade> historyTrade(String symbol, Integer size) {
-        return executeSync(service.historyTrade(symbol,size)).getData();
+        return executeSync(service.historyTrade(symbol, size)).getData();
     }
 
     @Override
@@ -89,7 +87,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, Integer size) {
         String typesStr = null;
         String stateStr = null;
-        if (types != null&& !types.isEmpty()) {
+        if (types != null && !types.isEmpty()) {
             StringJoiner typeJoiner = new StringJoiner(",");
             for (OrderType type : types) {
                 typeJoiner.add(type.getCode());
@@ -97,7 +95,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
             typesStr = typeJoiner.toString();
         }
 
-        if (states!=null && !states.isEmpty()){
+        if (states != null && !states.isEmpty()) {
             StringJoiner stateJoiner = new StringJoiner(",");
             for (OrderState state : states) {
                 stateJoiner.add(state.getCode());
@@ -108,7 +106,6 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
 
-
     @Override
     public Account balance(String accountId) {
         return executeSync(service.balance(accountId)).getData();
@@ -116,12 +113,16 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type) {
-        return executeSync(service.place(accountId,amount,price,source.getCode(),symbol,type.getCode())).getData();
+        return executeSync(service.place(accountId, amount, price, source == null ? null : source.getCode(), symbol, type == null ? null : type.getCode())).getData();
     }
 
     @Override
     public Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size) {
-        return executeSync(service.openOrders(accountId,symbol,side.name(),size)).getData();
+        String name = null;
+        if (side != null) {
+            name = side.name();
+        }
+        return executeSync(service.openOrders(accountId, symbol.toLowerCase(), name, size)).getData();
     }
 
     @Override
