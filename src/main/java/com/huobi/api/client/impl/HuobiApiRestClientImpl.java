@@ -140,9 +140,42 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return executeSync(service.matchResults(orderId)).getData();
     }
 
+
+    @Override
+    public Set<MatchResult> matchResults(String symbol, List<OrderType> types,
+                                         String startDate, String endDate,
+                                         String from, String direct, Integer size) {
+
+        String typesStr = null;
+        if (types != null && !types.isEmpty()) {
+            StringJoiner typeJoiner = new StringJoiner(",");
+            for (OrderType type : types) {
+                typeJoiner.add(type.getCode());
+            }
+            typesStr = typeJoiner.toString();
+        }
+
+        return executeSync(service.matchResults(symbol, typesStr, startDate, endDate, from, direct, size)).getData();
+    }
+
+
     @Override
     public MarginAccount marginBalance(String symbol) {
         return executeSync(service.marginBalance(symbol)).getData();
     }
+
+
+    private String joinList(List<String> types, String delimiter) {
+        String result = null;
+        if (types != null && !types.isEmpty()) {
+            StringJoiner joiner = new StringJoiner(delimiter);
+            for (String type : types) {
+                joiner.add(type);
+            }
+            result = joiner.toString();
+        }
+        return result;
+    }
+
 
 }

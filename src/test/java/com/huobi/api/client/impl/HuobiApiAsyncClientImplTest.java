@@ -70,4 +70,14 @@ public class HuobiApiAsyncClientImplTest {
         Set<Order> openOrders = client.openOrders("2265332", "btcusdt", null, 100);
         assert openOrders != null;
     }
+
+
+    @Test
+    public void matchResults(){
+        Set<MatchResult> matchResults = client.matchResults("btcusdt", null, null, null, null, null, null);
+        assert matchResults != null;
+    }
+
+
+
 }

@@ -127,6 +127,8 @@ public interface HuobiApiRestClient {
     Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type);
 
     /**
+     *
+     * “account-id” 和 “symbol” 需同时指定或者二者都不指定。如果二者都不指定，返回最多500条尚未成交订单，按订单号降序排列。
      * 查询用户当前未成交订单 (up to 500)
      *
      * @param accountId
@@ -157,6 +159,10 @@ public interface HuobiApiRestClient {
      * 根据order-id查询订单的成交明细
      */
     Set<MatchResult> matchResults(String orderId);
+
+    Set<MatchResult> matchResults(String symbol, List<OrderType> types,
+                                  String startDate, String endDate,
+                                  String from, String direct, Integer size);
 
     /**
      * 借贷账户详情

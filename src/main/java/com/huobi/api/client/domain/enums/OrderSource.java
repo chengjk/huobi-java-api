@@ -11,7 +11,11 @@ import java.util.Arrays;
  */
 @AllArgsConstructor
 public enum OrderSource {
-    API("api"), MARGIN_API("margin-api");
+    SYS("sys"),
+    WEB("web"),
+    APP("app"),
+    API("api"),
+    MARGIN_API("margin-api");
     private String code;
 
 
