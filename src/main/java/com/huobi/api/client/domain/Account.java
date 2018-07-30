@@ -20,4 +20,6 @@ public class Account {
     @JsonProperty("user-id")
     private String userId;
     private List<Asset> list;
+
+    private String subtype;
 }

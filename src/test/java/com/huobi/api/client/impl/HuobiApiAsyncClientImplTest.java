@@ -56,5 +56,12 @@ public class HuobiApiAsyncClientImplTest {
     public void getAccounts() {
         Set<Account> accounts = client.accounts();
         assert accounts != null;
+        //2265332
+    }
+
+    @Test
+    public void getBalance(){
+        Account balance = client.balance("2265332");
+        assert balance != null;
     }
 }
