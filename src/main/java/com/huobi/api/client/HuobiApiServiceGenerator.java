@@ -1,6 +1,7 @@
 package com.huobi.api.client;
 
 import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.exception.HuobiApiException;
 import com.huobi.api.client.security.AuthenticationInterceptor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,7 @@ public class HuobiApiServiceGenerator {
         try {
             Response<T> response = call.execute();
             if (response.isSuccessful()) {
+                parseBody(response.body());
                 return response.body();
             } else {
                 parseError(response);
@@ -62,6 +64,15 @@ public class HuobiApiServiceGenerator {
             log.error(e.getMessage(), e);
         }
         throw new IllegalStateException("invalid response from server.");
+    }
+
+    private static <T> void parseBody(T body) throws HuobiApiException {
+        if (body instanceof RespBody) {
+            RespBody resp = (RespBody) body;
+            if (resp.getStatus().equalsIgnoreCase("error")) {
+                throw new HuobiApiException(resp.toErrorString());
+            }
+        }
     }
 
     /**

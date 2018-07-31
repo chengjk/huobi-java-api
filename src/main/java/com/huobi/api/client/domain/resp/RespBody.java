@@ -20,4 +20,11 @@ public class RespBody<T> {
     @JsonProperty("err-msg")
     private String errMsg;
 
+
+    public String toErrorString() {
+        String msg = "errCode:%s, errMsg:%s.";
+        return String.format(msg, errCode, errMsg);
+    }
+
+
 }
