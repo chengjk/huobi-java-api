@@ -69,7 +69,7 @@ public class HuobiApiServiceGenerator {
     private static <T> void parseBody(T body) throws HuobiApiException {
         if (body instanceof RespBody) {
             RespBody resp = (RespBody) body;
-            if (resp.getStatus().equalsIgnoreCase("error")) {
+            if (!resp.getStatus().equalsIgnoreCase("ok")) {
                 throw new HuobiApiException(resp.toErrorString());
             }
         }
@@ -78,9 +78,8 @@ public class HuobiApiServiceGenerator {
     /**
      * Extracts and converts the response error body into an object.
      */
-    public static HuobiApiException parseError(Response<?> response) throws IOException, HuobiApiException {
-        throw (HuobiApiException) retrofit.responseBodyConverter(HuobiApiException.class, new Annotation[0])
-                .convert(response.errorBody());
+    public static HuobiApiException parseError(Response<?> response) throws HuobiApiException {
+        throw new HuobiApiException(response.raw().code(), response.raw().message());
     }
 
 

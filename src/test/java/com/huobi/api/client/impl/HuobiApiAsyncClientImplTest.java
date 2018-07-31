@@ -52,7 +52,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void kline() {
-        Set<Candle> btcusdt = client.kline("btcusdtss", Resolution.M1, 150);
+        Set<Candle> btcusdt = client.kline("btcusdt", Resolution.M1, 150);
         assert btcusdt.size() > 0;
     }
 

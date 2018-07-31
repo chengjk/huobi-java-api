@@ -1,6 +1,5 @@
 package com.huobi.api.client.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,13 +10,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class HuobiApiException extends Exception {
     private String errCode;
     private String errMsg;
 
+
+    public HuobiApiException(int errCode, String message) {
+        this(String.valueOf(errCode), message);
+    }
+
+    public HuobiApiException(String errCode, String message) {
+        super(message);
+        this.errCode = errCode;
+        errMsg = message;
+    }
+
     public HuobiApiException(String message) {
         super(message);
+        errMsg = message;
     }
 
     public HuobiApiException(String message, Throwable cause) {
