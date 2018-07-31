@@ -26,7 +26,7 @@ public class HuobiApiAsyncClientImplTest {
 
     private String apiKey = "a";
     private String apiSecret = "s";
-    private HuobiApiRestClient client = new HuobiApiRestClientImpl(apiKey, apiSecret);
+    private HuobiApiRestClient client;
 
     @Before
     public void config() throws IOException {
@@ -35,6 +35,7 @@ public class HuobiApiAsyncClientImplTest {
         props.load(is);
         apiKey = props.getProperty("apiKey");
         apiSecret = props.getProperty("apiSecret");
+        client = new HuobiApiRestClientImpl(apiKey, apiSecret);
     }
 
     @Test
@@ -62,6 +63,7 @@ public class HuobiApiAsyncClientImplTest {
 
 
     }
+
     @Test
     public void orders() {
         Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.values()), null, null, null);
