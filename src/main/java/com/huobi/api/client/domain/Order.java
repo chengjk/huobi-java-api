@@ -20,7 +20,7 @@ public class Order {
     private String amount;
     private String price;
     @JsonProperty(value = "created-at")
-    private String createdAt;
+    private Long createdAt;
     private OrderType type;
 
     //region deprecate
@@ -46,7 +46,7 @@ public class Order {
     private OrderSource source;
     private OrderState state;
     @JsonProperty(value = "canceled-at")
-    private String canceledAt;
+    private Long canceledAt;
     private String exchange;
     private String batch;
 }

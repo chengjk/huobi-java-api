@@ -5,9 +5,16 @@ import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.OrderState;
 import com.huobi.api.client.domain.enums.Resolution;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Test;
+import sun.tools.java.ClassPath;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -17,9 +24,18 @@ import java.util.Set;
 public class HuobiApiAsyncClientImplTest {
 
 
-    private final String apiKey = "a";
-    private final String apiSecret = "s";
+    private String apiKey = "a";
+    private String apiSecret = "s";
     private HuobiApiRestClient client = new HuobiApiRestClientImpl(apiKey, apiSecret);
+
+    @Before
+    public void config() throws IOException {
+        InputStream is = ClassLoader.getSystemResourceAsStream("config.properties");
+        Properties props = new Properties();
+        props.load(is);
+        apiKey = props.getProperty("apiKey");
+        apiSecret = props.getProperty("apiSecret");
+    }
 
     @Test
     public void timestamp() {
@@ -60,24 +76,23 @@ public class HuobiApiAsyncClientImplTest {
     }
 
     @Test
-    public void getBalance(){
+    public void getBalance() {
         Account balance = client.balance("2265332");
         assert balance != null;
     }
 
     @Test
-    public void openOrders(){
+    public void openOrders() {
         Set<Order> openOrders = client.openOrders("2265332", "btcusdt", null, 100);
         assert openOrders != null;
     }
 
 
     @Test
-    public void matchResults(){
+    public void matchResults() {
         Set<MatchResult> matchResults = client.matchResults("btcusdt", null, null, null, null, null, null);
         assert matchResults != null;
     }
-
 
 
 }
