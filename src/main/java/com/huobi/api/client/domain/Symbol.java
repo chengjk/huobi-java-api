@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Symbol {
+    private String symbol;
     @JsonProperty("base-currency")
     private String baseCurrency;
     @JsonProperty("quote-currency")

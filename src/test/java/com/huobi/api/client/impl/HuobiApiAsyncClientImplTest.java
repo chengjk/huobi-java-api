@@ -71,6 +71,12 @@ public class HuobiApiAsyncClientImplTest {
     }
 
     @Test
+    public void symbols() {
+        Set<Symbol> orders = client.symbols();
+        assert orders != null;
+    }
+
+    @Test
     public void getAccounts() {
         Set<Account> accounts = client.accounts();
         assert accounts != null;
