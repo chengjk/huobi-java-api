@@ -14,6 +14,7 @@ public class MarketDetailResp {
     private String id;
     private String ch;
     private long ts;
+    private String subbed;
 
     private Candle tick;
 

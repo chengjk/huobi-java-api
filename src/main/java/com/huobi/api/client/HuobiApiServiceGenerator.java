@@ -13,7 +13,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 
 /**
  * created by jacky. 2018/7/20 9:07 PM

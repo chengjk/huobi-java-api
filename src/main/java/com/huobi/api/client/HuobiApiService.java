@@ -2,7 +2,6 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
-import com.huobi.api.client.domain.enums.AccountState;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 import retrofit2.Call;

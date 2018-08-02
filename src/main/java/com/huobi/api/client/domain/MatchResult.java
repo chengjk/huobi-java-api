@@ -6,6 +6,8 @@ import com.huobi.api.client.domain.enums.OrderType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * created by jacky. 2018/7/26 11:01 AM
  */
@@ -20,11 +22,11 @@ public class MatchResult {
     private String symbol;
     private OrderType type;
     private OrderSource source;
-    private String price;
+    private BigDecimal price;
     @JsonProperty("filled-amount")
-    private String filledAmount;
+    private BigDecimal filledAmount;
     @JsonProperty("filled-fees")
-    private String filledFees;
+    private BigDecimal filledFees;
     @JsonProperty("created-at")
     private String createdAt;
 }

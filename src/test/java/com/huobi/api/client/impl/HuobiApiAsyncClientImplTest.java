@@ -7,10 +7,7 @@ import com.huobi.api.client.domain.enums.Resolution;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import sun.tools.java.ClassPath;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -103,4 +100,9 @@ public class HuobiApiAsyncClientImplTest {
     }
 
 
+    @Test
+    public void maketDetail() {
+        Candle detail = client.detail("ltcusdt");
+        log.info(String.valueOf(detail.getVol()));
+    }
 }

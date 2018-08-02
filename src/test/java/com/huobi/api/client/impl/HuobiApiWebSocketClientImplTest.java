@@ -46,8 +46,11 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onMarketDetailTick(){
-        stream = ws.onMarketDetailTick("BTCUSDT", data -> {
-            System.out.println(data.getTick().getClose());
+        stream = ws.onMarketDetailTick("ltcusdt", data -> {
+            if (StringUtils.isEmpty(data.getSubbed())) {
+                System.out.println(data.getTick().getAmount());
+                System.out.println(data.getTick().getVol());
+            }
         });
     }
 

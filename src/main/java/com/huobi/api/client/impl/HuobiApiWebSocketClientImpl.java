@@ -2,19 +2,16 @@ package com.huobi.api.client.impl;
 
 import com.huobi.api.client.HuobiApiWebSocketClient;
 import com.huobi.api.client.constant.HuobiConsts;
-import com.huobi.api.client.domain.Candle;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
-import com.huobi.api.client.domain.resp.RespBody;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
 import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * created by jacky. 2018/7/24 4:00 PM

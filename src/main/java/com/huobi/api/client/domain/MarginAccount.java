@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * created by jacky. 2018/7/23 4:08 PM
  */
@@ -12,9 +14,9 @@ import lombok.Setter;
 public class MarginAccount  extends  Account{
     private String symbol;
     @JsonProperty("fl-price")
-    private String flPrice;
+    private BigDecimal flPrice;
     @JsonProperty("fl-type")
     private String flType;
     @JsonProperty("risk-rate")
-    private String riskRate;
+    private BigDecimal riskRate;
 }

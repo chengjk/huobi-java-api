@@ -2,7 +2,10 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
-import com.huobi.api.client.domain.event.*;
+import com.huobi.api.client.domain.event.DepthEventResp;
+import com.huobi.api.client.domain.event.KlineEventResp;
+import com.huobi.api.client.domain.event.MarketDetailResp;
+import com.huobi.api.client.domain.event.TradeDetailResp;
 import com.huobi.api.client.domain.resp.ApiCallback;
 
 import java.io.Closeable;
