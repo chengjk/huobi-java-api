@@ -100,15 +100,15 @@ public interface HuobiApiService {
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/{order-id}")
-    Call<RespBody<Order>> get(@Query("order-id") String orderId);
+    Call<RespBody<Order>> get(@Path("order-id") String orderId);
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/order/orders/{order-id}/submitcancel")
-    Call<RespBody<Long>> cancel(@Query("order-id") String orderId);
+    Call<RespBody<Long>> cancel(@Path("order-id") String orderId);
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/{order-id}/matchResults")
-    Call<RespBody<Set<MatchResult>>> matchResults(@Query("order-id") String orderId);
+    Call<RespBody<Set<MatchResult>>> matchResults(@Path("order-id") String orderId);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)

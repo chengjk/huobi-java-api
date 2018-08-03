@@ -69,16 +69,12 @@ public class HuobiApiAsyncClientImplTest {
     public void trade() {
         Set<Trade> trades = client.trade("btcusdt");
         assert trades != null;
-
-
     }
 
     @Test
     public void historyTrade() {
         Set<Trade> trades = client.historyTrade("btcusdt",10);
         assert trades != null;
-
-
     }
 
     @Test
@@ -100,9 +96,6 @@ public class HuobiApiAsyncClientImplTest {
         assert currencys != null;
     }
 
-
-
-
     @Test
     public void getAccounts() {
         Set<Account> accounts = client.accounts();
@@ -116,17 +109,11 @@ public class HuobiApiAsyncClientImplTest {
         assert balance != null;
     }
 
-
-
-
     @Test
     public void place() {
         Long id = client.place("2265332", "1", "1", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
         assert id != null;
     }
-
-
-
 
 
     @Test
@@ -135,6 +122,24 @@ public class HuobiApiAsyncClientImplTest {
         assert openOrders != null;
     }
 
+    @Test
+    public void get() {
+        Order test = client.get("test");
+        assert test != null;
+    }
+
+    @Test
+    public void cancel() {
+        Long id = client.cancel("test");
+        assert id != null;
+    }
+
+
+    @Test
+    public void matchResultsByOrder() {
+        Set<MatchResult> matchResults = client.matchResults("testId");
+        assert matchResults != null;
+    }
 
     @Test
     public void matchResults() {
