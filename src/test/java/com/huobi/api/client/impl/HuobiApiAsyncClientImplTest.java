@@ -2,8 +2,7 @@ package com.huobi.api.client.impl;
 
 import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.domain.*;
-import com.huobi.api.client.domain.enums.OrderState;
-import com.huobi.api.client.domain.enums.Resolution;
+import com.huobi.api.client.domain.enums.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +47,19 @@ public class HuobiApiAsyncClientImplTest {
     }
 
     @Test
+    public void depth() {
+        Depth depth = client.depth("btcusdt", MergeLevel.STEP0);
+        assert depth != null;
+    }
+    @Test
+    public void merged() {
+        Merged merged = client.merged("btcusdt");
+        assert merged != null;
+    }
+
+
+
+    @Test
     public void kline() {
         Set<Candle> btcusdt = client.kline("btcusdt", Resolution.M1, 150);
         assert btcusdt.size() > 0;
@@ -56,6 +68,14 @@ public class HuobiApiAsyncClientImplTest {
     @Test
     public void trade() {
         Set<Trade> trades = client.trade("btcusdt");
+        assert trades != null;
+
+
+    }
+
+    @Test
+    public void historyTrade() {
+        Set<Trade> trades = client.historyTrade("btcusdt",10);
         assert trades != null;
 
 
@@ -73,6 +93,16 @@ public class HuobiApiAsyncClientImplTest {
         assert orders != null;
     }
 
+
+    @Test
+    public void currencies() {
+        Set<String> currencys = client.currencys();
+        assert currencys != null;
+    }
+
+
+
+
     @Test
     public void getAccounts() {
         Set<Account> accounts = client.accounts();
@@ -85,6 +115,19 @@ public class HuobiApiAsyncClientImplTest {
         Account balance = client.balance("2265332");
         assert balance != null;
     }
+
+
+
+
+    @Test
+    public void place() {
+        Long id = client.place("2265332", "1", "1", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
+        assert id != null;
+    }
+
+
+
+
 
     @Test
     public void openOrders() {

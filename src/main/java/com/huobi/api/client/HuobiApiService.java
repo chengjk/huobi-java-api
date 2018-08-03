@@ -36,15 +36,16 @@ public interface HuobiApiService {
     /**
      * 获取 Market Depth 数据
      */
+//    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/market/depth")
     Call<RespBody<Depth>> depth(@Query("symbol") String symbol, @Query("type") String type);
 
 
     @GET("/market/trade")
-    Call<RespBody<RespTick<Set<Trade>>>> trade(@Query("symbol") String symbol);
+    Call<RespBody<RespTick<Trade>>> trade(@Query("symbol") String symbol);
 
     @GET("/market/history/trade")
-    Call<RespBody<Set<Trade>>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
+    Call<RespBody<Set<RespTick<Trade>>>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
 
     @GET("/market/detail")
     Call<RespBody<Candle>> detail(@Query("symbol") String symbol);

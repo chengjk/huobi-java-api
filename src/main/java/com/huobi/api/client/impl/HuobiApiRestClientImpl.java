@@ -4,7 +4,10 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
+import com.huobi.api.client.domain.resp.RespBody;
+import com.huobi.api.client.domain.resp.RespTick;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -35,7 +38,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Merged merged(String symbol) {
-        return executeSync(service.merged(symbol)).getData();
+        return executeSync(service.merged(symbol)).getTick();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Depth depth(String symbol, MergeLevel type) {
-        return executeSync(service.depth(symbol, type == null ? null : type.name())).getData();
+        return executeSync(service.depth(symbol, type == null ? null : type.getCode())).getTick();
     }
 
     @Override
@@ -55,7 +58,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Set<Trade> historyTrade(String symbol, Integer size) {
-        return executeSync(service.historyTrade(symbol, size)).getData();
+        RespBody<Set<RespTick<Trade>>> setRespBody = executeSync(service.historyTrade(symbol, size));
+        Set<Trade> trades = new HashSet<>();
+        for (RespTick<Trade> tick : setRespBody.getData()) {
+            trades.addAll(tick.getData());
+        }
+        return trades;
     }
 
     @Override

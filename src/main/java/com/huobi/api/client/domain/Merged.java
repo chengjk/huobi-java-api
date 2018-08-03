@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * created by jacky. 2018/7/21 2:12 PM
@@ -26,10 +27,12 @@ public class Merged {
     /**
      *[买1价,买1量],
      */
-    private TickerPrice bid;
+    private List<BigDecimal> bid;
     /**
      * [卖1价,卖1量]
      */
-    private TickerPrice ask;
+    private List<BigDecimal> ask;
+
+    private String version;
 
 }
