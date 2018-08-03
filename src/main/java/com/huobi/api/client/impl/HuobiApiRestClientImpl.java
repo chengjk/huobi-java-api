@@ -60,7 +60,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Candle detail(String symbol) {
-        return executeSync(service.detail(symbol)).getData();
+        return executeSync(service.detail(symbol)).getTick();
     }
 
     @Override
