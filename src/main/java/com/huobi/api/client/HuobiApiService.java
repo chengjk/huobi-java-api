@@ -107,12 +107,12 @@ public interface HuobiApiService {
     Call<RespBody<Long>> cancel(@Path("order-id") String orderId);
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
-    @GET("/v1/order/orders/{order-id}/matchResults")
+    @GET("/v1/order/orders/{order-id}/matchresults")
     Call<RespBody<Set<MatchResult>>> matchResults(@Path("order-id") String orderId);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
-    @GET("/v1/order/orders/matchResults")
+    @GET("/v1/order/matchresults")
     Call<RespBody<Set<MatchResult>>> matchResults(@Query("symbol") String symbol, @Query("types") String types,
                                                   @Query("start-date") String startDate, @Query("end-date") String endDate,
                                                   @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
