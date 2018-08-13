@@ -19,7 +19,7 @@ public class Candle {
     private BigDecimal amount;
     private BigDecimal vol;
     private BigDecimal count;
-    private BigDecimal symbol;
+    private String symbol;
     private long ts;
     private long version;
 
