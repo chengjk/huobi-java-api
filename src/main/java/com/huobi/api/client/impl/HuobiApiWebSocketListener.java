@@ -42,7 +42,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         byte[] uncompress = uncompress(bytes.toByteArray());
         String resp = new String(uncompress);
         if (resp.contains("ping")) {
-            webSocket.send(resp.replace("ping", "pong"));
+//            webSocket.send(resp.replace("ping", "pong"));
         } else if (resp.contains("pong")) {
             //ignore
         } else {
@@ -70,14 +70,16 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
-        log.info("closing");
-        log.info(code + reason);
+        log.info("closing. code:" + code + ",reason:" + reason);
+        if (code == 1003) {
+            //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
+            callback.onExpired(webSocket);
+        }
     }
 
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-
         log.info("closed");
     }
 

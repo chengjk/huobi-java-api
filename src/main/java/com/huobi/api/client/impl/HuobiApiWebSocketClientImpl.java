@@ -32,7 +32,15 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         KlineEvent event = new KlineEvent();
         event.setSymbol(symbol);
         event.setPeriod(period);
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, KlineEventResp.class));
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    onKlineTick(symbol, period, callback);
+                }
+            }
+        });
     }
 
     @Override
@@ -40,23 +48,47 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         DepthEvent event = new DepthEvent();
         event.setSymbol(symbol);
         event.setLevel(level);
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, DepthEventResp.class));
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    onDepthTick(symbol, level, callback);
+                }
+            }
+        });
     }
 
 
     @Override
     public Closeable onTradeDetailTick(String symbol, ApiCallback<TradeDetailResp> callback) {
-        TradeDetailEvent event=new TradeDetailEvent();
+        TradeDetailEvent event = new TradeDetailEvent();
         event.setSymbol(symbol);
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, TradeDetailResp.class));
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<TradeDetailResp>(callback, TradeDetailResp.class) {
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    onTradeDetailTick(symbol, callback);
+                }
+            }
+        });
     }
 
 
     @Override
     public Closeable onMarketDetailTick(String symbol, ApiCallback<MarketDetailResp> callback) {
-        MarketDetailEvent event =new MarketDetailEvent();
+        MarketDetailEvent event = new MarketDetailEvent();
         event.setSymbol(symbol);
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<>(callback, MarketDetailResp.class));
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<MarketDetailResp>(callback, MarketDetailResp.class){
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    onMarketDetailTick(symbol, callback);
+                }
+            }
+        });
     }
 
     private Closeable createNewWebSocket(String sub, HuobiApiWebSocketListener<?> listener) {
