@@ -100,18 +100,17 @@ public class HuobiApiAsyncClientImplTest {
     public void getAccounts() {
         Set<Account> accounts = client.accounts();
         assert accounts != null;
-        //2265332
     }
 
     @Test
     public void getBalance() {
-        Account balance = client.balance("2265332");
+        Account balance = client.balance("4880381");
         assert balance != null;
     }
 
     @Test
     public void place() {
-        Long id = client.place("2265332", "1", "1", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
+        Long id = client.place("4880381", "0.001", "6327", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
         assert id != null;
     }
 
@@ -124,13 +123,13 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void get() {
-        Order test = client.get("test");
+        Order test = client.get("12109974553");
         assert test != null;
     }
 
     @Test
     public void cancel() {
-        Long id = client.cancel("test");
+        Long id = client.cancel("12109974553");
         assert id != null;
     }
 

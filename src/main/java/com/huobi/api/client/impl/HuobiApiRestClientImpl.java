@@ -4,8 +4,10 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
+import com.huobi.api.client.domain.reqs.PlaceOrderRequest;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
+import okhttp3.RequestBody;
 
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +123,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type) {
-        return executeSync(service.place(accountId, amount, price, source == null ? null : source.getCode(), symbol, type == null ? null : type.getCode())).getData();
+        PlaceOrderRequest req = new PlaceOrderRequest();
+        req.setAccountId(accountId);
+        req.setAmount(amount);
+        req.setPrice(price);
+        req.setSource(source == null ? null : source.getCode());
+        req.setSymbol(symbol);
+        req.setType(type == null ? null : type.getCode());
+        return executeSync(service.place(req)).getData();
     }
 
     @Override

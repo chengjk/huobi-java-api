@@ -5,5 +5,6 @@ package com.huobi.api.client.domain.enums;
  */
 public enum AccountType {
     //现货，杠杆，点卡
-    spot
+    spot,
+    margin
 }

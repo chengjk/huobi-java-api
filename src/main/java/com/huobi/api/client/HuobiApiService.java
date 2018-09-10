@@ -2,6 +2,7 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
+import com.huobi.api.client.domain.reqs.PlaceOrderRequest;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 import retrofit2.Call;
@@ -91,8 +92,7 @@ public interface HuobiApiService {
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/order/orders/place")
-    Call<RespBody<Long>> place(@Query("account-id") String accountId, @Query("amount") String amount, @Query("price") String price,
-                               @Query("source") String source, @Query("symbol") String symbol, @Query("type") String type);
+    Call<RespBody<Long>> place(@Body PlaceOrderRequest request);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
