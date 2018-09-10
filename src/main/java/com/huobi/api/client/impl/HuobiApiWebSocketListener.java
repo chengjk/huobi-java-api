@@ -42,7 +42,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         byte[] uncompress = uncompress(bytes.toByteArray());
         String resp = new String(uncompress);
         if (resp.contains("ping")) {
-//            webSocket.send(resp.replace("ping", "pong"));
+            webSocket.send(resp.replace("ping", "pong"));
         } else if (resp.contains("pong")) {
             //ignore
         } else {
