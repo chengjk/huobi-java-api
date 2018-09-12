@@ -25,16 +25,11 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
     private Class<T> respClass;
     private TypeReference<T> eventTypeReference;
 
-
-    public HuobiApiWebSocketListener(ApiCallback<T> apiCallback) {
-        this.callback = apiCallback;
-        this.eventTypeReference = new TypeReference<T>() {
-        };
-    }
-
     public HuobiApiWebSocketListener(ApiCallback<T> apiCallback, Class<T> respClass) {
         this.callback = apiCallback;
         this.respClass = respClass;
+        this.eventTypeReference = new TypeReference<T>() {
+        };
     }
 
     @Override
@@ -55,6 +50,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
                     event = mapper.readValue(resp, respClass);
                 }
                 callback.onResponse(event);
+                callback.onMessage(webSocket);
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }

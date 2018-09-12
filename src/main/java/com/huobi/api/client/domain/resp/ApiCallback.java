@@ -22,5 +22,19 @@ public interface ApiCallback<T> {
     default void onFailure(Throwable throwable) {
     }
 
-    default void onExpired(WebSocket webSocket){};
+    /**
+     * call when expired
+     *
+     * @param webSocket
+     */
+    default void onExpired(WebSocket webSocket) {
+    }
+
+    /**
+     * call when receive message.
+     *
+     * @param webSocket
+     */
+    default void onMessage(WebSocket webSocket) {
+    }
 }

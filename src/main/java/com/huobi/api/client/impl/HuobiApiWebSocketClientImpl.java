@@ -44,6 +44,25 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     }
 
     @Override
+    public Closeable requestKline(String symbol, Resolution period, long from, long to, ApiCallback<KlineEventResp> callback) {
+        KlineEvent event = new KlineEvent();
+        event.setSymbol(symbol);
+        event.setPeriod(period);
+        event.setFrom(from);
+        event.setTo(to);
+        return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    requestKline(symbol, period,from,to,callback);
+                }
+            }
+
+        });
+    }
+
+    @Override
     public Closeable onDepthTick(String symbol, MergeLevel level, ApiCallback<DepthEventResp> callback) {
         DepthEvent event = new DepthEvent();
         event.setSymbol(symbol);
@@ -91,11 +110,11 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         });
     }
 
-    private Closeable createNewWebSocket(String sub, HuobiApiWebSocketListener<?> listener) {
+    private Closeable createNewWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_BASE_URL_PRO;
         Request request = new Request.Builder().url(streamingUrl).build();
         final WebSocket webSocket = client.newWebSocket(request, listener);
-        webSocket.send(sub);
+        webSocket.send(topic);
         return () -> {
             final int code = 1000;
             listener.onClosing(webSocket, code, null);
