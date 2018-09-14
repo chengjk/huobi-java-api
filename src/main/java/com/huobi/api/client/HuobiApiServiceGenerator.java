@@ -61,8 +61,9 @@ public class HuobiApiServiceGenerator {
             }
         } catch (IOException | HuobiApiException e) {
             log.error(e.getMessage(), e);
+            throw new IllegalStateException("invalid response from server." + e.getMessage());
         }
-        throw new IllegalStateException("invalid response from server.");
+        return null;
     }
 
     private static <T> void parseBody(T body) throws HuobiApiException {

@@ -37,6 +37,10 @@ public class HuobiApiAsyncClientImplTest {
     @Test
     public void timestamp() {
         long timestamp = client.timestamp();
+        System.out.println("server:" + timestamp);
+        long local = System.currentTimeMillis();
+        System.out.println("local:" + local);
+        System.out.println("delay:" + (local - timestamp));
         assert timestamp > 0;
     }
 
@@ -51,12 +55,12 @@ public class HuobiApiAsyncClientImplTest {
         Depth depth = client.depth("btcusdt", MergeLevel.STEP0);
         assert depth != null;
     }
+
     @Test
     public void merged() {
         Merged merged = client.merged("btcusdt");
         assert merged != null;
     }
-
 
 
     @Test
@@ -73,7 +77,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void historyTrade() {
-        Set<Trade> trades = client.historyTrade("btcusdt",10);
+        Set<Trade> trades = client.historyTrade("btcusdt", 10);
         assert trades != null;
     }
 
@@ -110,7 +114,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("4880381", "0.001", "6327", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
+        Long id = client.place("4880381", "1", "1.1", OrderSource.API, "ETHBTC", OrderType.SELL_LIMIT);
         assert id != null;
     }
 
