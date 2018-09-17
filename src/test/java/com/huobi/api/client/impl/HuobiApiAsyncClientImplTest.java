@@ -121,19 +121,19 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void openOrders() {
-        Set<Order> openOrders = client.openOrders("2265332", "btcusdt", null, 100);
+        Set<Order> openOrders = client.openOrders("4880381", "btcusdt", null, 100);
         assert openOrders != null;
     }
 
     @Test
     public void get() {
-        Order test = client.get("12109974553");
+        Order test = client.get("12664273590");
         assert test != null;
     }
 
     @Test
     public void cancel() {
-        Long id = client.cancel("12109974553");
+        Long id = client.cancel("12654130771");
         assert id != null;
     }
 
@@ -152,7 +152,7 @@ public class HuobiApiAsyncClientImplTest {
 
 
     @Test
-    public void maketDetail() {
+    public void marketDetail() {
         Candle detail = client.detail("ltcusdt");
         log.info(String.valueOf(detail.getVol()));
     }

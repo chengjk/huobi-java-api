@@ -111,7 +111,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     }
 
     private Closeable createNewWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
-        String streamingUrl = HuobiConsts.WS_API_BASE_URL_PRO;
+        String streamingUrl = HuobiConsts.WS_API_URL;
         Request request = new Request.Builder().url(streamingUrl).build();
         final WebSocket webSocket = client.newWebSocket(request, listener);
         webSocket.send(topic);

@@ -7,16 +7,17 @@ import java.time.format.DateTimeFormatter;
  * created by jacky. 2018/7/20 8:56 PM
  */
 public interface HuobiConsts {
-    String API_HOST = "api.huobi.pro";
-    String API_URL = "https://" + API_HOST;
-
-
+    String API_HOST_PRO = "api.huobi.pro";
+    String API_HOST_HADAX = "api.hadax.com";
     String WS_API_BASE_URL_PRO = "wss://api.huobi.pro/ws";
     String WS_API_BASE_URL_HADAX = "wss://api.hadax.com/ws";
 
 
-    String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
+    String API_HOST = API_HOST_PRO;
+    String API_URL =  "https://" + API_HOST_PRO;
+    String WS_API_URL = WS_API_BASE_URL_PRO;
 
+    String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
 
     String ENDPOINT_SECURITY_TYPE_APIKEY = "AccessKeyId";
     String ENDPOINT_SECURITY_TYPE_APIKEY_HEADER = ENDPOINT_SECURITY_TYPE_APIKEY + ":#";
