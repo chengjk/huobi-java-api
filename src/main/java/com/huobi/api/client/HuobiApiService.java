@@ -2,14 +2,13 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
-import com.huobi.api.client.domain.reqs.PlaceOrderRequest;
+import com.huobi.api.client.domain.reqs.*;
+import com.huobi.api.client.domain.resp.BatchCancelResp;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -110,7 +109,7 @@ public interface HuobiApiService {
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/order/orders/batchcancel")
-    Call<RespBody<Map>> batchCancel(@Query("order-ids") List<String> orderId);
+    Call<RespBody<BatchCancelResp>> batchCancel(@Body BatchCancelRequest request);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
@@ -124,25 +123,14 @@ public interface HuobiApiService {
                                                   @Query("start-date") String startDate, @Query("end-date") String endDate,
                                                   @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
-    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
-    @GET("/v1/margin/accounts/balance")
-    Call<RespBody<MarginAccount>> marginBalance(@Query("symbol") String symbol);
-
-    //---- 以下 未经过测试-----
-
     /**
      * 虚拟币提现API
-     *
-     * @param address  提现地址
-     * @param amount   提币数量
-     * @param currency 资产类型.btc, ltc, bch, eth, etc ...(火币Pro支持的币种)
-     * @param fee      optional  转账手续费
-     * @param addrTag  optional  虚拟币共享地址tag，适用于xrp，xem，bts，steem，eos，xmr.  格式, "123"类的整数字符串
      * @return
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @POST("/v1/dw/withdraw/api/create")
-    Call<RespBody<Long>> withdraw(@Query("address") String address, @Query("amount") String amount, @Query("currency") String currency, @Query("fee") String fee, @Query("addr-tag") String addrTag);
+    Call<RespBody<Long>> withdraw(@Body WithdrawRequest request);
+
 
     /**
      * 申请取消提现虚拟币
@@ -167,4 +155,72 @@ public interface HuobiApiService {
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/query/deposit-withdraw")
     Call<RespBody<Set<DepositWithdraw>>> queryDepositWithdraw(@Query("currency") String currency, @Query("type") String type, @Query("from") String from, @Query("size") Integer size);
+
+
+    //------杠杆交易----
+
+    /**
+     * 从币币交易账户划转至杠杆账户
+     *
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/v1/dw/transfer-in/margin")
+    Call<RespBody<Long>> transferInMargin(@Body TransferMarginRequest request);
+
+    /**
+     * 从杠杆账户划转至币币交易账户
+     *
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/v1/dw/transfer-out/margin")
+    Call<RespBody<Long>> transferOutMargin(@Body TransferMarginRequest request);
+
+    /**
+     * 申请借贷
+     *
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/v1/margin/orders")
+    Call<RespBody<Long>> marginOrders(@Body TransferMarginRequest request);
+
+
+    /**
+     * 归还借贷
+     *
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/v1/margin/orders/{order-id}/repay")
+    Call<RespBody<Long>> marginOrderRepay(@Path("order-id") String orderId, @Body MarginRepayRequest request);
+
+
+    /**
+     * 查询借贷记录
+     *
+     * @param symbol    交易对
+     * @param startDate optional 查询开始日期, 日期格式yyyy-mm-dd
+     * @param endDate   optional 查询结束日期, 日期格式yyyy-mm-dd
+     * @param states    optional 状态
+     * @param from      optional 查询起始 ID
+     * @param direct    optional 查询方向.prev 向前，next 向后
+     * @param size      optional 查询记录大小
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @GET("/v1/margin/loan-orders")
+    Call<RespBody<Set<LoanOrder>>> loanOrders(@Query("symbol") String symbol, @Query("start-date") String startDate, @Query("end-date") String endDate,
+                                         @Query("states") String states, @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
+
+    /**
+     * 借贷账户详情
+     *
+     * @param symbol 交易对
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @GET("/v1/margin/accounts/balance")
+    Call<RespBody<Set<MarginAccount>>> marginBalance(@Query("symbol") String symbol);
 }

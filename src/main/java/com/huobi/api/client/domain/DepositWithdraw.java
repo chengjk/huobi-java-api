@@ -11,19 +11,29 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DepositWithdraw {
-    private Long id;//true	long
-    private String type;//true	long	类型	'deposit' 'withdraw'
-    private String currency;//true	string	币种
+    private Long id;
+    //类型	'deposit' 'withdraw'
+    private String type;
+    //币种
+    private String currency;
     @JsonProperty("tx-hash")
-    private String txHash;//true	string	交易哈希
-    private String amount;//true	long	个数
-    private String address;//true	string	地址
+    //交易哈希
+    private String txHash;
+    //个数
+    private String amount;
+    //地址
+    private String address;
     @JsonProperty("address-tag")
-    private String addressTag;//true	string	地址标签
-    private String fee;//true	long	手续费
-    private DepositWithdrawState state;//true	string	状态	状态参见下表
+    //地址标签
+    private String addressTag;
+    //手续费
+    private String fee;
+    //状态
+    private DepositWithdrawState state;
     @JsonProperty("created-at")
-    private long createdAt;//true	long	发起时间
+    //发起时间
+    private long createdAt;
     @JsonProperty("updated-at")
+    //最后更新时间
     private long updatedAt;
 }

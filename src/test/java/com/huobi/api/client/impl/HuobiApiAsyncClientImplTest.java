@@ -3,6 +3,7 @@ package com.huobi.api.client.impl;
 import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
+import com.huobi.api.client.domain.resp.BatchCancelResp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -109,6 +110,10 @@ public class HuobiApiAsyncClientImplTest {
     @Test
     public void getBalance() {
         Account balance = client.balance("4880381");
+        Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
+        Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
+        System.out.println(btc.getBalance().toPlainString());
+        System.out.println(usdt.getBalance().toPlainString());
         assert balance != null;
     }
 
@@ -137,6 +142,12 @@ public class HuobiApiAsyncClientImplTest {
         assert id != null;
     }
 
+    @Test
+    public void batchCancel() {
+        BatchCancelResp resp = client.batchCancel(Arrays.asList("12654130771", "12664273590"));
+        assert resp != null;
+    }
+
 
     @Test
     public void matchResultsByOrder() {
@@ -155,5 +166,65 @@ public class HuobiApiAsyncClientImplTest {
     public void marketDetail() {
         Candle detail = client.detail("ltcusdt");
         log.info(String.valueOf(detail.getVol()));
+    }
+
+
+    @Test
+    public void withdraw() {
+        Long id = client.withdraw("aaaa", "1", "usdt", null, null);
+        assert id != null;
+    }
+
+    @Test
+    public void cancelWithdraw() {
+        Long id = client.cancelWithdraw(111L);
+        assert id != null;
+
+    }
+
+    @Test
+    public void queryDepositWithdraw() {
+        Set<DepositWithdraw> depositWithdraws = client.queryDepositWithdraw("usdt", "deposit", "", 1);
+        assert depositWithdraws != null;
+
+    }
+
+    @Test
+    public void transferIn() {
+        Long id = client.transferInMargin("btcusdt", "usdt", "1");
+        assert id != null;
+    }
+
+    @Test
+    public void transferOut() {
+        Long id = client.transferOutMargin("btcusdt", "usdt", "1");
+        assert id != null;
+    }
+
+
+    @Test
+    public void marginOrders() {
+        Long id = client.marginOrders("btcusdt", "usdt", "1");
+        assert id != null;
+    }
+
+    @Test
+    public void marginOrderRepay() {
+        Long id = client.marginOrderRepay("111", "1");
+        assert id != null;
+    }
+
+
+    @Test
+    public void loanOrder() {
+        Set<LoanOrder> loanOrder = client.loanOrders("btcusdt", "2018-09-09", "2018-09-20", null, null, null, null);
+        assert loanOrder != null;
+    }
+
+
+    @Test
+    public void marginBlance() {
+        Set<MarginAccount> account = client.marginBalance("btcusdt");
+        assert account != null;
     }
 }

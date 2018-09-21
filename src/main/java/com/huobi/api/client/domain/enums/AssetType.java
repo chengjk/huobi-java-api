@@ -13,8 +13,8 @@ public enum AssetType {
     FROZEN("frozen"),
     LOAN("loan"),
     INTEREST("interest"),
-    TRANSFER_OUT_AVAILABLE("transfer_out_available"),
-    LOAN_AVAILABLE("loan_available");
+    TRANSFER_OUT_AVAILABLE("transfer-out-available"),
+    LOAN_AVAILABLE("loan-available");
     private String name;
 
 

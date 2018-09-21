@@ -2,6 +2,7 @@ package com.huobi.api.client;
 
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
+import com.huobi.api.client.domain.resp.BatchCancelResp;
 
 import java.util.List;
 import java.util.Set;
@@ -155,6 +156,8 @@ public interface HuobiApiRestClient {
      */
     Long cancel(String orderId);
 
+    BatchCancelResp batchCancel(List<String> orderIds);
+
     /**
      * 根据order-id查询订单的成交明细
      */
@@ -164,8 +167,28 @@ public interface HuobiApiRestClient {
                                   String startDate, String endDate,
                                   String from, String direct, Integer size);
 
+
+    Long withdraw(String address, String amount, String currency, String fee, String addrTag);
+
+
+    Long cancelWithdraw(Long withdrawId);
+
+    Set<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size);
+
+    Long transferInMargin(String symbol, String currency, String amount);
+
+    Long transferOutMargin(String symbol, String currency, String amount);
+
+    Long marginOrders(String symbol, String currency, String amount);
+
+
+    Long marginOrderRepay(String orderId, String amount);
+
+    Set<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
+                              String states, String from, String direct, Integer size);
+
     /**
      * 借贷账户详情
      */
-    MarginAccount marginBalance(String symbol);
+    Set<MarginAccount> marginBalance(String symbol);
 }

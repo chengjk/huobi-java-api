@@ -27,9 +27,8 @@ public enum DepositWithdrawState {
     //withdraw
     UNKNOWN("unknown"),//	状态未知
     CONFIRMING("confirming"),//	确认中
-//    CONFIRMED("confirmed"),//	确认中
     SAFE("safe"),//	已完成
-    ORPHAN("orphan");//
+    ORPHAN("orphan");//待确认
 
     private String code;
 

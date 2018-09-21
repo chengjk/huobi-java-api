@@ -4,10 +4,10 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.HuobiApiService;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
-import com.huobi.api.client.domain.reqs.PlaceOrderRequest;
+import com.huobi.api.client.domain.reqs.*;
+import com.huobi.api.client.domain.resp.BatchCancelResp;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
-import okhttp3.RequestBody;
 
 import java.util.HashSet;
 import java.util.List;
@@ -153,6 +153,13 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
+    public BatchCancelResp batchCancel(List<String> orderIds) {
+
+        BatchCancelRequest req = new BatchCancelRequest(new HashSet<>(orderIds));
+        return executeSync(service.batchCancel(req)).getData();
+    }
+
+    @Override
     public Set<MatchResult> matchResults(String orderId) {
         return executeSync(service.matchResults(orderId)).getData();
     }
@@ -177,7 +184,61 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
 
     @Override
-    public MarginAccount marginBalance(String symbol) {
+    public Long withdraw(String address, String amount, String currency, String fee, String addrTag) {
+        WithdrawRequest req = new WithdrawRequest(address, amount, currency);
+        req.setFee(fee);
+        req.setAddrTag(addrTag);
+        return executeSync(service.withdraw(req)).getData();
+    }
+
+    @Override
+    public Long cancelWithdraw(Long withdrawId) {
+        return executeSync(service.cancelWithdraw(withdrawId)).getData();
+    }
+
+
+    @Override
+    public Set<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size) {
+        return executeSync(service.queryDepositWithdraw(currency, type, from, size)).getData();
+    }
+
+
+    @Override
+    public Long transferInMargin(String symbol, String currency, String amount) {
+        TransferMarginRequest request = new TransferMarginRequest(symbol, currency, amount);
+        return executeSync(service.transferInMargin(request)).getData();
+    }
+
+    @Override
+    public Long transferOutMargin(String symbol, String currency, String amount) {
+        TransferMarginRequest request = new TransferMarginRequest(symbol, currency, amount);
+        return executeSync(service.transferOutMargin(request)).getData();
+    }
+
+
+    @Override
+    public Long marginOrders(String symbol, String currency, String amount) {
+        TransferMarginRequest request = new TransferMarginRequest(symbol, currency, amount);
+        return executeSync(service.marginOrders(request)).getData();
+    }
+
+
+    @Override
+    public Long marginOrderRepay(String orderId, String amount) {
+        MarginRepayRequest request = new MarginRepayRequest(amount);
+        return executeSync(service.marginOrderRepay(orderId, request)).getData();
+    }
+
+
+    @Override
+    public Set<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
+                                     String states, String from, String direct, Integer size) {
+        return executeSync(service.loanOrders(symbol, startDate, endDate, states, from, direct, size)).getData();
+    }
+
+
+    @Override
+    public Set<MarginAccount> marginBalance(String symbol) {
         return executeSync(service.marginBalance(symbol)).getData();
     }
 
