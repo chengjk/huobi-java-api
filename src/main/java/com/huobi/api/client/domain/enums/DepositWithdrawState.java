@@ -18,11 +18,11 @@ public enum DepositWithdrawState {
     CANCELED("canceled"),    //已撤销
     PASS("pass"),    //审批通过
     REJECT("reject"),    //审批拒绝
-    PRE_TRANSFER("pre_transfer"),    //处理中
-    WALLET_TRANSFER("wallet_transfer"),    //已汇出
-    WALLET_REJECT("wallet_reject"),    //钱包拒绝
+    PRE_TRANSFER("pre-transfer"),    //处理中
+    WALLET_TRANSFER("wallet-transfer"),    //已汇出
+    WALLET_REJECT("wallet-reject"),    //钱包拒绝
     CONFIRMED("confirmed"),    //区块已确认
-    CONFIRM_ERROR("confirm_error"),    //区块确认错误
+    CONFIRM_ERROR("confirm-error"),    //区块确认错误
     REPEALED("repealed"),   //已撤销
     //withdraw
     UNKNOWN("unknown"),//	状态未知
