@@ -127,6 +127,15 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+
+
+
+    @Test
+    public void onAccountTick(){
+        stream = ws.onAccountTick(data->{
+            System.out.println(data);
+        });
+    }
     @After
     public void after() throws InterruptedException, IOException {
         for (int i = 0; i < 100; i++) {

@@ -1,5 +1,6 @@
 package com.huobi.api.client.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.huobi.api.client.domain.enums.AssetType;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class Asset {
+    @JsonProperty("account-id")
+    private Long accountId;
     private String currency;
     private AssetType type;
     private BigDecimal balance;

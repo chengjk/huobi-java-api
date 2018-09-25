@@ -141,6 +141,20 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         });
     }
 
+    @Override
+    public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
+        AccountEvent event=new AccountEvent();
+        event.setClientId("40sG903yz80oDFWr");
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                super.onClosing(webSocket, code, reason);
+                if (code == 1003) {
+                    onAccountTick(callback);
+                }
+            }
+        });
+    }
 
     private Closeable createNewWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL;
@@ -154,5 +168,6 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             listener.onClosed(webSocket, code, null);
         };
     }
+
 
 }
