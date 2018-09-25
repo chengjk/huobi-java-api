@@ -33,5 +33,5 @@ public interface HuobiApiWebSocketClient {
 
     Closeable onMarketDetailTick(String symbol, ApiCallback<MarketDetailResp> callback);
 
-    Closeable onOrderTick(String symbol, ApiCallback<OrderEventNotify> callback);
+    Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback);
 }

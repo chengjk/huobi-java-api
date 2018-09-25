@@ -127,10 +127,10 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     }
 
     @Override
-    public Closeable onOrderTick(String symbol, ApiCallback<OrderEventNotify> callback){
+    public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback){
         OrderEvent event=new OrderEvent(symbol);
         event.setClientId("40sG903yz80oDFWr");
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventNotify>(callback, OrderEventNotify.class) {
+        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onClosing(webSocket, code, reason);

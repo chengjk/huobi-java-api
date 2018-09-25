@@ -8,6 +8,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OrderEventNotify {
+public class OrderEventResp extends WsNotify {
     private OrderTick data;
 }
