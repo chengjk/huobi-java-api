@@ -8,12 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TradeDetailResp {
-    private String id;
-    private String status;
-    private String subbed;
-    private String ch;
-    private long ts;
+public class TradeDetailResp extends WsNotify {
     private TradeTick tick;
 }
 

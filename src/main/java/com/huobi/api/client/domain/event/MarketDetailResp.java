@@ -9,13 +9,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class MarketDetailResp {
-    private String status;
-    private String id;
-    private String ch;
-    private long ts;
-    private String subbed;
-
+public class MarketDetailResp extends WsNotify {
     private Candle tick;
-
 }

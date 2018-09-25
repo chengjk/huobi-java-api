@@ -11,16 +11,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class KlineEventResp {
-    private String id;
-    private String status;
-    private long ts;
-    private String ch;
+public class KlineEventResp extends WsNotify {
     private Candle tick;
-    private String subbed;
-
-
-    //-----req---
-    private String rep;
     private List<Candle> data;
 }
