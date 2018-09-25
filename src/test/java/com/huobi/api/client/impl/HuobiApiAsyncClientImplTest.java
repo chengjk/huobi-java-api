@@ -109,7 +109,8 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void getBalance() {
-        Account balance = client.balance("4880381");
+//        Account balance = client.balance("4880381");
+        Account balance = client.balance("4973369");
         Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
         Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
         System.out.println(btc.getBalance().toPlainString());

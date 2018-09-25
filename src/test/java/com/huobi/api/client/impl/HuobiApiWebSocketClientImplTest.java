@@ -2,9 +2,7 @@ package com.huobi.api.client.impl;
 
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
-import com.huobi.api.client.domain.event.KlineEvent;
-import com.huobi.api.client.domain.event.KlineEventResp;
-import com.huobi.api.client.domain.event.TradeDetailResp;
+import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import okhttp3.WebSocket;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +68,31 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+    @Test
+    public void requestDepth(){
+        String symbol = "BTCUSDT";
+        MergeLevel level = MergeLevel.STEP0;
+        int step = 5;
+        final long[] from = {1509037320};
+        final long[] to = {from[0] + step * 60};
+        stream = ws.requestDepth(symbol, level,from[0],to[0], new ApiCallback<DepthEventResp>() {
+            @Override
+            public void onResponse(DepthEventResp data) {
+                System.out.println(data.getRep());
+            }
+            @Override
+            public void onMessage(WebSocket webSocket) {
+                from[0] = to[0];
+                to[0] = from[0] + step * 60;
+                DepthEvent event = new DepthEvent();
+                event.setSymbol(symbol);
+                event.setLevel(level);
+                event.setFrom(from[0]);
+                event.setTo(to[0]);
+                webSocket.send(event.toRequest());
+            }
+        });
+    }
 
     @Test
     public void onTradeDetailTick() {
@@ -96,6 +119,13 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+
+    @Test
+    public void onOrderTick() {
+        stream = ws.onOrderTick("btcusdt", response -> {
+            System.out.println(response.getData());
+        });
+    }
 
     @After
     public void after() throws InterruptedException, IOException {

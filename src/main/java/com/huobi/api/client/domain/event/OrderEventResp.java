@@ -1,23 +1,24 @@
 package com.huobi.api.client.domain.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.huobi.api.client.domain.Depth;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * created by jacky. 2018/7/24 8:43 PM
+ * created by jacky. 2018/9/25 4:12 PM
  */
 @Getter
 @Setter
-public class DepthEventResp {
-    private String id;
-    private String rep;
+public class OrderEventResp {
+    private String op;
+    private String topic;
     private String status;
-    private long ts;
-    private Depth data;
+    private String cid;
+    private OrderTick data;
+
     @JsonProperty("err-code")
     private String errCode;
     @JsonProperty("err-msg")
     private String errMsg;
+    private long ts;
 }

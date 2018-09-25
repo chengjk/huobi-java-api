@@ -13,6 +13,8 @@ public class DepthEvent implements WsEvent {
 
     private String symbol;
     private MergeLevel level;
+    private long from;
+    private long to;
 
     @Override
     public String toSubscribe() {
@@ -22,5 +24,14 @@ public class DepthEvent implements WsEvent {
                 "}";
 
         return String.format(sub, symbol.toLowerCase(), level.getCode(), "depth_" + symbol.toLowerCase() + "_" + level.getCode());
+    }
+
+
+    public String toRequest(){
+        String req = "{\n" +
+                "  \"req\": \"market.%s.depth.%s\",\n" +
+                "  \"id\": \"%s\",\"from\": %s,\"to\": %s}" +
+                "}";
+        return String.format(req, symbol.toLowerCase(), level.getCode(),"depth_" + symbol.toLowerCase() + "_" + level.getCode(),from,to);
     }
 }
