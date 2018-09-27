@@ -21,7 +21,7 @@ public class HmacSHA256Signer {
       Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
       SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
       sha256_HMAC.init(secretKeySpec);
-      byte[] hash = sha256_HMAC.doFinal(message.getBytes());
+      byte[] hash = sha256_HMAC.doFinal(message.getBytes(StandardCharsets.UTF_8));
       return Base64.getEncoder().encodeToString(hash);
     } catch (Exception e) {
       throw new RuntimeException("Unable to sign message.", e);

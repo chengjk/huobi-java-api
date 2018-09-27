@@ -1,11 +1,16 @@
 package com.huobi.api.client.impl;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.HuobiApiWebSocketClient;
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
+import com.huobi.api.client.security.WsAuthentication;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,6 +21,7 @@ import java.io.Closeable;
 /**
  * created by jacky. 2018/7/24 4:00 PM
  */
+@Slf4j
 public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
 
     private OkHttpClient client;
@@ -34,11 +40,9 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setPeriod(period);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onKlineTick(symbol, period, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onKlineTick(symbol, period, callback);
             }
         });
     }
@@ -52,13 +56,10 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setTo(to);
         return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    requestKline(symbol, period, from, to, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                requestKline(symbol, period, from, to, callback);
             }
-
         });
     }
 
@@ -69,11 +70,9 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setLevel(level);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onDepthTick(symbol, level, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onDepthTick(symbol, level, callback);
             }
         });
     }
@@ -85,11 +84,9 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setLevel(level);
         return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    requestDepth(symbol, level, from, to, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                requestDepth(symbol, level, from, to, callback);
             }
         });
     }
@@ -101,11 +98,10 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<TradeDetailResp>(callback, TradeDetailResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onTradeDetailTick(symbol, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onTradeDetailTick(symbol, callback);
+
             }
         });
     }
@@ -117,41 +113,56 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<MarketDetailResp>(callback, MarketDetailResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onMarketDetailTick(symbol, callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onMarketDetailTick(symbol, callback);
             }
         });
     }
 
     @Override
-    public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback){
-        OrderEvent event=new OrderEvent(symbol);
-        event.setClientId("40sG903yz80oDFWr");
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onOrderTick(symbol, callback);
+    public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
+        OrderEvent event = new OrderEvent(symbol);
+        event.setClientId("111");
+        //oauth
+        return createNewWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
+            if ("auth".equalsIgnoreCase(response.getOp())) {
+                if (response.getErrCode().equals("0")) {
+                    //oauth success,sub topic.
+                    webSocket.send(event.toSubscribe());
+                } else {
+                    //oauth failed.show msg.
+                    log.info("error " + response.getErrCode() + ":" + response.getErrMsg());
                 }
+            } else if ("notify".equalsIgnoreCase(response.getOp())) {
+                callback.onResponse(webSocket, response);
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                try {
+                    log.error(mapper.writeValueAsString(response));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, OrderEventResp.class){
+            @Override
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onOrderTick(symbol, callback);
             }
         });
     }
 
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
-        AccountEvent event=new AccountEvent();
+        AccountEvent event = new AccountEvent();
         event.setClientId("40sG903yz80oDFWr");
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                if (code == 1003) {
-                    onAccountTick(callback);
-                }
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onAccountTick(callback);
             }
         });
     }

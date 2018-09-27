@@ -41,6 +41,8 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         } else if (resp.contains("pong")) {
             //ignore
         } else {
+            onMessage(webSocket, resp);
+            callback.onMessage(webSocket, resp);
             ObjectMapper mapper = new ObjectMapper();
             try {
                 T event;
@@ -49,8 +51,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
                 } else {
                     event = mapper.readValue(resp, respClass);
                 }
-                callback.onResponse(event);
-                callback.onMessage(webSocket);
+                callback.onResponse(webSocket, event);
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }
@@ -69,7 +70,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         log.info("closing. code:" + code + ",reason:" + reason);
         if (code == 1003) {
             //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
-            callback.onExpired(webSocket);
+            onExpired(webSocket, code, reason);
         }
     }
 
@@ -77,6 +78,11 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
         log.info("closed");
+    }
+
+
+    public void onExpired(WebSocket webSocket, int code, String reason) {
+        callback.onExpired(webSocket, code, reason);
     }
 
 

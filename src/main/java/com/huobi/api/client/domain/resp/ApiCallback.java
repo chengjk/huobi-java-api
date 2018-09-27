@@ -9,10 +9,10 @@ public interface ApiCallback<T> {
 
     /**
      * Called whenever a response comes back
-     *
+     * @param webSocket
      * @param response
      */
-    void onResponse(T response);
+    void onResponse(WebSocket webSocket,T response);
 
     /**
      * Called whenever a error occur
@@ -27,14 +27,17 @@ public interface ApiCallback<T> {
      *
      * @param webSocket
      */
-    default void onExpired(WebSocket webSocket) {
+    default void onExpired(WebSocket webSocket,int code, String reason) {
     }
 
     /**
+     * refer to onResponse
+     *
      * call when receive message.
      *
      * @param webSocket
      */
-    default void onMessage(WebSocket webSocket) {
+    @Deprecated
+    default void onMessage(WebSocket webSocket, String text) {
     }
 }

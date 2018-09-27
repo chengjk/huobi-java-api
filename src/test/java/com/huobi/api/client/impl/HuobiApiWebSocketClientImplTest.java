@@ -21,7 +21,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onKlineTick() {
-        stream = ws.onKlineTick("BTCUSDT", Resolution.M1, data -> {
+        stream = ws.onKlineTick("BTCUSDT", Resolution.M1, (ws,data) -> {
             if (StringUtils.isNotEmpty(data.getSubbed())) {
                 System.out.println(data.getSubbed());
             } else {
@@ -40,15 +40,12 @@ public class HuobiApiWebSocketClientImplTest {
         final long[] to = {from[0] + step * 60};
         stream = ws.requestKline(symbol, period, from[0], to[0], new ApiCallback<KlineEventResp>() {
             @Override
-            public void onResponse(KlineEventResp data) {
+            public void onResponse(WebSocket webSocket,KlineEventResp data) {
                 if (StringUtils.isNotEmpty(data.getSubbed())) {
                     System.out.println(data.getRep());
                 } else {
                     data.getData().forEach(f -> System.out.println(f.getId() + ":" + f.getClose()));
                 }
-            }
-            @Override
-            public void onMessage(WebSocket webSocket) {
                 from[0] = to[0];
                 to[0] = from[0] + step * 60; //
                 KlineEvent event = new KlineEvent();
@@ -63,7 +60,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onDepthTick() {
-        stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, data -> {
+        stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, (ws,data) -> {
             System.out.println(data.getRep());
         });
     }
@@ -77,11 +74,8 @@ public class HuobiApiWebSocketClientImplTest {
         final long[] to = {from[0] + step * 60};
         stream = ws.requestDepth(symbol, level,from[0],to[0], new ApiCallback<DepthEventResp>() {
             @Override
-            public void onResponse(DepthEventResp data) {
+            public void onResponse(WebSocket webSocket,DepthEventResp data) {
                 System.out.println(data.getRep());
-            }
-            @Override
-            public void onMessage(WebSocket webSocket) {
                 from[0] = to[0];
                 to[0] = from[0] + step * 60;
                 DepthEvent event = new DepthEvent();
@@ -98,12 +92,12 @@ public class HuobiApiWebSocketClientImplTest {
     public void onTradeDetailTick() {
         stream = ws.onTradeDetailTick("BTCUSDT", new ApiCallback<TradeDetailResp>() {
             @Override
-            public void onResponse(TradeDetailResp response) {
+            public void onResponse(WebSocket webSocket,TradeDetailResp response) {
                 System.out.println(response.getTs());
             }
 
             @Override
-            public void onExpired(WebSocket webSocket) {
+            public void onExpired(WebSocket webSocket,int code,String reason) {
                 System.out.println("ws expired callback");
             }
         });
@@ -111,7 +105,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onMarketDetailTick() {
-        stream = ws.onMarketDetailTick("ltcusdt", data -> {
+        stream = ws.onMarketDetailTick("ltcusdt", (ws,data) -> {
             if (StringUtils.isEmpty(data.getSubbed())) {
                 System.out.println(data.getTick().getAmount());
                 System.out.println(data.getTick().getVol());
@@ -122,8 +116,11 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onOrderTick() {
-        stream = ws.onOrderTick("btcusdt", response -> {
-            System.out.println(response.getData());
+        stream = ws.onOrderTick("htusdt", new ApiCallback<OrderEventResp>() {
+            @Override
+            public void onResponse(WebSocket webSocket,OrderEventResp response) {
+                System.out.println(response);
+            }
         });
     }
 
@@ -132,7 +129,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onAccountTick(){
-        stream = ws.onAccountTick(data->{
+        stream = ws.onAccountTick((ws,data)->{
             System.out.println(data);
         });
     }
