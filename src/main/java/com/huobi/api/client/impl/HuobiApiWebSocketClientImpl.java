@@ -125,7 +125,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         OrderEvent event = new OrderEvent(symbol);
         event.setClientId("111");
         //oauth
-        return createNewWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
+        return newAuthWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
             if ("auth".equalsIgnoreCase(response.getOp())) {
                 if (response.getErrCode().equals("0")) {
                     //oauth success,sub topic.
@@ -145,7 +145,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
                     e.printStackTrace();
                 }
             }
-        }, OrderEventResp.class){
+        }, OrderEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -158,7 +158,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("40sG903yz80oDFWr");
-        return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
+        return newAuthWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -169,7 +169,16 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
 
     private Closeable createNewWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL;
-        Request request = new Request.Builder().url(streamingUrl).build();
+        return newWebSocket(streamingUrl, topic, listener);
+    }
+
+    private Closeable newAuthWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
+        String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
+        return newWebSocket(streamingUrl, topic, listener);
+    }
+
+    private Closeable newWebSocket(String url, String topic, HuobiApiWebSocketListener<?> listener) {
+        Request request = new Request.Builder().url(url).build();
         final WebSocket webSocket = client.newWebSocket(request, listener);
         webSocket.send(topic);
         return () -> {
@@ -179,6 +188,4 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             listener.onClosed(webSocket, code, null);
         };
     }
-
-
 }

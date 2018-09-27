@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 public interface HuobiConsts {
     String API_HOST_PRO = "api.huobi.pro";
     String API_HOST_HADAX = "api.hadax.com";
-    String WS_API_BASE_URL_PRO = "wss://api.huobi.pro/ws";
+    String WS_API_BASE_URL_PRO = "wss://api.huobi.pro:443/ws";
     String WS_API_BASE_URL_HADAX = "wss://api.hadax.com/ws";
 
 

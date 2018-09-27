@@ -82,7 +82,7 @@ public class HuobiSigner {
         String payload = "GET\n" +
                 "api.huobi.pro:443\n" +
                 "/ws/v1\n" +
-                "AccessKeyId=6ab18816-7510b23c-70b60749-71c31&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2018-09-26T12%3A38%3A46";
+                "AccessKeyId=6ab18816-7510b23c-70b60749-71c31&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2018-09-27T08%3A30%3A30";
         String sign = HmacSHA256Signer.sign(payload, secretKey);
 
 
