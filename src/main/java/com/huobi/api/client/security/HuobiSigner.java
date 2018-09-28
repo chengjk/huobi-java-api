@@ -10,17 +10,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Map;
-import java.util.StringJoiner;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * created by jacky. 2018/9/27 2:34 PM
  */
 public class HuobiSigner {
-    private String apiKey = "e8d23f3b-92721ba8-7b804c0f-222a1";
-    private String secret = "bd14ad47-fe8f8ed9-bf3e32df-1ea61";
+    private String apiKey;
+    private String secret;
+    public HuobiSigner(String apiKey, String secret) {
+        this.apiKey = apiKey;
+        this.secret = secret;
+    }
 
     /**
      * 创建签名.
@@ -34,7 +35,7 @@ public class HuobiSigner {
     public String sign(String method, String uri, Map<String, String> params, String gmtNow) {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(method.toUpperCase()).append('\n') // GET
-                .append(HuobiConsts.API_HOST.toLowerCase()).append('\n') // Host
+                .append(HuobiConsts.API_HOST.toLowerCase()+":443").append('\n') // Host
                 .append(uri).append('\n'); // /path
 
         StringJoiner joiner = new StringJoiner("&");
@@ -101,6 +102,15 @@ public class HuobiSigner {
 
         //获取签名，并进行Base64编码
         String actualSign = Base64.getEncoder().encodeToString(hash);
+
+
+        HashMap<String, String> map = new HashMap<>();
+        String sign1 = new HuobiSigner("6ab18816-7510b23c-70b60749-71c31", secretKey).sign("GET", "/ws/v1", map, "2018-09-27T08:30:30");
+
+        if (sign.equals(sign1)) {
+            System.out.println("asdfa");
+        }
+
 
         if (actualSign.equals(sign)) {
             System.out.println("Sss");

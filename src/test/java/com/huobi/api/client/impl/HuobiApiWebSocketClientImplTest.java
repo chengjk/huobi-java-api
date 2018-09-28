@@ -7,17 +7,34 @@ import com.huobi.api.client.domain.resp.ApiCallback;
 import okhttp3.WebSocket;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * created by jacky. 2018/7/24 8:30 PM
  */
 public class HuobiApiWebSocketClientImplTest {
-    private HuobiApiWebSocketClientImpl ws = new HuobiApiWebSocketClientImpl();
     Closeable stream;
+    private String apiKey = "a";
+    private String apiSecret = "s";
+    private HuobiApiWebSocketClientImpl ws;
+
+    @Before
+    public void config() throws IOException {
+        InputStream is = ClassLoader.getSystemResourceAsStream("config.properties");
+        Properties props = new Properties();
+        props.load(is);
+        apiKey = props.getProperty("apiKey");
+        apiSecret = props.getProperty("apiSecret");
+        ws = new HuobiApiWebSocketClientImpl(apiKey,apiSecret);
+    }
+
+
 
     @Test
     public void onKlineTick() {

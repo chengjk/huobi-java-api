@@ -2,6 +2,8 @@ package com.huobi.api.client.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.security.HuobiSigner;
 import com.huobi.api.client.security.ZipUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,21 +21,45 @@ import java.nio.ByteBuffer;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * created by jacky. 2018/9/27 9:19 PM
  */
 @Slf4j
 @Getter
-@Setter
 public class HuobiApiAuthWebSocketClient extends WebSocketClient {
 
-    private String auth;
+    private String auth = "{" +
+            "\"SignatureVersion\":\"%s\"," +
+            "\"op\":\"auth\"," +
+            "\"AccessKeyId\":\"%s\"," +
+            "\"Signature\":\"%s\"," +
+            "\"SignatureMethod\":\"%s\"," +
+            "\"Timestamp\":\"%s\"," +
+            "\"cid\":\"%s\"" +
+            "}";
+
+    private String unSub = "{" +
+            "\"unsub\": \"%s\"," +
+            "\"id\": \"%s\"" +
+            "}";
+
+    private String WS_PATH = "/ws/v1";
+    private String apiKey;
+    private String secretKey;
+    @Setter
     private String topic;
+    @Setter
+    private String clientId;
+    @Setter
     private HuobiApiWebSocketListener<?> listener;
 
-    public HuobiApiAuthWebSocketClient(URI serverURI) {
+    public HuobiApiAuthWebSocketClient(URI serverURI,String apiKey,String secret) {
         super(serverURI);
+        this.apiKey = apiKey;
+        this.secretKey = secret;
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 @Override
@@ -60,8 +86,27 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
-        send(auth);
+        auth();
     }
+
+
+    public void auth() {
+        HuobiSigner signer = new HuobiSigner(apiKey, secretKey);
+        Map<String, String> param = new HashMap<>();
+        String now = signer.gmtNow();
+        String signature = signer.sign("GET", WS_PATH, param, now);
+        send(String.format(auth, HuobiConsts.SIGNATURE_VERSION, apiKey, signature, HuobiConsts.SIGNATURE_METHOD, now, clientId));
+    }
+
+
+    public void sub(){
+        send(topic);
+    }
+
+    public void unSub() {
+        send(String.format(unSub, topic, clientId));
+    }
+
 
     @Override
     public void onMessage(ByteBuffer bytes) {
@@ -89,8 +134,10 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
                     String code = node.get("err-code").asText();
                     if ("0".equals(code)) {
                         //auth success
-                        send(topic);
+                        sub();
                     }
+                } else if ("sub".equals(op)) {
+                    //ignore
                 } else if ("notify".equals(op)) {
                     listener.onMessage(null, text);
                 }

@@ -9,7 +9,6 @@ import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
-import com.huobi.api.client.security.WsAuthentication;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
@@ -26,14 +25,19 @@ import java.net.URISyntaxException;
 @Slf4j
 public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
 
+    private String apiKey;
+    private String secretKey;
     private OkHttpClient client;
 
+    public HuobiApiWebSocketClientImpl(String apiKey, String secretKey) {
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
 
-    public HuobiApiWebSocketClientImpl() {
         Dispatcher d = new Dispatcher();
         d.setMaxRequestsPerHost(100);
         this.client = new OkHttpClient.Builder().dispatcher(d).build();
     }
+
 
     @Override
     public Closeable onKlineTick(String symbol, Resolution period, ApiCallback<KlineEventResp> callback) {
@@ -125,8 +129,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     @Override
     public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
         OrderEvent event = new OrderEvent(symbol);
-        event.setClientId("111");
-        return newAuthWebSocket1(new WsAuthentication(event.getClientId()).toAuth(), event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
+        event.setClientId("dzc_order_1");
+        return newAuthWebSocket1(event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -138,8 +142,9 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
-        event.setClientId("40sG903yz80oDFWr");
-        return newAuthWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
+        event.setClientId("dzc_account_"+System.currentTimeMillis());
+        //todo auth
+        return newAuthWebSocket("auth", new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
             if ("auth".equals(response.getOp())) {
                 if ("0".equals(response.getErrCode())) {
                     webSocket.send(event.toSubscribe());
@@ -174,13 +179,13 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return newWebSocket(streamingUrl, topic, listener);
     }
 
-    private Closeable newAuthWebSocket1(String auth, String topic, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket1( String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);
-            HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri);
-            client.setAuth(auth);
+            HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri,apiKey,secretKey);
             client.setTopic(topic);
+            client.setClientId("dzc_order_1");
             client.setListener(listener);
             client.connect();
         } catch (URISyntaxException e) {
