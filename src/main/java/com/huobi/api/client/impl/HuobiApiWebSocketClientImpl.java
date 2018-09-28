@@ -17,6 +17,8 @@ import okhttp3.Request;
 import okhttp3.WebSocket;
 
 import java.io.Closeable;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * created by jacky. 2018/7/24 4:00 PM
@@ -125,7 +127,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         OrderEvent event = new OrderEvent(symbol);
         event.setClientId("111");
         //oauth
-        return newAuthWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
+        return newAuthWebSocket1(new WsAuthentication(event.getClientId()).toAuth(),event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
             if ("auth".equalsIgnoreCase(response.getOp())) {
                 if (response.getErrCode().equals("0")) {
                     //oauth success,sub topic.
@@ -175,6 +177,21 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     private Closeable newAuthWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
         return newWebSocket(streamingUrl, topic, listener);
+    }
+
+    private Closeable newAuthWebSocket1(String auth,String topic, HuobiApiWebSocketListener<?> listener) {
+        String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
+        try {
+            URI uri = new URI(streamingUrl);
+            HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri);
+            client.setAuth(auth);
+            client.setTopic(topic);
+            client.setListener(listener);
+            client.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Closeable newWebSocket(String url, String topic, HuobiApiWebSocketListener<?> listener) {

@@ -58,4 +58,12 @@ public class OrderTick {
     //单次成交手续费（买入为币，卖出为钱）
     @JsonProperty("filled-fees")
     private String filledFees;
+
+    @JsonProperty("user-id")
+    private String userId;
+
+
+
+
+
 }

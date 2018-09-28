@@ -3,16 +3,14 @@ package com.huobi.api.client.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.domain.resp.ApiCallback;
+import com.huobi.api.client.security.ZipUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.GZIPInputStream;
 
 /**
  * created by jacky. 2018/7/24 3:57 PM
@@ -34,22 +32,25 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, ByteString bytes) {
-        byte[] uncompress = uncompress(bytes.toByteArray());
-        String resp = new String(uncompress);
-        if (resp.contains("ping")) {
-            webSocket.send(resp.replace("ping", "pong"));
-        } else if (resp.contains("pong")) {
+        byte[] uncompress = ZipUtil.decompress(bytes.toByteArray());
+        onMessage(webSocket, new String(uncompress));
+    }
+
+    @Override
+    public void onMessage(WebSocket webSocket, String text) {
+        if (text.contains("ping")) {
+            webSocket.send(text.replace("ping", "pong"));
+        } else if (text.contains("pong")) {
             //ignore
         } else {
-            onMessage(webSocket, resp);
-            callback.onMessage(webSocket, resp);
+            callback.onMessage(webSocket, text);
             ObjectMapper mapper = new ObjectMapper();
             try {
                 T event;
                 if (respClass == null) {
-                    event = mapper.readValue(resp, eventTypeReference);
+                    event = mapper.readValue(text, eventTypeReference);
                 } else {
-                    event = mapper.readValue(resp, respClass);
+                    event = mapper.readValue(text, respClass);
                 }
                 callback.onResponse(webSocket, event);
             } catch (IOException e) {
@@ -57,7 +58,6 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
             }
         }
     }
-
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
@@ -83,26 +83,6 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     public void onExpired(WebSocket webSocket, int code, String reason) {
         callback.onExpired(webSocket, code, reason);
-    }
-
-
-    public static byte[] uncompress(byte[] bytes) {
-        if (bytes == null || bytes.length == 0) {
-            return null;
-        }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        try {
-            GZIPInputStream ungzip = new GZIPInputStream(in);
-            byte[] buffer = new byte[256];
-            int n;
-            while ((n = ungzip.read(buffer)) >= 0) {
-                out.write(buffer, 0, n);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return out.toByteArray();
     }
 
 
