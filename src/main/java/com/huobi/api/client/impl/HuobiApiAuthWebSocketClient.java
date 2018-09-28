@@ -88,7 +88,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
                 if ("auth".equals(op)) {
                     String code = node.get("err-code").asText();
                     if ("0".equals(code)) {
-                        //auth success todo
+                        //auth success
                         send(topic);
                     }
                 } else if ("notify".equals(op)) {

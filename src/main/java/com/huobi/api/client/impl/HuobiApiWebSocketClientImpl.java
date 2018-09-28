@@ -126,28 +126,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
         OrderEvent event = new OrderEvent(symbol);
         event.setClientId("111");
-        //oauth
-        return newAuthWebSocket1(new WsAuthentication(event.getClientId()).toAuth(),event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>((webSocket, response) -> {
-            if ("auth".equalsIgnoreCase(response.getOp())) {
-                if (response.getErrCode().equals("0")) {
-                    //oauth success,sub topic.
-                    webSocket.send(event.toSubscribe());
-                } else {
-                    //oauth failed.show msg.
-                    log.info("error " + response.getErrCode() + ":" + response.getErrMsg());
-                }
-            } else if ("notify".equalsIgnoreCase(response.getOp())) {
-                callback.onResponse(webSocket, response);
-            } else {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-                try {
-                    log.error(mapper.writeValueAsString(response));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, OrderEventResp.class) {
+        return newAuthWebSocket1(new WsAuthentication(event.getClientId()).toAuth(), event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -160,7 +139,23 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("40sG903yz80oDFWr");
-        return newAuthWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
+        return newAuthWebSocket(new WsAuthentication(event.getClientId()).toAuth(), new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
+            if ("auth".equals(response.getOp())) {
+                if ("0".equals(response.getErrCode())) {
+                    webSocket.send(event.toSubscribe());
+                }
+            } else if ("notify".equals(response.getOp())) {
+                callback.onResponse(webSocket, response);
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                try {
+                    log.error(mapper.writeValueAsString(response));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, AccountEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -179,7 +174,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return newWebSocket(streamingUrl, topic, listener);
     }
 
-    private Closeable newAuthWebSocket1(String auth,String topic, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket1(String auth, String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);

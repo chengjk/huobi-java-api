@@ -19,8 +19,8 @@ import java.util.TreeSet;
  * created by jacky. 2018/9/27 2:34 PM
  */
 public class HuobiSigner {
-    private String apiKey = "6ab18816-7510b23c-70b60749-71c31";
-    private String secret = "c84dab82-12dc9c5f-47d4d371-b17df";
+    private String apiKey = "e8d23f3b-92721ba8-7b804c0f-222a1";
+    private String secret = "bd14ad47-fe8f8ed9-bf3e32df-1ea61";
 
     /**
      * 创建签名.

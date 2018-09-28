@@ -18,8 +18,8 @@ import java.util.StringJoiner;
  */
 public class WsAuthentication {
     private String WS_PATH = "/ws/v1";
-    private String apiKey = "6ab18816-7510b23c-70b60749-71c31";
-    private String secretKey = "c84dab82-12dc9c5f-47d4d371-b17df";
+    private String apiKey = "e8d23f3b-92721ba8-7b804c0f-222a1";
+    private String secretKey = "bd14ad47-fe8f8ed9-bf3e32df-1ea61";
     private String clientId;
 
     public WsAuthentication(String clientId) {
