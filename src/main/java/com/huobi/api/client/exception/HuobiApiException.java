@@ -10,7 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class HuobiApiException extends Exception {
+public class HuobiApiException extends RuntimeException {
+    private static final long serialVersionUID = -8973960378572936039L;
     private String errCode;
     private String errMsg;
 

@@ -4,6 +4,7 @@ import com.huobi.api.client.HuobiApiRestClient;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.BatchCancelResp;
+import com.huobi.api.client.exception.HuobiApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,11 +111,16 @@ public class HuobiApiAsyncClientImplTest {
     @Test
     public void getBalance() {
 //        Account balance = client.balance("4880381");
-        Account balance = client.balance("4973369");
-        Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
-        Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
-        System.out.println(btc.getBalance().toPlainString());
-        System.out.println(usdt.getBalance().toPlainString());
+        Account balance = null;
+        try {
+            balance = client.balance("4973369");
+            Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
+            Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
+            System.out.println(btc.getBalance().toPlainString());
+            System.out.println(usdt.getBalance().toPlainString());
+        } catch (HuobiApiException e) {
+            e.printStackTrace();
+        }
         assert balance != null;
     }
 

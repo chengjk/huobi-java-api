@@ -59,9 +59,9 @@ public class HuobiApiServiceGenerator {
             } else {
                 parseError(response);
             }
-        } catch (IOException | HuobiApiException e) {
+        } catch (IOException e) {
+            //can not parse resp
             log.error(e.getMessage(), e);
-            throw new IllegalStateException("invalid response from server." + e.getMessage());
         }
         return null;
     }
@@ -70,7 +70,7 @@ public class HuobiApiServiceGenerator {
         if (body instanceof RespBody) {
             RespBody resp = (RespBody) body;
             if (!resp.getStatus().equalsIgnoreCase("ok")) {
-                throw new HuobiApiException(resp.toErrorString());
+                throw new HuobiApiException(resp.getErrCode(),resp.getErrMsg());
             }
         }
     }
