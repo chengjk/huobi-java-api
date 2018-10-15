@@ -143,8 +143,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("dzc_account_"+System.currentTimeMillis());
-        //todo auth
-        return newAuthWebSocket("auth", new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
+        return newAuthWebSocket(event.toAuth(apiKey, secretKey), new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
             if ("auth".equals(response.getOp())) {
                 if ("0".equals(response.getErrCode())) {
                     webSocket.send(event.toSubscribe());

@@ -133,7 +133,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onOrderTick() {
-        stream = ws.onOrderTick("htusdt", new ApiCallback<OrderEventResp>() {
+        stream = ws.onOrderTick("btcusdt", new ApiCallback<OrderEventResp>() {
             @Override
             public void onResponse(WebSocket webSocket,OrderEventResp response) {
                 System.out.println(response);
