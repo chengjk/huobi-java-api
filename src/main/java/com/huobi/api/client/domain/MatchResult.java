@@ -27,6 +27,8 @@ public class MatchResult {
     private BigDecimal filledAmount;
     @JsonProperty("filled-fees")
     private BigDecimal filledFees;
+    @JsonProperty("filled-points")
+    private String filledPoints;
     @JsonProperty("created-at")
     private String createdAt;
 }

@@ -36,7 +36,7 @@ public class Order {
 
     @JsonProperty(value = "filled-amount")
     private BigDecimal filledAmount;
-    @JsonProperty(value = "filled-cash-amount")
+    @JsonProperty(value = "filled-cash-amount") //未扣除fee
     private BigDecimal filledCashAmount;
     @JsonProperty(value = "filled-fees")
     private BigDecimal filledFees;

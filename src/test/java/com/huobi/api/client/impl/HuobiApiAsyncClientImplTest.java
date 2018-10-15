@@ -85,7 +85,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void orders() {
-        Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.values()), null, null, null);
+        Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED), null, null, 10);
         assert orders != null;
     }
 
@@ -110,10 +110,9 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void getBalance() {
-//        Account balance = client.balance("4880381");
         Account balance = null;
         try {
-            balance = client.balance("4973369");
+            balance = client.balance("4880381");
             Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
             Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
             System.out.println(btc.getBalance().toPlainString());
@@ -126,7 +125,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("4880381", "1", "1.1", OrderSource.API, "ETHBTC", OrderType.SELL_LIMIT);
+        Long id = client.place("4880381", "0.0119", "", OrderSource.API, "btcusdt", OrderType.SELL_MARKET);
         assert id != null;
     }
 
@@ -158,7 +157,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void matchResultsByOrder() {
-        Set<MatchResult> matchResults = client.matchResults("testId");
+        Set<MatchResult> matchResults = client.matchResults("14713189707");
         assert matchResults != null;
     }
 
