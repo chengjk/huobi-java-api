@@ -142,7 +142,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
-        event.setClientId("dzc_account_"+System.currentTimeMillis());
+        event.setClientId("dzc_account_" + System.currentTimeMillis());
         return newAuthWebSocket(event.toAuth(apiKey, secretKey), new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
             if ("auth".equals(response.getOp())) {
                 if ("0".equals(response.getErrCode())) {
@@ -178,15 +178,21 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return newWebSocket(streamingUrl, topic, listener);
     }
 
-    private Closeable newAuthWebSocket1( String topic, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket1(String topic, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);
-            HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri,apiKey,secretKey);
+            HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri, apiKey, secretKey);
             client.setTopic(topic);
             client.setClientId("dzc_order_1");
             client.setListener(listener);
             client.connect();
+            return () -> {
+                listener.onClosing(null, 1000, null); //  client.getConnection() 不兼容 okhttp.
+                client.unSub();
+                client.close();
+                listener.onClosed(null, 1000, null);
+            };
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
