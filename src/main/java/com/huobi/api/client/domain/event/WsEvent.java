@@ -5,4 +5,8 @@ package com.huobi.api.client.domain.event;
  */
 public interface WsEvent {
     String toSubscribe();
+
+    default String getClientId() {
+        return null;
+    }
 }

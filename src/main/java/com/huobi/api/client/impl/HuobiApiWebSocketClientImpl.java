@@ -130,7 +130,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
         OrderEvent event = new OrderEvent(symbol);
         event.setClientId("dzc_order_1");
-        return newAuthWebSocket1(event.toSubscribe(), new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
+        return newAuthWebSocket1(event, new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
@@ -141,6 +141,21 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
 
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
+        AccountEvent event=new AccountEvent();
+        event.setClientId("dzc_account_"+System.currentTimeMillis());
+        return newAuthWebSocket1(event, new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
+            @Override
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                super.onExpired(webSocket, code, reason);
+                onAccountTick(callback);
+            }
+        });
+    }
+
+
+
+    //todo for test.  huobi not support okhttp ws client ops!
+    public Closeable onAccountTickOkhttp(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("dzc_account_" + System.currentTimeMillis());
         return newAuthWebSocket(event.toAuth(apiKey, secretKey), new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
@@ -178,13 +193,13 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return newWebSocket(streamingUrl, topic, listener);
     }
 
-    private Closeable newAuthWebSocket1(String topic, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket1(WsEvent event, HuobiApiWebSocketListener<?> listener) {
         String streamingUrl = HuobiConfig.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);
             HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri, apiKey, secretKey);
-            client.setTopic(topic);
-            client.setClientId("dzc_order_1");
+            client.setTopic(event.toSubscribe());
+            client.setClientId(event.getClientId());
             client.setListener(listener);
             client.connect();
             return () -> {

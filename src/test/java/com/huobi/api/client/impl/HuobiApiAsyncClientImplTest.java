@@ -148,7 +148,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void cancel() {
-        Long id = client.cancel("12654130771");
+        Long id = client.cancel("14799077863");
         assert id != null;
     }
 
