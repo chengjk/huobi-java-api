@@ -1,6 +1,10 @@
 package com.huobi.api.client.domain.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.huobi.api.client.domain.enums.OrderRole;
+import com.huobi.api.client.domain.enums.OrderSource;
+import com.huobi.api.client.domain.enums.OrderState;
+import com.huobi.api.client.domain.enums.OrderType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,16 +37,16 @@ public class OrderTick {
     private Long createdAt;
     //订单类型，请参考订单类型说明
     @JsonProperty("order-type")
-    private String orderType;
+    private OrderType orderType;
     //订单来源，请参考订单来源说明
     @JsonProperty("order-source")
-    private String orderSource;
+    private OrderSource orderSource;
     //订单状态，请参考订单状态说明
     @JsonProperty("order-state")
-    private String orderState;
+    private OrderState orderState;
     //maker, taker
     @JsonProperty("role")
-    private String role;
+    private OrderRole role;
     //成交价格
     @JsonProperty("price")
     private String price;

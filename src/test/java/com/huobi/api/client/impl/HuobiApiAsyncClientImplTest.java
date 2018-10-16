@@ -125,7 +125,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("4880381", "0.0119", "", OrderSource.API, "btcusdt", OrderType.SELL_MARKET);
+        Long id = client.place("4880381", "0.001", "7000", OrderSource.API, "btcusdt", OrderType.SELL_LIMIT);
         assert id != null;
     }
 

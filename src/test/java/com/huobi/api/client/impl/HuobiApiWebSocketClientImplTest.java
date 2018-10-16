@@ -152,7 +152,7 @@ public class HuobiApiWebSocketClientImplTest {
     }
     @After
     public void after() throws InterruptedException, IOException {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
             Thread.sleep(1000L);
         }
         stream.close();

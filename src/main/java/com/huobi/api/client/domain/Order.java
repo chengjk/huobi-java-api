@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 
 /**
  * created by jacky. 2018/7/21 3:20 PM
+ *
  */
 @Getter
 @Setter
@@ -24,15 +25,6 @@ public class Order {
     @JsonProperty(value = "created-at")
     private Long createdAt;
     private OrderType type;
-
-    //region deprecate
-    @JsonProperty(value = "field-amount")
-    private BigDecimal fieldAmount;
-    @JsonProperty(value = "field-cash-amount")
-    private BigDecimal fieldCashAmount;
-    @JsonProperty(value = "field-fees")
-    private BigDecimal fieldFees;
-    //endregion
 
     @JsonProperty(value = "filled-amount")
     private BigDecimal filledAmount;
@@ -51,4 +43,20 @@ public class Order {
     private Long canceledAt;
     private String exchange;
     private String batch;
+
+    //region deprecate
+    //orders 接口返回的是 field-xxx, openOrder 接口返回的是 filled-xxx. 为了兼容，这两批字段内容保持同步。
+    @JsonProperty(value = "field-amount")
+    public void setFieldAmount(BigDecimal fieldAmount) {
+        this.filledAmount = fieldAmount;
+    }
+    @JsonProperty(value = "field-cash-amount")
+    public void setFieldCashAmount(BigDecimal fieldCashAmount) {
+        this.filledCashAmount = fieldCashAmount;
+    }
+    @JsonProperty(value = "field-fees")
+    public void setFieldFees(BigDecimal fieldFees) {
+        this.filledFees = fieldFees;
+    }
+    //endregion
 }

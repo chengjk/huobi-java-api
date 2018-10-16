@@ -14,7 +14,10 @@ public enum OrderSource {
     WEB("web"),
     APP("app"),
     API("api"),
-    MARGIN_API("margin-api");
+    MARGIN_API("margin-api"),
+    SPOT_API("spot-api"),
+    ;
+
     private String code;
 
 
