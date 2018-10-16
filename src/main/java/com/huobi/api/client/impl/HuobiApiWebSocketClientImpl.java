@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.HuobiApiWebSocketClient;
-import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.event.*;
@@ -169,17 +169,17 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     }
 
     private Closeable createNewWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
-        String streamingUrl = HuobiConsts.WS_API_URL;
+        String streamingUrl = HuobiConfig.WS_API_URL;
         return newWebSocket(streamingUrl, topic, listener);
     }
 
     private Closeable newAuthWebSocket(String topic, HuobiApiWebSocketListener<?> listener) {
-        String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
+        String streamingUrl = HuobiConfig.WS_API_URL + "/v1";
         return newWebSocket(streamingUrl, topic, listener);
     }
 
     private Closeable newAuthWebSocket1(String topic, HuobiApiWebSocketListener<?> listener) {
-        String streamingUrl = HuobiConsts.WS_API_URL + "/v1";
+        String streamingUrl = HuobiConfig.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);
             HuobiApiAuthWebSocketClient client = new HuobiApiAuthWebSocketClient(uri, apiKey, secretKey);

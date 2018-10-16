@@ -9,13 +9,6 @@ import java.time.format.DateTimeFormatter;
 public interface HuobiConsts {
     String API_HOST_PRO = "api.huobi.pro";
     String API_HOST_HADAX = "api.hadax.com";
-    String WS_API_BASE_URL_PRO = "wss://api.huobi.pro:443/ws";
-    String WS_API_BASE_URL_HADAX = "wss://api.hadax.com/ws";
-
-
-    String API_HOST = API_HOST_PRO;
-    String API_URL =  "https://" + API_HOST_PRO;
-    String WS_API_URL = WS_API_BASE_URL_PRO;
 
     String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
 

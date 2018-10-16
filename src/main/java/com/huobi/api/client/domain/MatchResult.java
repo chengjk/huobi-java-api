@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class MatchResult {
-    private String id;
+    private Long id;
     @JsonProperty("order-id")
     private String orderId;
     @JsonProperty("match-id")
@@ -30,5 +30,5 @@ public class MatchResult {
     @JsonProperty("filled-points")
     private String filledPoints;
     @JsonProperty("created-at")
-    private String createdAt;
+    private Long createdAt;
 }

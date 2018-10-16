@@ -1,6 +1,6 @@
 package com.huobi.api.client;
 
-import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.exception.HuobiApiException;
 import com.huobi.api.client.security.AuthenticationInterceptor;
@@ -25,7 +25,7 @@ public class HuobiApiServiceGenerator {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(HuobiConsts.API_URL)
+                    .baseUrl(HuobiConfig.REST_API_URL)
                     .addConverterFactory(JacksonConverterFactory.create());
 
 

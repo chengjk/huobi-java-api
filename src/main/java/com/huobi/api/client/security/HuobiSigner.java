@@ -1,5 +1,6 @@
 package com.huobi.api.client.security;
 
+import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.constant.HuobiConsts;
 
 import java.io.UnsupportedEncodingException;
@@ -32,7 +33,7 @@ public class HuobiSigner {
     public String sign(String method, String uri, Map<String, String> params, String gmtNow) {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(method.toUpperCase()).append('\n') // GET
-                .append(HuobiConsts.API_HOST.toLowerCase()+":443").append('\n') // Host
+                .append(HuobiConfig.API_HOST.toLowerCase()+":443").append('\n') // Host
                 .append(uri).append('\n'); // /path
 
         StringJoiner joiner = new StringJoiner("&");

@@ -1,6 +1,8 @@
 package com.huobi.api.client.impl;
 
 import com.huobi.api.client.HuobiApiRestClient;
+import com.huobi.api.client.constant.HuobiConfig;
+import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.BatchCancelResp;
@@ -31,6 +33,8 @@ public class HuobiApiAsyncClientImplTest {
         InputStream is = ClassLoader.getSystemResourceAsStream("config.properties");
         Properties props = new Properties();
         props.load(is);
+        //unnecessary
+        HuobiConfig.API_HOST = HuobiConsts.API_HOST_PRO;
         apiKey = props.getProperty("apiKey");
         apiSecret = props.getProperty("apiSecret");
         client = new HuobiApiRestClientImpl(apiKey, apiSecret);
@@ -125,7 +129,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("4880381", "0.001", "7000", OrderSource.API, "btcusdt", OrderType.SELL_LIMIT);
+        Long id = client.place("4880381", "0.001", "6000", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
         assert id != null;
     }
 
