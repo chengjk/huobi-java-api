@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum AssetType {
-    WORKING("working"),
     TRADE("trade"),
     FROZEN("frozen"),
     LOAN("loan"),

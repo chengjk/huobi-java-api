@@ -143,7 +143,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void get() {
-        Order test = client.get("12664273590");
+        Order test = client.get("14978268779");
         assert test != null;
     }
 
@@ -162,7 +162,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void matchResultsByOrder() {
-        List<MatchResult> matchResults = client.matchResults("14713189707");
+        List<MatchResult> matchResults = client.matchResults("14978268779");
         assert matchResults != null;
     }
 

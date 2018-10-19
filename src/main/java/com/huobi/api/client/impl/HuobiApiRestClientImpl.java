@@ -8,6 +8,7 @@ import com.huobi.api.client.domain.reqs.*;
 import com.huobi.api.client.domain.resp.BatchCancelResp;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
+import com.huobi.api.client.exception.HuobiApiException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -157,7 +158,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     @Override
     public List<MatchResult> matchResults(String orderId) {
-        return executeSync(service.matchResults(orderId)).getData();
+        try {
+            return executeSync(service.matchResults(orderId)).getData();
+        } catch (HuobiApiException e) {
+            if (e.getErrCode().equalsIgnoreCase("base-record-invalid")) {
+                return new ArrayList<>();
+            }
+            throw e;
+        }
     }
 
 
@@ -165,7 +173,6 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     public List<MatchResult> matchResults(String symbol, List<OrderType> types,
                                           String startDate, String endDate,
                                           String from, String direct, Integer size) {
-
         String typesStr = null;
         if (types != null && !types.isEmpty()) {
             StringJoiner typeJoiner = new StringJoiner(",");
@@ -174,8 +181,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
             }
             typesStr = typeJoiner.toString();
         }
-
-        return executeSync(service.matchResults(symbol, typesStr, startDate, endDate, from, direct, size)).getData();
+        try {
+            return executeSync(service.matchResults(symbol, typesStr, startDate, endDate, from, direct, size)).getData();
+        } catch (HuobiApiException e) {
+            if (e.getErrCode().equalsIgnoreCase("base-record-invalid")) {
+                return new ArrayList<>();
+            }
+            throw e;
+        }
     }
 
 
