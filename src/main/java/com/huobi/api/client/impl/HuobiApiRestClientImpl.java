@@ -9,9 +9,9 @@ import com.huobi.api.client.domain.resp.BatchCancelResp;
 import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.StringJoiner;
 
 import static com.huobi.api.client.HuobiApiServiceGenerator.createService;
@@ -23,18 +23,14 @@ import static com.huobi.api.client.HuobiApiServiceGenerator.executeSync;
 public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
     private HuobiApiService service;
-    private String apiKey;
-    private String apiSecret;
 
     public HuobiApiRestClientImpl(String apiKey, String apiSecret) {
-        this.apiKey = apiKey;
-        this.apiSecret = apiSecret;
         service = createService(HuobiApiService.class, apiKey, apiSecret);
     }
 
 
     @Override
-    public Set<Candle> kline(String symbol, Resolution period, Integer size) {
+    public List<Candle> kline(String symbol, Resolution period, Integer size) {
         return executeSync(service.kline(symbol, period == null ? null : period.getCode(), size)).getData();
     }
 
@@ -44,7 +40,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Candle> tickers() {
+    public List<Candle> tickers() {
         return executeSync(service.tickers()).getData();
     }
 
@@ -54,14 +50,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Trade> trade(String symbol) {
+    public List<Trade> trade(String symbol) {
         return executeSync(service.trade(symbol)).getTick().getData();
     }
 
     @Override
-    public Set<Trade> historyTrade(String symbol, Integer size) {
-        RespBody<Set<RespTick<Trade>>> setRespBody = executeSync(service.historyTrade(symbol, size));
-        Set<Trade> trades = new HashSet<>();
+    public List<Trade> historyTrade(String symbol, Integer size) {
+        RespBody<List<RespTick<Trade>>> setRespBody = executeSync(service.historyTrade(symbol, size));
+        List<Trade> trades = new ArrayList<>();
         for (RespTick<Trade> tick : setRespBody.getData()) {
             trades.addAll(tick.getData());
         }
@@ -74,12 +70,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Symbol> symbols() {
+    public List<Symbol> symbols() {
         return executeSync(service.symbols()).getData();
     }
 
     @Override
-    public Set<String> currencys() {
+    public List<String> currencys() {
         return executeSync(service.currencys()).getData();
     }
 
@@ -89,12 +85,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Account> accounts() {
+    public List<Account> accounts() {
         return executeSync(service.accounts()).getData();
     }
 
     @Override
-    public Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, Integer size) {
+    public List<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate, List<OrderState> states, String from, String direct, Integer size) {
         String typesStr = null;
         String stateStr = null;
         if (types != null && !types.isEmpty()) {
@@ -134,7 +130,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size) {
+    public List<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size) {
         String name = null;
         if (side != null) {
             name = side.name();
@@ -160,15 +156,15 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Set<MatchResult> matchResults(String orderId) {
+    public List<MatchResult> matchResults(String orderId) {
         return executeSync(service.matchResults(orderId)).getData();
     }
 
 
     @Override
-    public Set<MatchResult> matchResults(String symbol, List<OrderType> types,
-                                         String startDate, String endDate,
-                                         String from, String direct, Integer size) {
+    public List<MatchResult> matchResults(String symbol, List<OrderType> types,
+                                          String startDate, String endDate,
+                                          String from, String direct, Integer size) {
 
         String typesStr = null;
         if (types != null && !types.isEmpty()) {
@@ -198,7 +194,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
 
     @Override
-    public Set<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size) {
+    public List<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size) {
         return executeSync(service.queryDepositWithdraw(currency, type, from, size)).getData();
     }
 
@@ -231,14 +227,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
 
 
     @Override
-    public Set<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
-                                     String states, String from, String direct, Integer size) {
+    public List<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
+                                      String states, String from, String direct, Integer size) {
         return executeSync(service.loanOrders(symbol, startDate, endDate, states, from, direct, size)).getData();
     }
 
 
     @Override
-    public Set<MarginAccount> marginBalance(String symbol) {
+    public List<MarginAccount> marginBalance(String symbol) {
         return executeSync(service.marginBalance(symbol)).getData();
     }
 

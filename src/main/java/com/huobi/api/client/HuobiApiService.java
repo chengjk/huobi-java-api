@@ -9,7 +9,7 @@ import com.huobi.api.client.domain.resp.RespTick;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * created by jacky. 2018/7/20 8:41 PM
@@ -21,7 +21,7 @@ public interface HuobiApiService {
      * 获取K线数据
      */
     @GET("/market/history/kline")
-    Call<RespBody<Set<Candle>>> kline(@Query("symbol") String symbol, @Query("period") String period, @Query("size") int size);
+    Call<RespBody<List<Candle>>> kline(@Query("symbol") String symbol, @Query("period") String period, @Query("size") int size);
 
     /**
      * 获取聚合行情(Ticker)
@@ -33,7 +33,7 @@ public interface HuobiApiService {
      * 获取市场行情
      */
     @GET("/market/tickers")
-    Call<RespBody<Set<Candle>>> tickers();
+    Call<RespBody<List<Candle>>> tickers();
 
     /**
      * 获取 Market Depth 数据
@@ -46,24 +46,24 @@ public interface HuobiApiService {
     Call<RespBody<RespTick<Trade>>> trade(@Query("symbol") String symbol);
 
     @GET("/market/history/trade")
-    Call<RespBody<Set<RespTick<Trade>>>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
+    Call<RespBody<List<RespTick<Trade>>>> historyTrade(@Query("symbol") String symbol, @Query("size") int size);
 
     @GET("/market/detail")
     Call<RespBody<Candle>> detail(@Query("symbol") String symbol);
 
 
     @GET("/v1/common/symbols")
-    Call<RespBody<Set<Symbol>>> symbols();
+    Call<RespBody<List<Symbol>>> symbols();
 
     @GET("/v1/common/currencys")
-    Call<RespBody<Set<String>>> currencys();
+    Call<RespBody<List<String>>> currencys();
 
     @GET("/v1/common/timestamp")
     Call<RespBody<Long>> timestamp();
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/account/accounts")
-    Call<RespBody<Set<Account>>> accounts();
+    Call<RespBody<List<Account>>> accounts();
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
@@ -80,10 +80,10 @@ public interface HuobiApiService {
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders")
-    Call<RespBody<Set<Order>>> orders(@Query("symbol") String symbol, @Query("types") String types,
-                                      @Query("start-date") String startDate, @Query("end-date") String endDate,
-                                      @Query("states") String states,
-                                      @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
+    Call<RespBody<List<Order>>> orders(@Query("symbol") String symbol, @Query("types") String types,
+                                       @Query("start-date") String startDate, @Query("end-date") String endDate,
+                                       @Query("states") String states,
+                                       @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/account/accounts/{account-id}/balance")
@@ -96,7 +96,7 @@ public interface HuobiApiService {
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/openOrders")
-    Call<RespBody<Set<Order>>> openOrders(@Query("account-id") String accountId, @Query("symbol") String symbol, @Query("side") String side, @Query("size") Integer size);
+    Call<RespBody<List<Order>>> openOrders(@Query("account-id") String accountId, @Query("symbol") String symbol, @Query("side") String side, @Query("size") Integer size);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
@@ -114,12 +114,12 @@ public interface HuobiApiService {
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/orders/{order-id}/matchresults")
-    Call<RespBody<Set<MatchResult>>> matchResults(@Path("order-id") String orderId);
+    Call<RespBody<List<MatchResult>>> matchResults(@Path("order-id") String orderId);
 
 
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/order/matchresults")
-    Call<RespBody<Set<MatchResult>>> matchResults(@Query("symbol") String symbol, @Query("types") String types,
+    Call<RespBody<List<MatchResult>>> matchResults(@Query("symbol") String symbol, @Query("types") String types,
                                                   @Query("start-date") String startDate, @Query("end-date") String endDate,
                                                   @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
@@ -154,7 +154,7 @@ public interface HuobiApiService {
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/query/deposit-withdraw")
-    Call<RespBody<Set<DepositWithdraw>>> queryDepositWithdraw(@Query("currency") String currency, @Query("type") String type, @Query("from") String from, @Query("size") Integer size);
+    Call<RespBody<List<DepositWithdraw>>> queryDepositWithdraw(@Query("currency") String currency, @Query("type") String type, @Query("from") String from, @Query("size") Integer size);
 
 
     //------杠杆交易----
@@ -211,7 +211,7 @@ public interface HuobiApiService {
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/margin/loan-orders")
-    Call<RespBody<Set<LoanOrder>>> loanOrders(@Query("symbol") String symbol, @Query("start-date") String startDate, @Query("end-date") String endDate,
+    Call<RespBody<List<LoanOrder>>> loanOrders(@Query("symbol") String symbol, @Query("start-date") String startDate, @Query("end-date") String endDate,
                                          @Query("states") String states, @Query("from") String from, @Query("direct") String direct, @Query("size") Integer size);
 
     /**
@@ -222,5 +222,5 @@ public interface HuobiApiService {
      */
     @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
     @GET("/v1/margin/accounts/balance")
-    Call<RespBody<Set<MarginAccount>>> marginBalance(@Query("symbol") String symbol);
+    Call<RespBody<List<MarginAccount>>> marginBalance(@Query("symbol") String symbol);
 }

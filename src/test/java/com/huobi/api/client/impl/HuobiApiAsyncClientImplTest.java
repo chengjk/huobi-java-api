@@ -14,8 +14,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * created by jacky. 2018/7/21 10:48 AM
@@ -52,7 +52,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void tickers() {
-        Set<Candle> tickers = client.tickers();
+        List<Candle> tickers = client.tickers();
         assert tickers.size() > 0;
     }
 
@@ -71,44 +71,40 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void kline() {
-        Set<Candle> btcusdt = client.kline("btcusdt", Resolution.M1, 150);
+        List<Candle> btcusdt = client.kline("btcusdt", Resolution.M1, 150);
         assert btcusdt.size() > 0;
     }
 
     @Test
     public void trade() {
-        Set<Trade> trades = client.trade("btcusdt");
+        List<Trade> trades = client.trade("btcusdt");
         assert trades != null;
     }
 
     @Test
     public void historyTrade() {
-        Set<Trade> trades = client.historyTrade("btcusdt", 10);
+        List<Trade> trades = client.historyTrade("btcusdt", 10);
         assert trades != null;
     }
 
-    @Test
-    public void orders() {
-        Set<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED), null, null, 10);
-        assert orders != null;
-    }
+
 
     @Test
     public void symbols() {
-        Set<Symbol> orders = client.symbols();
+        List<Symbol> orders = client.symbols();
         assert orders != null;
     }
 
 
     @Test
     public void currencies() {
-        Set<String> currencys = client.currencys();
+        List<String> currencys = client.currencys();
         assert currencys != null;
     }
 
     @Test
     public void getAccounts() {
-        Set<Account> accounts = client.accounts();
+        List<Account> accounts = client.accounts();
         assert accounts != null;
     }
 
@@ -133,10 +129,15 @@ public class HuobiApiAsyncClientImplTest {
         assert id != null;
     }
 
+    @Test
+    public void orders() {
+        List<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED), null, null, 10);
+        assert orders != null;
+    }
 
     @Test
     public void openOrders() {
-        Set<Order> openOrders = client.openOrders("4880381", "btcusdt", null, 100);
+        List<Order> openOrders = client.openOrders("4880381", "btcusdt", null, 100);
         assert openOrders != null;
     }
 
@@ -148,7 +149,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void cancel() {
-        Long id = client.cancel("14799077863");
+        Long id = client.cancel("14731040556");
         assert id != null;
     }
 
@@ -161,13 +162,13 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void matchResultsByOrder() {
-        Set<MatchResult> matchResults = client.matchResults("14713189707");
+        List<MatchResult> matchResults = client.matchResults("14713189707");
         assert matchResults != null;
     }
 
     @Test
     public void matchResults() {
-        Set<MatchResult> matchResults = client.matchResults("btcusdt", null, null, null, null, null, null);
+        List<MatchResult> matchResults = client.matchResults("btcusdt", null, null, null, null, null, null);
         assert matchResults != null;
     }
 
@@ -194,7 +195,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void queryDepositWithdraw() {
-        Set<DepositWithdraw> depositWithdraws = client.queryDepositWithdraw("usdt", "deposit", "", 1);
+        List<DepositWithdraw> depositWithdraws = client.queryDepositWithdraw("usdt", "deposit", "", 1);
         assert depositWithdraws != null;
 
     }
@@ -227,14 +228,14 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void loanOrder() {
-        Set<LoanOrder> loanOrder = client.loanOrders("btcusdt", "2018-09-09", "2018-09-20", null, null, null, null);
+        List<LoanOrder> loanOrder = client.loanOrders("btcusdt", "2018-09-09", "2018-09-20", null, null, null, null);
         assert loanOrder != null;
     }
 
 
     @Test
     public void marginBlance() {
-        Set<MarginAccount> account = client.marginBalance("btcusdt");
+        List<MarginAccount> account = client.marginBalance("btcusdt");
         assert account != null;
     }
 }

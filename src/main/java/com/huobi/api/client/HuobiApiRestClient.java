@@ -5,7 +5,6 @@ import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.BatchCancelResp;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * created by jacky. 2018/7/20 9:03 PM
@@ -21,7 +20,7 @@ public interface HuobiApiRestClient {
      * @return
      */
 
-    Set<Candle> kline(String symbol, Resolution period, Integer size);
+    List<Candle> kline(String symbol, Resolution period, Integer size);
 
     /**
      * 获取聚合行情(Ticker)
@@ -31,7 +30,7 @@ public interface HuobiApiRestClient {
     /**
      * 获取市场行情
      */
-    Set<Candle> tickers();
+    List<Candle> tickers();
 
     /**
      * 获取 Market Depth 数据
@@ -44,7 +43,7 @@ public interface HuobiApiRestClient {
      * @param symbol
      * @return
      */
-    Set<Trade> trade(String symbol);
+    List<Trade> trade(String symbol);
 
     /**
      * 单个symbol批量成交记录
@@ -53,7 +52,7 @@ public interface HuobiApiRestClient {
      * @param size   optional default 1 [1,2000]
      * @return
      */
-    Set<Trade> historyTrade(String symbol, Integer size);
+    List<Trade> historyTrade(String symbol, Integer size);
 
     /**
      * 滚动24小时交易聚合行情(单个symbol)
@@ -68,14 +67,14 @@ public interface HuobiApiRestClient {
      *
      * @return
      */
-    Set<Symbol> symbols();
+    List<Symbol> symbols();
 
     /**
      * 交易币种列表
      *
      * @return
      */
-    Set<String> currencys();
+    List<String> currencys();
 
     /**
      * 查询当前系统时间
@@ -89,7 +88,7 @@ public interface HuobiApiRestClient {
      *
      * @return
      */
-    Set<Account> accounts();
+    List<Account> accounts();
 
     /**
      * 查询用户当前委托、或历史委托订单 (up to 100)
@@ -104,7 +103,7 @@ public interface HuobiApiRestClient {
      * @param size      optional, [0,100]
      * @return
      */
-    Set<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
+    List<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
                       List<OrderState> states, String from, String direct, Integer size);
 
 
@@ -138,7 +137,7 @@ public interface HuobiApiRestClient {
      * @param size      optional default 150. [0,500]
      * @return
      */
-    Set<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size);
+    List<Order> openOrders(String accountId, String symbol, OrderSide side, Integer size);
 
     /**
      * 获取指定订单
@@ -161,9 +160,9 @@ public interface HuobiApiRestClient {
     /**
      * 根据order-id查询订单的成交明细
      */
-    Set<MatchResult> matchResults(String orderId);
+    List<MatchResult> matchResults(String orderId);
 
-    Set<MatchResult> matchResults(String symbol, List<OrderType> types,
+    List<MatchResult> matchResults(String symbol, List<OrderType> types,
                                   String startDate, String endDate,
                                   String from, String direct, Integer size);
 
@@ -173,7 +172,7 @@ public interface HuobiApiRestClient {
 
     Long cancelWithdraw(Long withdrawId);
 
-    Set<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size);
+    List<DepositWithdraw> queryDepositWithdraw(String currency, String type, String from, Integer size);
 
     Long transferInMargin(String symbol, String currency, String amount);
 
@@ -184,11 +183,11 @@ public interface HuobiApiRestClient {
 
     Long marginOrderRepay(String orderId, String amount);
 
-    Set<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
+    List<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
                               String states, String from, String direct, Integer size);
 
     /**
      * 借贷账户详情
      */
-    Set<MarginAccount> marginBalance(String symbol);
+    List<MarginAccount> marginBalance(String symbol);
 }
