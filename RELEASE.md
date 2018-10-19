@@ -1,4 +1,4 @@
-# Release log
+# RELEASE LOG
 
 ## 20181018.1-1.0-SNAPSHOT
 

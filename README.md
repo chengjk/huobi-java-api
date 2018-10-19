@@ -1,7 +1,7 @@
 # huobi-java-api
 huobi Restful api java client. 
 
-[release log][./RELEASE.md]
+[RELEASE LOG](./RELEASE.md)
 
 ## Configuration
 
