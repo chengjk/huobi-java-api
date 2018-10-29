@@ -115,8 +115,10 @@ public class HuobiApiAsyncClientImplTest {
             balance = client.balance("4880381");
             Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
             Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
+            Asset eth = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("eth")).findFirst().get();
             System.out.println(btc.getBalance().toPlainString());
             System.out.println(usdt.getBalance().toPlainString());
+            System.out.println(eth.getBalance().toPlainString());
         } catch (HuobiApiException e) {
             e.printStackTrace();
         }
@@ -131,7 +133,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void orders() {
-        List<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED), null, null, 10);
+        List<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED,OrderState.CANCELED,OrderState.PARTIAL_CANCELED,OrderState.PARTIAL_FILLED,OrderState.SUBMITTED), null, null, 100);
         assert orders != null;
     }
 

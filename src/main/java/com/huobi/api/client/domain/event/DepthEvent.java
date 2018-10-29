@@ -19,7 +19,7 @@ public class DepthEvent implements WsEvent {
     @Override
     public String toSubscribe() {
         String sub = "{\n" +
-                "\"req\": \"market.%s.depth.%s\",\n" +
+                "\"sub\": \"market.%s.depth.%s\",\n" +
                 "\"id\": \"%s\"\n" +
                 "}";
 

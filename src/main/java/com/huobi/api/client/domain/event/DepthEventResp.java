@@ -10,5 +10,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DepthEventResp extends WsNotify {
-    private Depth data;
+    private Depth tick;
 }

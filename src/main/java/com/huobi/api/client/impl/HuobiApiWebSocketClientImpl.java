@@ -88,6 +88,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         DepthEvent event = new DepthEvent();
         event.setSymbol(symbol);
         event.setLevel(level);
+        event.setFrom(from);
+        event.setTo(to);
         return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {

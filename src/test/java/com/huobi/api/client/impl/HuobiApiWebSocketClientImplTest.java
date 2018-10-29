@@ -77,9 +77,13 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onDepthTick() {
-        stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, (ws,data) -> {
-            System.out.println(data.getRep());
-        });
+        try {
+            stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, (ws,data) -> {
+                System.out.println(data.getTick());
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -87,12 +91,12 @@ public class HuobiApiWebSocketClientImplTest {
         String symbol = "BTCUSDT";
         MergeLevel level = MergeLevel.STEP0;
         int step = 5;
-        final long[] from = {1509037320};
+        final long[] from = {1540697904};
         final long[] to = {from[0] + step * 60};
         stream = ws.requestDepth(symbol, level,from[0],to[0], new ApiCallback<DepthEventResp>() {
             @Override
             public void onResponse(WebSocket webSocket,DepthEventResp data) {
-                System.out.println(data.getRep());
+                System.out.println(data.getTick());
                 from[0] = to[0];
                 to[0] = from[0] + step * 60;
                 DepthEvent event = new DepthEvent();

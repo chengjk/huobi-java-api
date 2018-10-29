@@ -1,5 +1,9 @@
 # RELEASE LOG
 
+
+## 20181029.1-1.0-SNAPSHOT
+fix error.  解决深度订阅失败、请求返回格式错误问题。
+
 ## 20181018.1-1.0-SNAPSHOT
 
 原有返回列表的接口返回类型从 Set 改为List。
