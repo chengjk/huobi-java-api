@@ -71,7 +71,13 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         if (code == 1003) {
             //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
             onExpired(webSocket, code, reason);
+        } else if (code == 9999) {
+            //手动关闭，不重连
+        } else {
+            //其他所有情况都重连
+            reconnect(webSocket, code, reason);
         }
+
     }
 
 
@@ -83,7 +89,12 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     public void onExpired(WebSocket webSocket, int code, String reason) {
         callback.onExpired(webSocket, code, reason);
+        reconnect(webSocket, code, reason);
     }
 
+    public void reconnect(WebSocket webSocket, int code, String reason) {
+        webSocket = null;
+        log.info("reconnect ws, code:{},reason:{}", code, reason);
+    }
 
 }
