@@ -221,7 +221,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         final WebSocket webSocket = client.newWebSocket(request, listener);
         webSocket.send(topic);
         return () -> {
-            final int code = 1000;
+            final int code = 99999;
             listener.onClosing(webSocket, code, null);
             webSocket.close(code, null);
             listener.onClosed(webSocket, code, null);
