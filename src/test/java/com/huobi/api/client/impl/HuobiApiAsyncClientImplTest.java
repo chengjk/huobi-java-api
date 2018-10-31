@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -177,8 +178,11 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void marketDetail() {
-        Candle detail = client.detail("ltcusdt");
-        log.info(String.valueOf(detail.getVol()));
+        Candle tick = client.detail("ethbtc");
+        String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 4, BigDecimal.ROUND_DOWN).toPlainString();
+        System.out.println(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
+                rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(),tick.getVol().toPlainString(),
+                tick.getOpen().toPlainString(),tick.getClose().toPlainString()));
     }
 
 

@@ -46,7 +46,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setPeriod(period);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onKlineTick(symbol, period, callback);
             }
@@ -62,7 +62,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setTo(to);
         return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 requestKline(symbol, period, from, to, callback);
             }
@@ -76,7 +76,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setLevel(level);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onDepthTick(symbol, level, callback);
             }
@@ -92,7 +92,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setTo(to);
         return createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 requestDepth(symbol, level, from, to, callback);
             }
@@ -106,7 +106,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<TradeDetailResp>(callback, TradeDetailResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onTradeDetailTick(symbol, callback);
 
@@ -121,7 +121,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<MarketDetailResp>(callback, MarketDetailResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onMarketDetailTick(symbol, callback);
             }
@@ -134,7 +134,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setClientId("dzc_order_1");
         return newAuthWebSocket1(event, new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onOrderTick(symbol, callback);
             }
@@ -147,7 +147,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setClientId("dzc_account_"+System.currentTimeMillis());
         return newAuthWebSocket1(event, new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onAccountTick(callback);
             }
@@ -178,7 +178,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             }
         }, AccountEventResp.class) {
             @Override
-            public void onExpired(WebSocket webSocket, int code, String reason) {
+            public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onExpired(webSocket, code, reason);
                 onAccountTick(callback);
             }
