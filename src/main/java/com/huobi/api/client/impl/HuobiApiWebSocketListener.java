@@ -61,7 +61,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        log.error("failure", t);
+        log.error("failure:" + t.getMessage(), t);
     }
 
 
