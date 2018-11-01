@@ -50,7 +50,7 @@ public class HuobiApiWebSocketClientImplTest {
                 }
             }
             @Override
-            public void onReconnect(Closeable closeable) {
+            public void onConnect(Closeable closeable) {
                 stream = closeable;
             }
         });

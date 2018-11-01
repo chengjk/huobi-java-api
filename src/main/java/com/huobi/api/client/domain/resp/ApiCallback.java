@@ -34,10 +34,10 @@ public interface ApiCallback<T> {
 
 
     /**
-     * call when reconnect
+     * call when connect
      * @param closeable
      */
-    default void onReconnect(Closeable closeable){}
+    default void onConnect(Closeable closeable){}
     /**
      * refer to onResponse
      *
