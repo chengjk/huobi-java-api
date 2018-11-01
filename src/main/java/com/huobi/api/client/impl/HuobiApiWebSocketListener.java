@@ -1,5 +1,6 @@
 package com.huobi.api.client.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.domain.resp.ApiCallback;
@@ -61,6 +62,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+        log.error(JSON.toJSONString(response));
         log.error("failure:" + t.getMessage(), t);
     }
 
@@ -71,7 +73,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         if (code == 1003) {
             //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
             onExpired(webSocket, code, reason);
-        } else if (code == 9999) {
+        } else if (code == 4999) {
             //手动关闭，不重连
         } else {
             //其他所有情况都重连

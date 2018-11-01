@@ -47,8 +47,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket,code,reason);
-                onKlineTick(symbol, period, callback);
+                super.reconnect(webSocket, code, reason);
+                callback.onReconnect(onKlineTick(symbol, period, callback));
             }
         });
     }
@@ -64,7 +64,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                requestKline(symbol, period, from, to, callback);
+                callback.onReconnect(requestKline(symbol, period, from, to, callback));
             }
         });
     }
@@ -78,7 +78,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onDepthTick(symbol, level, callback);
+                callback.onReconnect(onDepthTick(symbol, level, callback));
             }
         });
     }
@@ -94,7 +94,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                requestDepth(symbol, level, from, to, callback);
+                callback.onReconnect(requestDepth(symbol, level, from, to, callback));
             }
         });
     }
@@ -108,8 +108,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onTradeDetailTick(symbol, callback);
-
+                Closeable closeable = onTradeDetailTick(symbol, callback);
+                callback.onReconnect(closeable);
             }
         });
     }
@@ -123,7 +123,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onMarketDetailTick(symbol, callback);
+                callback.onReconnect(onMarketDetailTick(symbol, callback));
             }
         });
     }
@@ -136,24 +136,23 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onOrderTick(symbol, callback);
+                callback.onReconnect(onOrderTick(symbol, callback));
             }
         });
     }
 
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
-        AccountEvent event=new AccountEvent();
-        event.setClientId("dzc_account_"+System.currentTimeMillis());
+        AccountEvent event = new AccountEvent();
+        event.setClientId("dzc_account_" + System.currentTimeMillis());
         return newAuthWebSocket1(event, new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onAccountTick(callback);
+                callback.onReconnect(onAccountTick(callback));
             }
         });
     }
-
 
 
     //todo for test.  huobi not support okhttp ws client ops!
@@ -180,7 +179,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason) {
                 super.reconnect(webSocket, code, reason);
-                onAccountTick(callback);
+                callback.onReconnect(onAccountTick(callback));
             }
         });
     }
@@ -221,10 +220,10 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         final WebSocket webSocket = client.newWebSocket(request, listener);
         webSocket.send(topic);
         return () -> {
-            final int code = 99999;
-            listener.onClosing(webSocket, code, null);
-            webSocket.close(code, null);
-            listener.onClosed(webSocket, code, null);
+            final int code = 4999;
+            listener.onClosing(webSocket, code, "manual close.");
+            webSocket.close(code, "manual close.");
+            listener.onClosed(webSocket, code, "manual close.");
         };
     }
 }

@@ -2,6 +2,8 @@ package com.huobi.api.client.domain.resp;
 
 import okhttp3.WebSocket;
 
+import java.io.Closeable;
+
 /**
  * created by jacky. 2018/7/24 7:44 PM
  */
@@ -30,6 +32,12 @@ public interface ApiCallback<T> {
     default void onExpired(WebSocket webSocket,int code, String reason) {
     }
 
+
+    /**
+     * call when reconnect
+     * @param closeable
+     */
+    default void onReconnect(Closeable closeable){}
     /**
      * refer to onResponse
      *

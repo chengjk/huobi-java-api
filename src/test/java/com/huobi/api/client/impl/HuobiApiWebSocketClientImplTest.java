@@ -40,11 +40,18 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onKlineTick() {
-        stream = ws.onKlineTick("ETHBTC", Resolution.M1, (ws, data) -> {
-            if (StringUtils.isNotEmpty(data.getSubbed())) {
-                System.out.println(data.getSubbed());
-            } else {
-                System.out.println(data.getTick().getClose());
+        stream = ws.onKlineTick("ETHBTC", Resolution.M1, new ApiCallback<KlineEventResp>() {
+            @Override
+            public void onResponse(WebSocket ws, KlineEventResp data) {
+                if (StringUtils.isNotEmpty(data.getSubbed())) {
+                    System.out.println(data.getSubbed());
+                } else {
+                    System.out.println(data.getTick().getClose());
+                }
+            }
+            @Override
+            public void onReconnect(Closeable closeable) {
+                stream = closeable;
             }
         });
     }
@@ -165,6 +172,7 @@ public class HuobiApiWebSocketClientImplTest {
     public void after() throws InterruptedException, IOException {
         for (int i = 0; i < 10000; i++) {
             Thread.sleep(1000L);
+            System.out.println("Stream: "+stream.hashCode());
         }
         stream.close();
     }
