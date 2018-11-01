@@ -1,6 +1,5 @@
 package com.huobi.api.client.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.domain.resp.ApiCallback;
@@ -62,7 +61,6 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        log.error(JSON.toJSONString(response));
         log.error("failure:" + t.getMessage(), t);
     }
 
