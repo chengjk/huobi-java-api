@@ -11,10 +11,11 @@ public interface ApiCallback<T> {
 
     /**
      * Called whenever a response comes back
+     *
      * @param webSocket
      * @param response
      */
-    void onResponse(WebSocket webSocket,T response);
+    void onResponse(WebSocket webSocket, T response);
 
     /**
      * Called whenever a error occur
@@ -29,25 +30,20 @@ public interface ApiCallback<T> {
      *
      * @param webSocket
      */
-    default void onExpired(WebSocket webSocket,int code, String reason) {
+    default void onExpired(WebSocket webSocket, int code, String reason) {
     }
 
-
-
-
     /**
      * call when connect
+     *
      * @param closeable
      */
-    default void onConnect(WebSocket ws,Closeable closeable){}
-    /**
-     * call when connect
-     * @param closeable
-     */
-    default void onConnect(Closeable closeable){}
+    default void onConnect(WebSocket ws, Closeable closeable) {
+    }
+
     /**
      * refer to onResponse
-     *
+     * <p>
      * call when receive message.
      *
      * @param webSocket
