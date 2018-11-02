@@ -33,6 +33,13 @@ public interface ApiCallback<T> {
     }
 
 
+
+
+    /**
+     * call when connect
+     * @param closeable
+     */
+    default void onConnect(WebSocket ws,Closeable closeable){}
     /**
      * call when connect
      * @param closeable

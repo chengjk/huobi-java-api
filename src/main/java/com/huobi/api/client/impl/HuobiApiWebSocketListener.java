@@ -10,6 +10,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -90,6 +91,10 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
     public void onExpired(WebSocket webSocket, int code, String reason) {
         callback.onExpired(webSocket, code, reason);
         reconnect(webSocket, code, reason);
+    }
+
+    public void onConnect(WebSocket webSocket, Closeable closeable) {
+        callback.onConnect(webSocket, closeable);
     }
 
     public void reconnect(WebSocket webSocket, int code, String reason) {

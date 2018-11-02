@@ -50,7 +50,7 @@ public class HuobiApiWebSocketClientImplTest {
                 }
             }
             @Override
-            public void onConnect(Closeable closeable) {
+            public void onConnect(WebSocket ws,Closeable closeable) {
                 stream = closeable;
             }
         });
@@ -60,8 +60,8 @@ public class HuobiApiWebSocketClientImplTest {
     public void requestKline() {
         String symbol = "BTCUSDT";
         Resolution period = Resolution.M1;
-        int step = 5;
-        final long[] from = {1509037320};
+        int step = 1;
+        final long[] from = {1541126519};
 
         final long[] to = {from[0] + step * 60};
         stream = ws.requestKline(symbol, period, from[0], to[0], new ApiCallback<KlineEventResp>() {
