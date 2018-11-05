@@ -64,7 +64,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         log.error("failure:", t);
-        if (HuobiConfig.reconnectOnFailure) {
+        if (HuobiConfig.ReconnectOnFailure) {
             reconnect(webSocket, 4998, "failure:" + t.getMessage(), "");
         }
     }
@@ -80,7 +80,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
             //手动关闭，不重连
         } else {
             //其他所有情况都重连
-            if (HuobiConfig.autoReconnect) {
+            if (HuobiConfig.AutoReconnect) {
                 reconnect(webSocket, code, reason, "");
             }
         }
@@ -96,7 +96,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     public void onExpired(WebSocket webSocket, int code, String reason) {
         callback.onExpired(webSocket, code, reason);
-        if (HuobiConfig.reconnectOnExpired) {
+        if (HuobiConfig.ReconnectOnExpired) {
             reconnect(webSocket, code, reason, "");
         }
     }

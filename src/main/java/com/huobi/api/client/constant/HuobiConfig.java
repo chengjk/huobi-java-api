@@ -9,8 +9,8 @@ public class HuobiConfig {
     public static String WS_API_URL = "wss://" + API_HOST + ":443/ws";
 
 
-    public static boolean autoReconnect = true;
-    public static boolean reconnectOnFailure = false;
-    public static boolean reconnectOnExpired = true;
+    public static boolean AutoReconnect = true;
+    public static boolean ReconnectOnFailure = false;
+    public static boolean ReconnectOnExpired = true;
 
 }

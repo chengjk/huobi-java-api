@@ -14,6 +14,15 @@ HuobiConfig.REST_API_UR="https://api.huobi.pro"
 HuobiConfig.WS_API_URL="wss://api.huobi.pro:443/ws"
 
 ```
+
+1. `HuobiConfig.AutoReconnect`
+   是否开启断线重连，默认 true; WebSocketListener onClosing 时调用，若为true，除手动关闭以外都去重连。 
+2. `HuobiConfig.ReconnectOnFailure`
+   失败时是否重连，默认false。初次订阅时或连上一段时间后都有可能触发，故此，调试时设置成false，保证参数正确运行时设为true。
+3. `HuobiConfig.ReconnectOnExpired`
+   超时时是否重连，默认true。服务器ping多次未回应时触发。
+
+
 ### How configure unit test
 
 1. make dir  `src/test/resources/`, make dir as Test Resource Root
