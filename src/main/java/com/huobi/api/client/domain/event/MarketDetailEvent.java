@@ -13,10 +13,15 @@ public class MarketDetailEvent implements WsEvent {
 
     @Override
     public String toSubscribe() {
-        String sub = "{\n" +
-                "            \"sub\": \"market.%s.detail\",\n" +
-                "                \"id\":\"MarketDetail_%s\"\n" +
+        String sub = "{" +
+                "            \"sub\": \"%s\"," +
+                "                \"id\":\"MarketDetail_%s\"" +
                 "        }";
-        return String.format(sub, symbol.toLowerCase(), symbol.toLowerCase());
+        return String.format(sub, getTopic(), symbol.toLowerCase());
+    }
+
+    @Override
+    public String getTopic() {
+        return String.format("market.%s.detail", symbol.toLowerCase());
     }
 }

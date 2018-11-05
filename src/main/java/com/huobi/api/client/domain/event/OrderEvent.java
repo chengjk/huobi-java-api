@@ -21,9 +21,14 @@ public class OrderEvent implements WsEvent {
         String format = "{" +
                 "  \"op\": \"sub\"," +
                 "  \"cid\": \"%s\"," +
-                "  \"topic\": \"orders.%s\"" +
+                "  \"topic\": \"%s\"" +
                 "}";
 
-        return String.format(format, clientId, symbol.toLowerCase());
+        return String.format(format, clientId, getTopic());
+    }
+
+    @Override
+    public String getTopic() {
+        return String.format("orders.%s", symbol.toLowerCase());
     }
 }

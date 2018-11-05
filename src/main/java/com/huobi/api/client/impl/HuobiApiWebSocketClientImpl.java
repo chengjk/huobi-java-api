@@ -46,8 +46,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setPeriod(period);
         Closeable closeable = createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onKlineTick(symbol, period, callback);
             }
         });
@@ -63,8 +63,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setTo(to);
         Closeable closeable = createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 requestKline(symbol, period, from, to, callback);
             }
         });
@@ -78,8 +78,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setLevel(level);
         Closeable closeable = createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code,reason, event.toUnSub());
                 onDepthTick(symbol, level, callback);
             }
         });
@@ -95,8 +95,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setTo(to);
         Closeable closeable = createNewWebSocket(event.toRequest(), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code,reason, event.toUnSub());
                 requestDepth(symbol, level, from, to, callback);
             }
         });
@@ -110,8 +110,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         Closeable closeable = createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<TradeDetailResp>(callback, TradeDetailResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onTradeDetailTick(symbol, callback);
             }
         });
@@ -125,8 +125,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setSymbol(symbol);
         Closeable closeable = createNewWebSocket(event.toSubscribe(), new HuobiApiWebSocketListener<MarketDetailResp>(callback, MarketDetailResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onMarketDetailTick(symbol, callback);
             }
         });
@@ -136,11 +136,11 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     @Override
     public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
         OrderEvent event = new OrderEvent(symbol);
-        event.setClientId("dzc_order_1");
+        event.setClientId("dzc_order_"+System.currentTimeMillis());
         Closeable closeable = newAuthWebSocket1(event, new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onOrderTick(symbol, callback);
             }
         });
@@ -153,8 +153,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setClientId("dzc_account_" + System.currentTimeMillis());
         return newAuthWebSocket1(event, new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onAccountTick(callback);
             }
         });
@@ -183,8 +183,8 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             }
         }, AccountEventResp.class) {
             @Override
-            public void reconnect(WebSocket webSocket, int code, String reason) {
-                super.reconnect(webSocket, code, reason);
+            public void reconnect(WebSocket webSocket, int code, String reason,String unSub) {
+                super.reconnect(webSocket, code, reason,event.toUnSub());
                 onAccountTick(callback);
             }
         });

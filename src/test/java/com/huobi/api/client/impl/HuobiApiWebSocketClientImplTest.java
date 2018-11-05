@@ -6,6 +6,7 @@ import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.WebSocket;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
@@ -21,6 +22,7 @@ import java.util.Properties;
 /**
  * created by jacky. 2018/7/24 8:30 PM
  */
+@Slf4j
 public class HuobiApiWebSocketClientImplTest {
     Closeable stream;
     private String apiKey = "a";
@@ -44,14 +46,16 @@ public class HuobiApiWebSocketClientImplTest {
             @Override
             public void onResponse(WebSocket ws, KlineEventResp data) {
                 if (StringUtils.isNotEmpty(data.getSubbed())) {
-                    System.out.println(data.getSubbed());
+                    log.info(data.getSubbed());
                 } else {
-                    System.out.println(data.getTick().getClose());
+                    log.info(data.getTick().getClose().toPlainString());
                 }
             }
+
             @Override
-            public void onConnect(WebSocket ws,Closeable closeable) {
+            public void onConnect(WebSocket ws, Closeable closeable) {
                 stream = closeable;
+                log.info("onConnect :" + closeable.hashCode());
             }
         });
     }
@@ -68,9 +72,9 @@ public class HuobiApiWebSocketClientImplTest {
             @Override
             public void onResponse(WebSocket webSocket, KlineEventResp data) {
                 if (StringUtils.isNotEmpty(data.getSubbed())) {
-                    System.out.println(data.getRep());
+                    log.info(data.getRep());
                 } else {
-                    data.getData().forEach(f -> System.out.println(f.getId() + ":" + f.getClose()));
+                    data.getData().forEach(f -> log.info(f.getId() + ":" + f.getClose()));
                 }
                 from[0] = to[0];
                 to[0] = from[0] + step * 60; //
@@ -87,8 +91,21 @@ public class HuobiApiWebSocketClientImplTest {
     @Test
     public void onDepthTick() {
         try {
-            stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, (ws, data) -> {
-                System.out.println(data.getTick());
+            stream = ws.onDepthTick("BTCUSDT", MergeLevel.STEP0, new ApiCallback<DepthEventResp>() {
+                @Override
+                public void onResponse(WebSocket ws, DepthEventResp data) {
+                    Depth tick = data.getTick();
+                    if (tick != null) {
+
+                        log.info("tick:" + tick.getId());
+                    }
+                }
+
+                @Override
+                public void onConnect(WebSocket ws, Closeable closeable) {
+                    stream = closeable;
+                    log.info("onConnect: " + stream.hashCode());
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +124,6 @@ public class HuobiApiWebSocketClientImplTest {
             public void onResponse(WebSocket webSocket, DepthEventResp data) {
                 Depth tick = data.getTick();
                 if (tick != null) {
-                    System.out.println(tick);
                     from[0] = to[0];
                     to[0] = from[0] + step * 60;
                     DepthEvent event = new DepthEvent();
@@ -126,12 +142,12 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.onTradeDetailTick("BTCUSDT", new ApiCallback<TradeDetailResp>() {
             @Override
             public void onResponse(WebSocket webSocket, TradeDetailResp response) {
-                System.out.println(response.getTs());
+                log.info(response.getTs() + "");
             }
 
             @Override
             public void onExpired(WebSocket webSocket, int code, String reason) {
-                System.out.println("ws expired callback");
+                log.info("ws expired callback");
             }
         });
     }
@@ -142,9 +158,9 @@ public class HuobiApiWebSocketClientImplTest {
             if (StringUtils.isEmpty(data.getSubbed())) {
                 Candle tick = data.getTick();
                 String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
-                System.out.println(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
-                        rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(),tick.getAmount().toPlainString(),
-                        tick.getOpen().toPlainString(),tick.getClose().toPlainString()));
+                log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
+                        rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
+                        tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
             }
         });
     }
@@ -155,7 +171,7 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.onOrderTick("ethbtc", new ApiCallback<OrderEventResp>() {
             @Override
             public void onResponse(WebSocket webSocket, OrderEventResp response) {
-                System.out.println(response);
+                log.info(response.getCid());
             }
         });
     }
@@ -164,7 +180,7 @@ public class HuobiApiWebSocketClientImplTest {
     @Test
     public void onAccountTick() {
         stream = ws.onAccountTick((ws, data) -> {
-            System.out.println(data);
+            log.info(data.getCid());
         });
     }
 
@@ -172,7 +188,7 @@ public class HuobiApiWebSocketClientImplTest {
     public void after() throws InterruptedException, IOException {
         for (int i = 0; i < 10000; i++) {
             Thread.sleep(1000L);
-            System.out.println("Stream: "+stream.hashCode());
+            log.info("Stream: " + stream.hashCode());
         }
         stream.close();
     }

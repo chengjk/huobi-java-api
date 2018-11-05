@@ -16,22 +16,33 @@ public class DepthEvent implements WsEvent {
     private long from;
     private long to;
 
+
     @Override
     public String toSubscribe() {
         String sub = "{\n" +
-                "\"sub\": \"market.%s.depth.%s\",\n" +
+                "\"sub\": \"%s\",\n" +
                 "\"id\": \"%s\"\n" +
                 "}";
-
-        return String.format(sub, symbol.toLowerCase(), level.getCode(), "depth_" + symbol.toLowerCase() + "_" + level.getCode());
+        return String.format(sub, getTopic(), "depth_" + symbol.toLowerCase() + "_" + level.getCode());
     }
 
 
-    public String toRequest(){
+    public String toRequest() {
         String req = "{\n" +
-                "  \"req\": \"market.%s.depth.%s\",\n" +
+                "  \"req\": \"%s\",\n" +
                 "  \"id\": \"%s\",\"from\": %s,\"to\": %s}" +
                 "}";
-        return String.format(req, symbol.toLowerCase(), level.getCode(),"depth_" + symbol.toLowerCase() + "_" + level.getCode(),from,to);
+        return String.format(req, getTopic(), "depth_" + symbol.toLowerCase() + "_" + level.getCode(), from, to);
+    }
+
+
+
+    public String getTopic() {
+        return String.format("market.%s.depth.%s", symbol.toLowerCase(), level.getCode());
+    }
+
+    @Override
+    public String getClientId() {
+        return System.currentTimeMillis() + "";
     }
 }

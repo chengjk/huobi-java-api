@@ -15,10 +15,15 @@ public class TradeDetailEvent implements WsEvent {
     public String toSubscribe() {
 
         String sub = "{\n" +
-                "  \"sub\": \"market.%s.trade.detail\",\n" +
+                "  \"sub\": \"%s\",\n" +
                 "  \"id\": \"%s\"\n" +
                 "}";
 
-        return String.format(sub, symbol.toLowerCase(), "TradeDetail_" + symbol.toLowerCase());
+        return String.format(sub, getTopic(), "TradeDetail_" + symbol.toLowerCase());
+    }
+
+    @Override
+    public String getTopic() {
+        return String.format("market.%s.trade.detail", symbol.toLowerCase());
     }
 }

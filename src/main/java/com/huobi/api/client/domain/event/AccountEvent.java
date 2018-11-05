@@ -16,16 +16,17 @@ import java.util.Map;
 public class AccountEvent implements  WsEvent {
 
     private String clientId;
+    private String topic = "accounts";
     @Override
     public String toSubscribe() {
         String format = "{\n" +
                 "  \"op\": \"sub\",\n" +
                 "  \"cid\": \"%s\",\n" +
-                "  \"topic\": \"accounts\"\n" +
+                "  \"topic\": \"%s\"\n" +
                 "}";
 
 
-        return String.format(format, clientId);
+        return String.format(format, clientId,topic);
     }
 
 

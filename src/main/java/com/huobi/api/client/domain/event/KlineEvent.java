@@ -18,13 +18,18 @@ public class KlineEvent implements WsEvent {
 
     @Override
     public String toSubscribe() {
-        String source = "{  \"sub\": \"market.%s.kline.%s\",  \"id\": \"%s\"}";
-        return String.format(source, symbol.toLowerCase(), period.getCode(), "kline_" + symbol.toLowerCase() + "_" + period.getCode());
+        String source = "{  \"sub\": \"%s\",  \"id\": \"%s\"}";
+        return String.format(source, getTopic(), "kline_" + symbol.toLowerCase() + "_*");
     }
 
 
     public String toRequest() {
-        String source = "{  \"req\": \"market.%s.kline.%s\",  \"id\": \"%s\" , \"from\": %s,\"to\": %s}";
-        return String.format(source, symbol.toLowerCase(), period.getCode(), "kline_" + symbol.toLowerCase() + "_" + period.getCode(), from, to);
+        String source = "{  \"req\": \"%s\",  \"id\": \"%s\" , \"from\": %s,\"to\": %s}";
+        return String.format(source, getTopic(), "kline_" + symbol.toLowerCase() + "_" + period.getCode(), from, to);
+    }
+
+    @Override
+    public String getTopic() {
+        return String.format("market.%s.kline.%s", symbol.toLowerCase(), period.getCode());
     }
 }

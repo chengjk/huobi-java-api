@@ -2,6 +2,7 @@ package com.huobi.api.client.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import com.huobi.api.client.security.ZipUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -44,7 +46,6 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         } else if (text.contains("pong")) {
             //ignore
         } else {
-            callback.onMessage(webSocket, text);
             ObjectMapper mapper = new ObjectMapper();
             try {
                 T event;
@@ -62,7 +63,10 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        log.error("failure:" + t.getMessage(), t);
+        log.error("failure:", t);
+        if (HuobiConfig.reconnectOnFailure) {
+            reconnect(webSocket, 4998, "failure:" + t.getMessage(), "");
+        }
     }
 
 
@@ -76,7 +80,9 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
             //手动关闭，不重连
         } else {
             //其他所有情况都重连
-            reconnect(webSocket, code, reason);
+            if (HuobiConfig.autoReconnect) {
+                reconnect(webSocket, code, reason, "");
+            }
         }
 
     }
@@ -90,15 +96,19 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     public void onExpired(WebSocket webSocket, int code, String reason) {
         callback.onExpired(webSocket, code, reason);
-        reconnect(webSocket, code, reason);
+        if (HuobiConfig.reconnectOnExpired) {
+            reconnect(webSocket, code, reason, "");
+        }
     }
 
     public void onConnect(WebSocket webSocket, Closeable closeable) {
         callback.onConnect(webSocket, closeable);
     }
 
-    public void reconnect(WebSocket webSocket, int code, String reason) {
-        webSocket = null;
+    public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
+        if (StringUtils.isNotBlank(unSub)) {
+            webSocket.send(unSub);
+        }
         log.info("reconnect ws, code:{},reason:{}", code, reason);
     }
 

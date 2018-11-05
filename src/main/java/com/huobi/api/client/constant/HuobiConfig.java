@@ -7,4 +7,10 @@ public class HuobiConfig {
     public static String API_HOST = HuobiConsts.API_HOST_PRO;
     public static String REST_API_URL = "https://" + API_HOST;
     public static String WS_API_URL = "wss://" + API_HOST + ":443/ws";
+
+
+    public static boolean autoReconnect = true;
+    public static boolean reconnectOnFailure = false;
+    public static boolean reconnectOnExpired = true;
+
 }

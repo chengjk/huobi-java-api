@@ -41,14 +41,4 @@ public interface ApiCallback<T> {
     default void onConnect(WebSocket ws, Closeable closeable) {
     }
 
-    /**
-     * refer to onResponse
-     * <p>
-     * call when receive message.
-     *
-     * @param webSocket
-     */
-    @Deprecated
-    default void onMessage(WebSocket webSocket, String text) {
-    }
 }
