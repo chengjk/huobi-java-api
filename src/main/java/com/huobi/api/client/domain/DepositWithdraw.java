@@ -5,6 +5,8 @@ import com.huobi.api.client.domain.enums.DepositWithdrawState;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * created by jacky. 2018/8/7 10:16 AM
  */
@@ -20,14 +22,14 @@ public class DepositWithdraw {
     //交易哈希
     private String txHash;
     //个数
-    private String amount;
+    private BigDecimal amount;
     //地址
     private String address;
     @JsonProperty("address-tag")
     //地址标签
     private String addressTag;
     //手续费
-    private String fee;
+    private BigDecimal fee;
     //状态
     private DepositWithdrawState state;
     @JsonProperty("created-at")

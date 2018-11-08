@@ -16,9 +16,9 @@ public class Symbol {
     @JsonProperty("quote-currency")
     private String quoteCurrency;
     @JsonProperty("price-precision")
-    private String pricePrecision;
+    private Integer pricePrecision;
     @JsonProperty("amount-precision")
-    private String amountPrecision;
+    private Integer amountPrecision;
     @JsonProperty("symbol-partition")
     private String symbolPartition;
 }

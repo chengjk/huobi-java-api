@@ -8,6 +8,8 @@ import com.huobi.api.client.domain.enums.OrderType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * created by jacky. 2018/9/25 4:05 PM
  */
@@ -28,10 +30,10 @@ public class OrderTick {
     private Long accountId;
     //订单数量
     @JsonProperty("order-amount")
-    private String orderAmount;
+    private BigDecimal orderAmount;
     //订单价格
     @JsonProperty("order-price")
-    private String orderPrice;
+    private BigDecimal orderPrice;
     //订单创建时间
     @JsonProperty("created-at")
     private Long createdAt;
@@ -49,19 +51,19 @@ public class OrderTick {
     private OrderRole role;
     //成交价格
     @JsonProperty("price")
-    private String price;
+    private BigDecimal price;
     //单次成交数量
     @JsonProperty("filled-amount")
-    private String filledAmount;
+    private BigDecimal filledAmount;
     //单次未成交数量
     @JsonProperty("unfilled-amount")
-    private String unfilledAmount;
+    private BigDecimal unfilledAmount;
     //单次成交金额
     @JsonProperty("filled-cash-amount")
-    private String filledCashAmount;
+    private BigDecimal filledCashAmount;
     //单次成交手续费（买入为币，卖出为钱）
     @JsonProperty("filled-fees")
-    private String filledFees;
+    private BigDecimal filledFees;
 
     @JsonProperty("user-id")
     private String userId;

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * created by jacky. 2018/9/21 11:56 AM
  */
@@ -24,25 +26,25 @@ public class LoanOrder {
     private String currency;
     //借贷本金总额
     @JsonProperty("loan-amount")
-    private String loanAmount;
+    private BigDecimal loanAmount;
     //未还本金
     @JsonProperty("loan-balance")
-    private String loanBalance;
+    private BigDecimal loanBalance;
     //利率
     @JsonProperty("interest-rate")
-    private String interestRate;
+    private BigDecimal interestRate;
     //利息总额
     @JsonProperty("interest-amount")
-    private String interestAmount;
+    private BigDecimal interestAmount;
     //未还利息
     @JsonProperty("interest-balance")
-    private String interestBalance;
+    private BigDecimal interestBalance;
     //借贷发起时间
     @JsonProperty("created-at")
-    private String createdAt;
+    private Long createdAt;
     //最近一次计息时间
     @JsonProperty("accrued-at")
-    private String accruedAt;
+    private Long accruedAt;
     //订单状态. created 未放款，accrual 已放款，cleared 已还清，invalid 异常
     private String state;
 
