@@ -1,5 +1,9 @@
 # RELEASE LOG
 
+## 20181115.1-1.0-SNAPSHOT
+
+1. 模型字段类型从字符串按需改为数字类型（Long，Integer，BigDecimal）.
+2. HuobiApiWebSocketListener 增加 manualClose 标记连接是不是手动关闭，若为手动关闭不重连。
 
 ## 20181105.1-1.0-SNAPSHOT
 
