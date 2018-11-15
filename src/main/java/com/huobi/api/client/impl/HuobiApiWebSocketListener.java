@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import com.huobi.api.client.security.ZipUtil;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -21,10 +23,12 @@ import java.io.IOException;
 @Slf4j
 public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
-
     private ApiCallback<T> callback;
     private Class<T> respClass;
     private TypeReference<T> eventTypeReference;
+    @Setter
+    @Getter
+    private boolean manualClose = false;
 
     public HuobiApiWebSocketListener(ApiCallback<T> apiCallback, Class<T> respClass) {
         this.callback = apiCallback;
@@ -63,9 +67,13 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        log.error("failure:", t);
-        if (HuobiConfig.ReconnectOnFailure) {
-            reconnect(webSocket, 4998, "failure:" + t.getMessage(), "");
+        if (manualClose) {
+            log.info("failure, manual close.");
+        } else {
+            log.error("failure:", t);
+            if (HuobiConfig.ReconnectOnFailure) {
+                reconnect(webSocket, 4998, "failure:" + t.getMessage(), "");
+            }
         }
     }
 
@@ -77,6 +85,7 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
             //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
             onExpired(webSocket, code, reason);
         } else if (code == 4999) {
+            manualClose = true;
             //手动关闭，不重连
         } else {
             //其他所有情况都重连
@@ -106,7 +115,8 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
     }
 
     public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
-        if (StringUtils.isNotBlank(unSub)) {
+        manualClose = false;
+        if (webSocket != null && StringUtils.isNotBlank(unSub)) {
             webSocket.send(unSub);
         }
         log.info("reconnect ws, code:{},reason:{}", code, reason);

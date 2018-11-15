@@ -211,10 +211,12 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             client.setListener(listener);
             client.connect();
             Closeable closeable = () -> {
-                listener.onClosing(null, 1000, null); //  client.getConnection() 不兼容 okhttp.
+                listener.setManualClose(true);
+                int manualCloseCode = 4999;
+                listener.onClosing(null, manualCloseCode, "manual close."); //  client.getConnection() 不兼容 okhttp.
                 client.unSub();
                 client.close();
-                listener.onClosed(null, 1000, null);
+                listener.onClosed(null, manualCloseCode, "manual close.");
             };
             listener.onConnect(null, closeable);
             return closeable;
@@ -229,10 +231,11 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         final WebSocket webSocket = client.newWebSocket(request, listener);
         webSocket.send(topic);
         Closeable closeable = () -> {
-            final int code = 4999;
-            listener.onClosing(webSocket, code, "manual close.");
-            webSocket.close(code, "manual close.");
-            listener.onClosed(webSocket, code, "manual close.");
+            listener.setManualClose(true);
+            int manualCloseCode = 4999;
+            listener.onClosing(webSocket, manualCloseCode, "manual close.");
+            webSocket.close(manualCloseCode, "manual close.");
+            listener.onClosed(webSocket, manualCloseCode, "manual close.");
         };
         listener.onConnect(webSocket, closeable);
         return closeable;
