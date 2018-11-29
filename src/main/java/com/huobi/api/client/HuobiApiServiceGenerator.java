@@ -12,8 +12,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import java.io.IOException;
-
 /**
  * created by jacky. 2018/7/20 9:07 PM
  */
@@ -59,9 +57,10 @@ public class HuobiApiServiceGenerator {
             } else {
                 parseError(response);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             //can not parse resp
-            log.error(e.getMessage(), e);
+            log.error("execute error.", e);
+            throw new HuobiApiException("execute_error", e);
         }
         return null;
     }
