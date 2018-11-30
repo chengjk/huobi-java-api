@@ -34,7 +34,7 @@ public class Order {
     private BigDecimal filledFees;
 
     @JsonProperty(value = "finished-at")
-    private String finishedAt;
+    private Long finishedAt;
     @JsonProperty(value = "user-id")
     private String userId;
     private OrderSource source;

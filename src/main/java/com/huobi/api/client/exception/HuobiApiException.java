@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HuobiApiException extends RuntimeException {
     private static final long serialVersionUID = -8973960378572936039L;
-    private String errCode;
-    private String errMsg;
+    private String errCode = "";
+    private String errMsg = "";
 
 
     public HuobiApiException(int errCode, String message) {
@@ -33,6 +33,7 @@ public class HuobiApiException extends RuntimeException {
 
     public HuobiApiException(String message, Throwable cause) {
         super(message, cause);
+        errMsg = message;
     }
 
     public HuobiApiException(Throwable cause) {
