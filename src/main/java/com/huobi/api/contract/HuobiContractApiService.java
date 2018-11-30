@@ -29,4 +29,7 @@ public interface HuobiContractApiService {
     Call<RespBody<List<Interest>>> openInterest(@Query("symbol") String symbol, @Query("contract_type") String type, @Query("contract_code") String code);
 
 
+    @GET("/market/depth")
+    Call<String> marketDepth(@Query("symbol") String symbol, @Query("type") String type);
+
 }
