@@ -89,7 +89,6 @@ public class HuobiApiAsyncClientImplTest {
     }
 
 
-
     @Test
     public void symbols() {
         List<Symbol> orders = client.symbols();
@@ -113,13 +112,10 @@ public class HuobiApiAsyncClientImplTest {
     public void getBalance() {
         Account balance = null;
         try {
-            balance = client.balance("4880381");
-            Asset btc = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().get();
-            Asset usdt = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().get();
-            Asset eth = balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("eth")).findFirst().get();
-            System.out.println(btc.getBalance().toPlainString());
-            System.out.println(usdt.getBalance().toPlainString());
-            System.out.println(eth.getBalance().toPlainString());
+            balance = client.balance("5409003");
+            balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
+            balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
+            balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("bch")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
         } catch (HuobiApiException e) {
             e.printStackTrace();
         }
@@ -128,13 +124,13 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("4880381", "0.001", "6000", OrderSource.API, "btcusdt", OrderType.BUY_LIMIT);
+        Long id = client.place("5409003", "0.001", "177", OrderSource.API, "bchusdt", OrderType.SELL_LIMIT);
         assert id != null;
     }
 
     @Test
     public void orders() {
-        List<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED,OrderState.CANCELED,OrderState.PARTIAL_CANCELED,OrderState.PARTIAL_FILLED,OrderState.SUBMITTED), null, null, 100);
+        List<Order> orders = client.orders("btcusdt", null, null, null, Arrays.asList(OrderState.FILLED, OrderState.CANCELED, OrderState.PARTIAL_CANCELED, OrderState.PARTIAL_FILLED, OrderState.SUBMITTED), null, null, 100);
         assert orders != null;
     }
 
@@ -146,7 +142,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void get() {
-        Order test = client.get("14978268779");
+        Order test = client.get("18057872068");
         assert test != null;
     }
 
@@ -165,13 +161,13 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void matchResultsByOrder() {
-        List<MatchResult> matchResults = client.matchResults("14978268779");
+        List<MatchResult> matchResults = client.matchResults("18057872068");
         assert matchResults != null;
     }
 
     @Test
     public void matchResults() {
-        List<MatchResult> matchResults = client.matchResults("btcusdt", null, null, null, null, null, null);
+        List<MatchResult> matchResults = client.matchResults("bchusdt", null, null, null, null, null, null);
         assert matchResults != null;
     }
 
@@ -181,8 +177,8 @@ public class HuobiApiAsyncClientImplTest {
         Candle tick = client.detail("ethbtc");
         String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 4, BigDecimal.ROUND_DOWN).toPlainString();
         System.out.println(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
-                rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(),tick.getVol().toPlainString(),
-                tick.getOpen().toPlainString(),tick.getClose().toPlainString()));
+                rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getVol().toPlainString(),
+                tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
     }
 
 
