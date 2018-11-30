@@ -2,7 +2,10 @@ package com.huobi.api.contract.impl;
 
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.HuobiContractApiService;
+import com.huobi.api.contract.domain.ContractIndex;
 import com.huobi.api.contract.domain.ContractInfo;
+import com.huobi.api.contract.domain.ContractPriceLimit;
+import com.huobi.api.contract.domain.Interest;
 
 import java.util.List;
 
@@ -22,6 +25,22 @@ public class HuobiContractApiRestClientImpl implements HuobiContractApiRestClien
     @Override
     public List<ContractInfo> info(String symbol, String type, String code) {
         return executeSync(service.info(symbol, type, code)).getData();
+    }
+
+
+    @Override
+    public List<ContractIndex> index(String symbol) {
+        return executeSync(service.index(symbol)).getData();
+    }
+
+    @Override
+    public List<ContractPriceLimit> priceLimit(String symbol, String type, String code) {
+        return executeSync(service.priceLimit(symbol, type, code)).getData();
+    }
+
+    @Override
+    public List<Interest> openInterest(String symbol, String type, String code) {
+        return executeSync(service.openInterest(symbol, type, code)).getData();
     }
 
 

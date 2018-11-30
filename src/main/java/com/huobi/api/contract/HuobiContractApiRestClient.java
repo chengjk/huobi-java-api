@@ -1,6 +1,9 @@
 package com.huobi.api.contract;
 
+import com.huobi.api.contract.domain.ContractIndex;
 import com.huobi.api.contract.domain.ContractInfo;
+import com.huobi.api.contract.domain.ContractPriceLimit;
+import com.huobi.api.contract.domain.Interest;
 
 import java.util.List;
 
@@ -9,6 +12,11 @@ import java.util.List;
  */
 public interface HuobiContractApiRestClient {
 
-
     List<ContractInfo> info(String symbol, String type, String code);
+
+    List<ContractIndex> index(String symbol);
+
+    List<ContractPriceLimit> priceLimit(String symbol, String type, String code);
+
+    List<Interest> openInterest(String symbol, String type, String code);
 }
