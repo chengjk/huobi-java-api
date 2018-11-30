@@ -3,7 +3,10 @@ package com.huobi.api.contract.impl;
 import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.contract.HuobiContractApiRestClient;
+import com.huobi.api.contract.domain.ContractIndex;
 import com.huobi.api.contract.domain.ContractInfo;
+import com.huobi.api.contract.domain.ContractPriceLimit;
+import com.huobi.api.contract.domain.Interest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,8 +38,23 @@ public class HuobiContractApiRestClientImplTest {
     }
     @Test
     public void info() {
-
         List<ContractInfo> info = client.info(null, null, null);
         assert info != null;
+    }
+
+
+    @Test
+    public void index() {
+        List<ContractIndex> btc = client.index("btc");
+    }
+
+    @Test
+    public void priceLimit() {
+        List<ContractPriceLimit> btc = client.priceLimit("btc", null, null);
+    }
+
+    @Test
+    public void openInterest() {
+        List<Interest> btc = client.openInterest("btc", null, null);
     }
 }
