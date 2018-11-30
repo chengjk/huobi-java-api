@@ -2,6 +2,7 @@ package com.huobi.api.contract.impl;
 
 import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.domain.ContractIndex;
 import com.huobi.api.contract.domain.ContractInfo;
@@ -56,5 +57,13 @@ public class HuobiContractApiRestClientImplTest {
     @Test
     public void openInterest() {
         List<Interest> btc = client.openInterest("btc", null, null);
+    }
+
+
+    @Test
+    public void marketDepth() {
+        String dep = client.marketDepth("btc", MergeLevel.STEP0);
+        System.out.println(dep);
+
     }
 }

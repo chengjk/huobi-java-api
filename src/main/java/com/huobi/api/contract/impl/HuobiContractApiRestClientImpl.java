@@ -1,5 +1,6 @@
 package com.huobi.api.contract.impl;
 
+import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.HuobiContractApiService;
 import com.huobi.api.contract.domain.ContractIndex;
@@ -41,6 +42,12 @@ public class HuobiContractApiRestClientImpl implements HuobiContractApiRestClien
     @Override
     public List<Interest> openInterest(String symbol, String type, String code) {
         return executeSync(service.openInterest(symbol, type, code)).getData();
+    }
+
+
+    @Override
+    public String marketDepth(String symbol, MergeLevel type) {
+        return executeSync(service.marketDepth(symbol, type.getCode()));
     }
 
 
