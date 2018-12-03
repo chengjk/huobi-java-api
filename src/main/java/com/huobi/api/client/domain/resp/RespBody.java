@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class RespBody<T> {
     private String status;
-    private long ts;
+    private Long ts;
     private String ch;
     private T data;
     private T tick;

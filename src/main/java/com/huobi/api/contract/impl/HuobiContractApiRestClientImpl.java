@@ -3,10 +3,7 @@ package com.huobi.api.contract.impl;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.HuobiContractApiService;
-import com.huobi.api.contract.domain.ContractIndex;
-import com.huobi.api.contract.domain.ContractInfo;
-import com.huobi.api.contract.domain.ContractPriceLimit;
-import com.huobi.api.contract.domain.Interest;
+import com.huobi.api.contract.domain.*;
 
 import java.util.List;
 
@@ -46,8 +43,8 @@ public class HuobiContractApiRestClientImpl implements HuobiContractApiRestClien
 
 
     @Override
-    public String marketDepth(String symbol, MergeLevel type) {
-        return executeSync(service.marketDepth(symbol, type.getCode()));
+    public Depth marketDepth(String symbol, MergeLevel type) {
+        return executeSync(service.marketDepth(symbol, type.getCode())).getTick();
     }
 
 

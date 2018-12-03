@@ -1,10 +1,7 @@
 package com.huobi.api.contract;
 
 import com.huobi.api.client.domain.resp.RespBody;
-import com.huobi.api.contract.domain.ContractIndex;
-import com.huobi.api.contract.domain.ContractInfo;
-import com.huobi.api.contract.domain.ContractPriceLimit;
-import com.huobi.api.contract.domain.Interest;
+import com.huobi.api.contract.domain.*;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -30,6 +27,6 @@ public interface HuobiContractApiService {
 
 
     @GET("/market/depth")
-    Call<String> marketDepth(@Query("symbol") String symbol, @Query("type") String type);
+    Call<RespBody<Depth>> marketDepth(@Query("symbol") String symbol, @Query("type") String type);
 
 }
