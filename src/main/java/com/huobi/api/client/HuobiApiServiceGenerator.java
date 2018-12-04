@@ -57,10 +57,12 @@ public class HuobiApiServiceGenerator {
             } else {
                 parseError(response);
             }
+        } catch (HuobiApiException e) {
+            log.error(e.getErrCode(), e);
+            throw e;
         } catch (Exception e) {
-            //can not parse resp
-            log.error("execute error.", e);
-            throw new HuobiApiException("execute_error", e);
+            log.error("execute io error.", e);
+            throw new HuobiApiException("execute_io_error", e);
         }
         return null;
     }
