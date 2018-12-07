@@ -9,7 +9,6 @@ import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.WebSocket;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,11 +65,7 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.onKlineTick("ETHBTC", Resolution.M1, new ApiCallback<KlineEventResp>() {
             @Override
             public void onResponse(WebSocket ws, KlineEventResp data) {
-                if (StringUtils.isNotEmpty(data.getSubbed())) {
-                    log.info(data.getSubbed());
-                } else {
-                    log.info(data.getTick().getClose().toPlainString());
-                }
+                log.info(data.getTick().getClose().toPlainString());
             }
 
             @Override
@@ -88,11 +83,7 @@ public class HuobiApiWebSocketClientImplTest {
                 new ApiCallback<KlineEventResp>() {
                     @Override
                     public void onResponse(WebSocket ws, KlineEventResp data) {
-                        if (StringUtils.isNotEmpty(data.getSubbed())) {
-                            log.info(data.getSubbed());
-                        } else {
-                            log.info(data.getTick().getClose().toPlainString());
-                        }
+                        log.info(data.getTick().getClose().toPlainString());
                     }
 
                     @Override
@@ -115,11 +106,7 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.requestKline(symbol, period, from[0], to[0], new ApiCallback<KlineEventResp>() {
             @Override
             public void onResponse(WebSocket webSocket, KlineEventResp data) {
-                if (StringUtils.isNotEmpty(data.getSubbed())) {
-                    log.info(data.getRep());
-                } else {
-                    data.getData().forEach(f -> log.info(f.getId() + ":" + f.getClose()));
-                }
+                data.getData().forEach(f -> log.info(f.getId() + ":" + f.getClose()));
                 from[0] = to[0];
                 to[0] = from[0] + step * 60; //
                 KlineEvent event = new KlineEvent();
@@ -173,6 +160,7 @@ public class HuobiApiWebSocketClientImplTest {
                             log.info(data.getSymbol() + "_" + data.getLevel() + "_tick:" + tick.getTs());
                         }
                     }
+
                     @Override
                     public void onConnect(WebSocket ws, Closeable closeable) {
                         stream = closeable;
@@ -261,13 +249,11 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.onMarketDetailTick("ethbtc", new ApiCallback<MarketDetailResp>() {
             @Override
             public void onResponse(WebSocket ws, MarketDetailResp data) {
-                if (StringUtils.isEmpty(data.getSubbed())) {
-                    Candle tick = data.getTick();
-                    String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
-                    log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
-                            rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
-                            tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
-                }
+                Candle tick = data.getTick();
+                String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
+                log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
+                        rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
+                        tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
             }
 
             @Override
@@ -284,13 +270,11 @@ public class HuobiApiWebSocketClientImplTest {
         stream = ws.onMarketDetailTick(symbols, new ApiCallback<MarketDetailResp>() {
             @Override
             public void onResponse(WebSocket ws, MarketDetailResp data) {
-                if (StringUtils.isEmpty(data.getSubbed())) {
-                    Candle tick = data.getTick();
-                    String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
-                    log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
-                            rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
-                            tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
-                }
+                Candle tick = data.getTick();
+                String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
+                log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
+                        rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
+                        tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
             }
 
             @Override
