@@ -54,7 +54,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
     @Setter
     private String clientId;
     @Setter
-    private HuobiApiWebSocketListener<?> listener;
+    private HuobiApiWebSocketListener listener;
 
     public HuobiApiAuthWebSocketClient(URI serverURI,String apiKey,String secret) {
         super(serverURI);

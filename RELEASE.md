@@ -9,6 +9,9 @@
 3. MarketDetailResp 增加 symbol。
 4. TradeDetailResp 增加 symbol。
 
+重构`WsEvent`相关。 重构`WebSocketListener`，`onResponse` 中不再需要判断是否为第一次返回。 
+> 第一次返回 "subed:xxxxx",并不包含数据。
+
 在onResponse 中区分业务属性做相应处理。
 
 ## 20181115.1-1.0-SNAPSHOT

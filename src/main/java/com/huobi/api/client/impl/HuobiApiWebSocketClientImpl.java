@@ -54,7 +54,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
                 events.add(event);
             }
         }
-        return createNewWebSocket(events, new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
+        return createNewWebSocket(events, new HuobiApiWebSocketListener(callback, KlineEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 events.forEach(event -> super.reconnect(webSocket, code, reason, event.toUnSub()));
@@ -74,7 +74,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
                 events.add(event);
             }
         }
-        return createNewWebSocket(events, new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
+        return createNewWebSocket(events, new HuobiApiWebSocketListener(callback, DepthEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 events.forEach(event -> super.reconnect(webSocket, code, reason, event.toUnSub()));
@@ -96,7 +96,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setFrom(from);
         event.setTo(to);
         event.setOp(WsOp.req);
-        Closeable closeable = createNewWebSocket(Arrays.asList(event), new HuobiApiWebSocketListener<KlineEventResp>(callback, KlineEventResp.class) {
+        Closeable closeable = createNewWebSocket(Arrays.asList(event), new HuobiApiWebSocketListener(callback, KlineEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 super.reconnect(webSocket, code, reason, event.toUnSub());
@@ -119,7 +119,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         event.setFrom(from);
         event.setTo(to);
         event.setOp(WsOp.req);
-        Closeable closeable = createNewWebSocket(Arrays.asList(event), new HuobiApiWebSocketListener<DepthEventResp>(callback, DepthEventResp.class) {
+        Closeable closeable = createNewWebSocket(Arrays.asList(event), new HuobiApiWebSocketListener(callback, DepthEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 super.reconnect(webSocket, code, reason, event.toUnSub());
@@ -144,7 +144,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             return event;
         }).collect(Collectors.toList());
 
-        return createNewWebSocket(events, new HuobiApiWebSocketListener<TradeDetailResp>(callback, TradeDetailResp.class) {
+        return createNewWebSocket(events, new HuobiApiWebSocketListener(callback, TradeDetailResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 events.forEach(event -> super.reconnect(webSocket, code, reason, event.toUnSub()));
@@ -167,7 +167,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             return event;
         }).collect(Collectors.toList());
 
-        return createNewWebSocket(events, new HuobiApiWebSocketListener<MarketDetailResp>(callback, MarketDetailResp.class) {
+        return createNewWebSocket(events, new HuobiApiWebSocketListener(callback, MarketDetailResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 events.forEach(event -> super.reconnect(webSocket, code, reason, event.toUnSub()));
@@ -180,7 +180,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback) {
         OrderEvent event = new OrderEvent(symbol);
         event.setClientId("dzc_order_" + System.currentTimeMillis());
-        Closeable closeable = newAuthWebSocket1(event, new HuobiApiWebSocketListener<OrderEventResp>(callback, OrderEventResp.class) {
+        Closeable closeable = newAuthWebSocket1(event, new HuobiApiWebSocketListener(callback, OrderEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 super.reconnect(webSocket, code, reason, event.toUnSub());
@@ -194,7 +194,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("dzc_account_" + System.currentTimeMillis());
-        return newAuthWebSocket1(event, new HuobiApiWebSocketListener<AccountEventResp>(callback, AccountEventResp.class) {
+        return newAuthWebSocket1(event, new HuobiApiWebSocketListener(callback, AccountEventResp.class) {
             @Override
             public void reconnect(WebSocket webSocket, int code, String reason, String unSub) {
                 super.reconnect(webSocket, code, reason, event.toUnSub());
@@ -205,13 +205,13 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
 
 
     //todo for test.  huobi not support okhttp ws client ops!
-    public Closeable onAccountTickOkhttp(ApiCallback<AccountEventResp> callback) {
+    public Closeable onAccountTickOkhttp(ApiCallback callback) {
         AccountEvent event = new AccountEvent();
         event.setClientId("dzc_account_" + System.currentTimeMillis());
         event.setApiKey(apiKey);
         event.setSecretKey(secretKey);
         event.setOp(WsOp.auth);
-        Closeable closeable = newAuthWebSocket(event, new HuobiApiWebSocketListener<AccountEventResp>((webSocket, response) -> {
+        Closeable closeable = newAuthWebSocket(event, new HuobiApiWebSocketListener((ApiCallback<WsNotify>) (webSocket, response) -> {
             if ("auth".equals(response.getOp())) {
                 if ("0".equals(response.getErrCode())) {
                     webSocket.send(event.toSubscribe());
@@ -237,17 +237,17 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return closeable;
     }
 
-    private Closeable createNewWebSocket(List<WsEvent> events, HuobiApiWebSocketListener<?> listener) {
+    private Closeable createNewWebSocket(List<WsEvent> events, HuobiApiWebSocketListener listener) {
         String streamingUrl = HuobiConfig.WS_API_URL;
         return newWebSocket(streamingUrl, events, listener);
     }
 
-    private Closeable newAuthWebSocket(WsEvent event, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket(WsEvent event, HuobiApiWebSocketListener listener) {
         String streamingUrl = HuobiConfig.WS_API_URL + "/v1";
         return newWebSocket(streamingUrl, Arrays.asList(event), listener);
     }
 
-    private Closeable newAuthWebSocket1(WsEvent event, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newAuthWebSocket1(WsEvent event, HuobiApiWebSocketListener listener) {
         String streamingUrl = HuobiConfig.WS_API_URL + "/v1";
         try {
             URI uri = new URI(streamingUrl);
@@ -273,7 +273,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
     }
 
 
-    private Closeable newWebSocket(String url, List<WsEvent> events, HuobiApiWebSocketListener<?> listener) {
+    private Closeable newWebSocket(String url, List<WsEvent> events, HuobiApiWebSocketListener listener) {
         Request request = new Request.Builder().url(url).build();
         final WebSocket webSocket = client.newWebSocket(request, listener);
         for (WsEvent event : events) {

@@ -3,6 +3,7 @@ package com.huobi.api.client.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.constant.HuobiConfig;
+import com.huobi.api.client.domain.event.WsNotify;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import com.huobi.api.client.security.ZipUtil;
 import lombok.Getter;
@@ -21,19 +22,19 @@ import java.io.IOException;
  * created by jacky. 2018/7/24 3:57 PM
  */
 @Slf4j
-public class HuobiApiWebSocketListener<T> extends WebSocketListener {
+public class HuobiApiWebSocketListener extends WebSocketListener {
 
-    private ApiCallback<T> callback;
-    private Class<T> respClass;
-    private TypeReference<T> eventTypeReference;
+    private ApiCallback callback;
+    private Class<? extends WsNotify> respClass;
+    private TypeReference<WsNotify> eventTypeReference;
     @Setter
     @Getter
     private boolean manualClose = false;
 
-    public HuobiApiWebSocketListener(ApiCallback<T> apiCallback, Class<T> respClass) {
+    public HuobiApiWebSocketListener(ApiCallback apiCallback, Class<? extends WsNotify> respClass) {
         this.callback = apiCallback;
         this.respClass = respClass;
-        this.eventTypeReference = new TypeReference<T>() {
+        this.eventTypeReference = new TypeReference<WsNotify>() {
         };
     }
 
@@ -52,13 +53,15 @@ public class HuobiApiWebSocketListener<T> extends WebSocketListener {
         } else {
             ObjectMapper mapper = new ObjectMapper();
             try {
-                T event;
+                WsNotify event;
                 if (respClass == null) {
                     event = mapper.readValue(text, eventTypeReference);
                 } else {
                     event = mapper.readValue(text, respClass);
                 }
-                callback.onResponse(webSocket, event);
+                if (event.withData()) {
+                    callback.onResponse(webSocket, event);
+                }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }
