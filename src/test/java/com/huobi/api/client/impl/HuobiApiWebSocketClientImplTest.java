@@ -246,7 +246,7 @@ public class HuobiApiWebSocketClientImplTest {
 
     @Test
     public void onMarketDetailTick() {
-        stream = ws.onMarketDetailTick("ethbtc", new ApiCallback<MarketDetailResp>() {
+        stream = ws.onMarketDetailTick("btcusdt", new ApiCallback<MarketDetailResp>() {
             @Override
             public void onResponse(WebSocket ws, MarketDetailResp data) {
                 Candle tick = data.getTick();
