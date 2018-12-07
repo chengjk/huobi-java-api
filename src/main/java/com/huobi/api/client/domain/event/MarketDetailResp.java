@@ -11,4 +11,14 @@ import lombok.Setter;
 @Setter
 public class MarketDetailResp extends WsNotify {
     private Candle tick;
+    private String symbol;
+
+    @Override
+    public void setCh(String ch) {
+        //market.ethbtc.detail
+        super.setCh(ch);
+        String[] split = ch.split("\\.");
+        symbol = split[1];
+    }
+
 }

@@ -144,7 +144,6 @@ public class HuobiApiWebSocketClientImplTest {
                 public void onResponse(WebSocket ws, DepthEventResp data) {
                     Depth tick = data.getTick();
                     if (tick != null) {
-
                         log.info("tick:" + tick.getId());
                     }
                 }
@@ -234,6 +233,29 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+
+
+    @Test
+    public void onTradeDetailTickBatch(){
+        stream = ws.onTradeDetailTick(symbols, new ApiCallback<TradeDetailResp>() {
+            @Override
+            public void onResponse(WebSocket webSocket, TradeDetailResp response) {
+                log.info(response.getTs() + "");
+            }
+
+            @Override
+            public void onExpired(WebSocket webSocket, int code, String reason) {
+                log.info("ws expired callback");
+            }
+
+            @Override
+            public void onConnect(WebSocket ws, Closeable closeable) {
+                stream = closeable;
+                log.info("onConnect :" + closeable.hashCode());
+            }
+        });
+    }
+
     @Test
     public void onMarketDetailTick() {
         stream = ws.onMarketDetailTick("ethbtc", new ApiCallback<MarketDetailResp>() {
@@ -256,6 +278,29 @@ public class HuobiApiWebSocketClientImplTest {
         });
     }
 
+
+
+    @Test
+    public void onMarketDetailTickBatch(){
+        stream = ws.onMarketDetailTick(symbols, new ApiCallback<MarketDetailResp>() {
+            @Override
+            public void onResponse(WebSocket ws, MarketDetailResp data) {
+                if (StringUtils.isEmpty(data.getSubbed())) {
+                    Candle tick = data.getTick();
+                    String rise = tick.getClose().subtract(tick.getOpen()).divide(tick.getOpen(), 6, BigDecimal.ROUND_DOWN).toPlainString();
+                    log.info(String.format("rise:%s;high:%s;low:%s;vol:%s---open:%s;close:%s",
+                            rise, tick.getHigh().toPlainString(), tick.getLow().toPlainString(), tick.getAmount().toPlainString(),
+                            tick.getOpen().toPlainString(), tick.getClose().toPlainString()));
+                }
+            }
+
+            @Override
+            public void onConnect(WebSocket ws, Closeable closeable) {
+                stream = closeable;
+                log.info("onConnect :" + closeable.hashCode());
+            }
+        });
+    }
 
     @Test
     public void onOrderTick() {
