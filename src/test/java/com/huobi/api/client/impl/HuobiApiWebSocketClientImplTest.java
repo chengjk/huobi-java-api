@@ -94,6 +94,7 @@ public class HuobiApiWebSocketClientImplTest {
                             log.info(data.getTick().getClose().toPlainString());
                         }
                     }
+
                     @Override
                     public void onConnect(WebSocket ws, Closeable closeable) {
                         stream = closeable;
@@ -102,6 +103,7 @@ public class HuobiApiWebSocketClientImplTest {
                 });
         onDepthTickBatch();
     }
+
     @Test
     public void requestKline() {
         String symbol = "BTCUSDT";
@@ -168,8 +170,7 @@ public class HuobiApiWebSocketClientImplTest {
                     public void onResponse(WebSocket ws, DepthEventResp data) {
                         Depth tick = data.getTick();
                         if (tick != null) {
-
-                            log.info("tick:" + tick.getTs());
+                            log.info(data.getSymbol() + "_" + data.getLevel() + "_tick:" + tick.getTs());
                         }
                     }
                     @Override
@@ -234,9 +235,8 @@ public class HuobiApiWebSocketClientImplTest {
     }
 
 
-
     @Test
-    public void onTradeDetailTickBatch(){
+    public void onTradeDetailTickBatch() {
         stream = ws.onTradeDetailTick(symbols, new ApiCallback<TradeDetailResp>() {
             @Override
             public void onResponse(WebSocket webSocket, TradeDetailResp response) {
@@ -279,9 +279,8 @@ public class HuobiApiWebSocketClientImplTest {
     }
 
 
-
     @Test
-    public void onMarketDetailTickBatch(){
+    public void onMarketDetailTickBatch() {
         stream = ws.onMarketDetailTick(symbols, new ApiCallback<MarketDetailResp>() {
             @Override
             public void onResponse(WebSocket ws, MarketDetailResp data) {

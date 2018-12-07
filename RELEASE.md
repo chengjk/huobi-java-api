@@ -1,5 +1,16 @@
 # RELEASE LOG
 
+## 20181208.1-1.0-SNAPSHOT
+支持批量订阅 WebSocket，避免由订阅引起的 `too many request` 错误。相同业务类的订阅推荐使用批量订阅，例如全部symbol的所有resolution的kline都放到一个批次里，深度数据也是。
+相应的WsResponse 里增加一些业务属性。
+
+1. DepthEventResp 增加 symbol，merge level。
+2. KlineEventResp 增加 symbol， resolution。
+3. MarketDetailResp 增加 symbol。
+4. TradeDetailResp 增加 symbol。
+
+在onResponse 中区分业务属性做相应处理。
+
 ## 20181115.1-1.0-SNAPSHOT
 
 1. 模型字段类型从字符串按需改为数字类型（Long，Integer，BigDecimal）.

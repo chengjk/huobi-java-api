@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OrderEvent implements WsEvent {
+public class OrderEvent extends WsBaseEvent {
     private String symbol;
     private String clientId;
 

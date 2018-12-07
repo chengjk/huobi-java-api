@@ -9,8 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DepthEvent implements WsEvent {
-
+public class DepthEvent extends WsBaseEvent {
     private String symbol;
     private MergeLevel level;
     private long from;
