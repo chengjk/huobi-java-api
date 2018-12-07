@@ -23,7 +23,7 @@ HuobiConfig.WS_API_URL="wss://api.huobi.pro:443/ws"
    超时时是否重连，默认true。服务器ping多次未回应时触发。
 
 
-### How configure unit test
+### How to configure unit test
 
 1. make dir  `src/test/resources/`, make dir as Test Resource Root
 2. create file `config.properties`.

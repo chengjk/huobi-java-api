@@ -6,12 +6,15 @@ import com.huobi.api.client.domain.event.*;
 import com.huobi.api.client.domain.resp.ApiCallback;
 
 import java.io.Closeable;
+import java.util.List;
 
 /**
  * created by jacky. 2018/7/24 3:52 PM
  */
 public interface HuobiApiWebSocketClient {
     Closeable onKlineTick(String symbol, Resolution period, ApiCallback<KlineEventResp> callback);
+
+    Closeable onKlineTick(List<String> symbols, List<Resolution> resolutions, ApiCallback<KlineEventResp> callback);
 
     /**
      * 请求历史kline数据,一次最多300条.
@@ -27,12 +30,23 @@ public interface HuobiApiWebSocketClient {
 
     Closeable onDepthTick(String symbol, MergeLevel level, ApiCallback<DepthEventResp> callback);
 
+    Closeable onDepthTick(List<String> symbols, List<MergeLevel> levels, ApiCallback<DepthEventResp> callback);
+
     Closeable requestDepth(String symbol, MergeLevel level, long from, long to, ApiCallback<DepthEventResp> callback);
 
     Closeable onTradeDetailTick(String symbol, ApiCallback<TradeDetailResp> callback);
 
+    Closeable onTradeDetailTick(List<String> symbols, ApiCallback<TradeDetailResp> callback);
+
     Closeable onMarketDetailTick(String symbol, ApiCallback<MarketDetailResp> callback);
 
+    Closeable onMarketDetailTick(List<String> symbols, ApiCallback<MarketDetailResp> callback);
+
+    /**
+     * @param symbol   pattern  *
+     * @param callback
+     * @return
+     */
     Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback);
 
     Closeable onAccountTick(ApiCallback<AccountEventResp> callback);
