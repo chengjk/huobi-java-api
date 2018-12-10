@@ -22,6 +22,7 @@ public enum OrderSource {
     MARGIN_WEB("margin-web"),
     MARGIN_APP("margin-app"),
     MARGIN_SYS("margin-sys"),
+    FL_SYS("fl-sys"),
     ;
 
     private String code;

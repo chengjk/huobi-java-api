@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TradeDetailEvent implements WsEvent {
+public class TradeDetailEvent extends WsBaseEvent {
     private String symbol;
 
     @Override

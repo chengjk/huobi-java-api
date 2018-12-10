@@ -10,5 +10,14 @@ import lombok.Setter;
 @Setter
 public class TradeDetailResp extends WsNotify {
     private TradeTick tick;
+    private String symbol;
+
+    @Override
+    public void setCh(String ch) {
+        //market.btcusdt.trade.detail
+        super.setCh(ch);
+        String[] split = ch.split("\\.");
+        symbol = split[1];
+    }
 }
 

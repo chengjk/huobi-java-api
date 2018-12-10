@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Getter
 @Setter
-public class AccountEvent implements  WsEvent {
+public class AccountEvent extends WsBaseEvent {
 
     private String clientId;
     private String topic = "accounts";
@@ -30,7 +30,7 @@ public class AccountEvent implements  WsEvent {
     }
 
 
-    public String toAuth(String apiKey, String secretKey){
+    public String toAuth(){
         String authFormat = "{" +
                 "\"SignatureVersion\":\"%s\"," +
                 "\"op\":\"auth\"," +
@@ -41,10 +41,10 @@ public class AccountEvent implements  WsEvent {
                 "\"cid\":\"%s\"" +
                 "}";
 
-        HuobiSigner signer = new HuobiSigner(apiKey, secretKey);
+        HuobiSigner signer = new HuobiSigner(getApiKey(), getSecretKey());
         Map<String, String> param = new HashMap<>();
         String now = signer.gmtNow();
         String signature = signer.sign("GET", "/ws/v1", param, now);
-        return String.format(authFormat, HuobiConsts.SIGNATURE_VERSION, apiKey, signature, HuobiConsts.SIGNATURE_METHOD, now, clientId);
+        return String.format(authFormat, HuobiConsts.SIGNATURE_VERSION, getApiKey(), signature, HuobiConsts.SIGNATURE_METHOD, now, clientId);
     }
 }

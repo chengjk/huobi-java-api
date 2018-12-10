@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class KlineEvent implements WsEvent {
+public class KlineEvent extends WsBaseEvent {
     private String symbol;
     private Resolution period;
     private long from;
