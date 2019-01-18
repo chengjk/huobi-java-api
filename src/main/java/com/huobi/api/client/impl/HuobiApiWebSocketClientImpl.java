@@ -279,13 +279,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         for (WsEvent event : events) {
             webSocket.send(event.toString());
         }
-        Closeable closeable = () -> {
-            listener.setManualClose(true);
-            int manualCloseCode = 4999;
-            listener.onClosing(webSocket, manualCloseCode, "manual close.");
-            webSocket.close(manualCloseCode, "manual close.");
-            listener.onClosed(webSocket, manualCloseCode, "manual close.");
-        };
+        Closeable closeable = listener.getCloseable(webSocket);
         listener.onConnect(webSocket, closeable);
         return closeable;
     }
