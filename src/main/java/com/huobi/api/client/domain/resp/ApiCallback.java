@@ -41,4 +41,11 @@ public interface ApiCallback<T> {
     default void onConnect(WebSocket ws, Closeable closeable) {
     }
 
+
+    /**
+     * call when server ping
+     * @param ws
+     */
+    default  void onPing(WebSocket ws,Closeable closeable){
+    }
 }

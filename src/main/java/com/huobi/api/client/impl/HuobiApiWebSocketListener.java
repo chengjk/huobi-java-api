@@ -3,6 +3,7 @@ package com.huobi.api.client.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.constant.HuobiConfig;
+import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.event.WsNotify;
 import com.huobi.api.client.domain.resp.ApiCallback;
 import com.huobi.api.client.security.ZipUtil;
@@ -48,6 +49,8 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         if (text.contains("ping")) {
             webSocket.send(text.replace("ping", "pong"));
+            callback.onPing(webSocket, getCloseable(webSocket));
+
         } else if (text.contains("pong")) {
             //ignore
         } else {
@@ -75,7 +78,7 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
         } else {
             log.error("failure:", t);
             if (HuobiConfig.ReconnectOnFailure) {
-                reconnect(webSocket, 4998, "failure:" + t.getMessage(), "");
+                reconnect(webSocket, HuobiConsts.WsCode.autoReconnect, "failure:" + t.getMessage(), "");
             }
         }
     }
@@ -83,11 +86,11 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
 
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
-        log.info("closing. code:" + code + ",reason:" + reason);
-        if (code == 1003) {
+        log.info("closing. code:{},reason:{}", code, reason);
+        if (code == HuobiConsts.WsCode.pingExpired) {
             //1003 ping check expired, session: 8e6a863b-2733-450c-9d02-5ce41ec811a7
             onExpired(webSocket, code, reason);
-        } else if (code == 4999) {
+        } else if (code == HuobiConsts.WsCode.manualClose) {
             manualClose = true;
             //手动关闭，不重连
         } else {
@@ -102,11 +105,12 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-        log.info("closed");
+        log.info("closed. code:{},reason:{}", code, reason);
     }
 
 
     public void onExpired(WebSocket webSocket, int code, String reason) {
+        log.info("expired. code:{},reason:{}", code, reason);
         callback.onExpired(webSocket, code, reason);
         if (HuobiConfig.ReconnectOnExpired) {
             reconnect(webSocket, code, reason, "");
@@ -125,4 +129,13 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
         log.info("reconnect ws, code:{},reason:{}", code, reason);
     }
 
+
+    public Closeable getCloseable(WebSocket webSocket) {
+        return () -> {
+            this.setManualClose(true);
+            this.onClosing(webSocket, HuobiConsts.WsCode.manualClose, "manual close.");
+            webSocket.close(HuobiConsts.WsCode.manualClose, "manual close.");
+            this.onClosed(webSocket, HuobiConsts.WsCode.manualClose, "manual close.");
+        };
+    }
 }
