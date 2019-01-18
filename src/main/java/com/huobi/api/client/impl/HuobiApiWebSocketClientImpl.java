@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.api.client.HuobiApiWebSocketClient;
 import com.huobi.api.client.constant.HuobiConfig;
+import com.huobi.api.client.constant.HuobiConsts;
 import com.huobi.api.client.domain.enums.MergeLevel;
 import com.huobi.api.client.domain.enums.Resolution;
 import com.huobi.api.client.domain.enums.WsOp;
@@ -258,7 +259,7 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
             client.connect();
             Closeable closeable = () -> {
                 listener.setManualClose(true);
-                int manualCloseCode = 4999;
+                int manualCloseCode = HuobiConsts.WsCode.manualClose;
                 listener.onClosing(null, manualCloseCode, "manual close."); //  client.getConnection() 不兼容 okhttp.
                 client.unSub();
                 client.close();

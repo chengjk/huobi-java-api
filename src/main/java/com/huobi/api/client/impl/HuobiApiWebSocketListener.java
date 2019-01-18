@@ -130,7 +130,7 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
     }
 
 
-    Closeable getCloseable(WebSocket webSocket) {
+    public Closeable getCloseable(WebSocket webSocket) {
         return () -> {
             this.setManualClose(true);
             this.onClosing(webSocket, HuobiConsts.WsCode.manualClose, "manual close.");

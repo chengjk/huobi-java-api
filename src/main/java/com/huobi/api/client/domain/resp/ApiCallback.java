@@ -47,6 +47,5 @@ public interface ApiCallback<T> {
      * @param ws
      */
     default  void onPing(WebSocket ws,Closeable closeable){
-
     }
 }
