@@ -191,9 +191,16 @@ public class HuobiApiWebSocketClientImpl implements HuobiApiWebSocketClient {
         return closeable;
     }
 
+    @Deprecated
     @Override
     public Closeable onAccountTick(ApiCallback<AccountEventResp> callback) {
+        return onAccountTick(0, callback);
+    }
+
+    @Override
+    public Closeable onAccountTick(Integer model, ApiCallback<AccountEventResp> callback) {
         AccountEvent event = new AccountEvent();
+        event.setModel(model);
         event.setClientId("dzc_account_" + System.currentTimeMillis());
         return newAuthWebSocket1(event, new HuobiApiWebSocketListener(callback, AccountEventResp.class) {
             @Override

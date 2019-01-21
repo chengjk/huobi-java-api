@@ -49,5 +49,21 @@ public interface HuobiApiWebSocketClient {
      */
     Closeable onOrderTick(String symbol, ApiCallback<OrderEventResp> callback);
 
+    /**
+     * refer to {@link HuobiApiWebSocketClient#onAccountTick(Integer, ApiCallback)}
+     * @param callback
+     * @return
+     */
+    @Deprecated
     Closeable onAccountTick(ApiCallback<AccountEventResp> callback);
+
+    /**
+     * @param model    选填,订阅账户balance类型。默认值为0.
+     *                 0 代表可用，即type=trade的balance;
+     *                 1 代表 total，即该账户的总余额，包括type=trade 和type=frozen的余额的和。
+     *                 建议：如需同时订阅可用和总余额，需要为 0 和 1 各开启一条 websocket 连接，如果使用同一条连接，后订阅的 topic 会覆盖前一个 topic
+     * @param callback
+     * @return
+     */
+    Closeable onAccountTick(Integer model, ApiCallback<AccountEventResp> callback);
 }
