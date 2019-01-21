@@ -1,9 +1,10 @@
 # RELEASE LOG
 
 ## 20190118.1-1.0-SNAPSHOT
-1. `ApiCallback` 增加 `onPing` 方法。服务器ping的时候调用，用于监控链接的状态，如果长时间没有更新，说明连接已经断开。
-2. WebSocket 的状态码都移动到常量中。
-3. 更新retrofit 版本到2.5.0
+1. 订阅account资产推送，增加订阅参数mode. 订阅返回的内容中不再推送交易子账户冻结余额的变化
+2. `ApiCallback` 增加 `onPing` 方法。服务器ping的时候调用，用于监控链接的状态，如果长时间没有更新，说明连接已经断开。
+3. WebSocket 的状态码都移动到常量中。
+4. 更新retrofit 版本到2.5.0
 
 ## 20181208.1-1.0-SNAPSHOT
 支持批量订阅 WebSocket，避免由订阅引起的 `too many request` 错误。相同业务类的订阅推荐使用批量订阅，例如全部symbol的所有resolution的kline都放到一个批次里，深度数据也是。
