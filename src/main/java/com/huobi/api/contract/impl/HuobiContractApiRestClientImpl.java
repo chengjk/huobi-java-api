@@ -1,6 +1,11 @@
 package com.huobi.api.contract.impl;
 
+import com.huobi.api.client.domain.Candle;
+import com.huobi.api.client.domain.Merged;
+import com.huobi.api.client.domain.Trade;
 import com.huobi.api.client.domain.enums.MergeLevel;
+import com.huobi.api.client.domain.enums.Resolution;
+import com.huobi.api.client.domain.resp.RespTick;
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.HuobiContractApiService;
 import com.huobi.api.contract.domain.*;
@@ -50,6 +55,31 @@ public class HuobiContractApiRestClientImpl implements HuobiContractApiRestClien
     @Override
     public Depth marketDepth(String symbol, MergeLevel type) {
         return executeSync(service.marketDepth(symbol, type.getCode())).getTick();
+    }
+
+
+    @Override
+    public List<Candle> historyKline(String symbol, Resolution period, Integer size) {
+        return executeSync(service.historyKline(symbol, period.getCode(), size)).getData();
+    }
+
+    @Override
+    public Merged marketDetailMerged(String symbol) {
+        return executeSync(service.marketDetailMerged(symbol)).getTick();
+    }
+
+    @Override
+    public RespTick<Trade> marketTrade(String symbol) {
+        return executeSync(service.marketTrade(symbol)).getTick();
+    }
+
+    @Override
+    public List<RespTick<Trade>> historyTrade(String symbol, Integer size) {
+        return executeSync(service.historyTrade(symbol,size)).getData();
+    }
+    @Override
+    public List<ContractAccount> accountInfo(String symbol) {
+        return executeSync(service.accountInfo(symbol)).getData();
     }
 
 

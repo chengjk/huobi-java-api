@@ -2,7 +2,12 @@ package com.huobi.api.contract.impl;
 
 import com.huobi.api.client.constant.HuobiConfig;
 import com.huobi.api.client.constant.HuobiConsts;
+import com.huobi.api.client.domain.Candle;
+import com.huobi.api.client.domain.Merged;
+import com.huobi.api.client.domain.Trade;
 import com.huobi.api.client.domain.enums.MergeLevel;
+import com.huobi.api.client.domain.enums.Resolution;
+import com.huobi.api.client.domain.resp.RespTick;
 import com.huobi.api.contract.HuobiContractApiRestClient;
 import com.huobi.api.contract.domain.*;
 import org.junit.Before;
@@ -58,7 +63,7 @@ public class HuobiContractApiRestClientImplTest {
     }
 
     @Test
-    public void deliveryPrice(){
+    public void deliveryPrice() {
         Delivery data = client.deliveryPrice("BTC");
         assert data != null;
     }
@@ -68,5 +73,36 @@ public class HuobiContractApiRestClientImplTest {
     public void marketDepth() {
         Depth dep = client.marketDepth("BTC_CW", MergeLevel.STEP0);
         assert dep != null;
+    }
+
+    @Test
+    public void historyKline() {
+        List<Candle> data = client.historyKline("BTC_CW", Resolution.M1, 10);
+        assert data != null;
+    }
+
+    @Test
+    public void mergedMarketDetail() {
+        Merged data = client.marketDetailMerged("BTC_CW");
+        assert data != null;
+    }
+
+    @Test
+    public void marketTrade() {
+        RespTick<Trade> data = client.marketTrade("BTC_CW");
+        assert data != null;
+    }
+
+    @Test
+    public void historyTrade() {
+        List<RespTick<Trade>> data = client.historyTrade("BTC_CQ", 10);
+        assert data != null;
+    }
+
+
+    @Test
+    public void accountInfo() {
+        List<ContractAccount> data = client.accountInfo("BTC_CW");
+        assert data != null;
     }
 }

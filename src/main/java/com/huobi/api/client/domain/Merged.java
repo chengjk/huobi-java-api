@@ -25,14 +25,14 @@ public class Merged {
     private BigDecimal count;
     private String symbol;
     /**
-     *[买1价,买1量],
+     * [买1价,买1量],
      */
     private List<BigDecimal> bid;
     /**
      * [卖1价,卖1量]
      */
     private List<BigDecimal> ask;
-
     private String version;
+    private long ts;
 
 }
