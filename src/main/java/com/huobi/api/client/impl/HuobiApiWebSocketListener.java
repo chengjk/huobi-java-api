@@ -78,7 +78,7 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
         } else {
             log.error("failure:", t);
             if (HuobiConfig.ReconnectOnFailure) {
-                reconnect(webSocket, HuobiConsts.WsCode.autoReconnect, "failure:" + t.getMessage(), "");
+                reconnect(webSocket, HuobiConsts.WsCode.autoReconnect, "failure:" + t.getMessage(), null);
             }
         }
     }
@@ -96,7 +96,7 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
         } else {
             //其他所有情况都重连
             if (HuobiConfig.AutoReconnect) {
-                reconnect(webSocket, code, reason, "");
+                reconnect(webSocket, code, reason, null);
             }
         }
 
@@ -113,7 +113,7 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
         log.info("expired. code:{},reason:{}", code, reason);
         callback.onExpired(webSocket, code, reason);
         if (HuobiConfig.ReconnectOnExpired) {
-            reconnect(webSocket, code, reason, "");
+            reconnect(webSocket, code, reason, null);
         }
     }
 

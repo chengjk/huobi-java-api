@@ -56,7 +56,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
     @Setter
     private HuobiApiWebSocketListener listener;
 
-    public HuobiApiAuthWebSocketClient(URI serverURI,String apiKey,String secret) {
+    public HuobiApiAuthWebSocketClient(URI serverURI, String apiKey, String secret) {
         super(serverURI);
         this.apiKey = apiKey;
         this.secretKey = secret;
@@ -99,7 +99,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
     }
 
 
-    public void sub(){
+    public void sub() {
         send(topic);
     }
 
@@ -124,6 +124,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
         try {
             if (text.contains("ping")) {
                 send(text.replace("ping", "pong"));
+                listener.onMessage(null, text);
             } else if (text.contains("pong")) {
                 //ignore
             } else {
@@ -135,11 +136,15 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
                     if ("0".equals(code)) {
                         //auth success
                         sub();
+                    } else {
+                        log.error("auth webSocket error.{}", text);
                     }
                 } else if ("sub".equals(op)) {
                     //ignore
                 } else if ("notify".equals(op)) {
                     listener.onMessage(null, text);
+                }else {
+                    log.error("unknown op {}",text);
                 }
             }
         } catch (IOException e) {
@@ -149,7 +154,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        listener.onClosed(null, i, s);
+        listener.onClosing(null, i, s);
     }
 
     @Override
