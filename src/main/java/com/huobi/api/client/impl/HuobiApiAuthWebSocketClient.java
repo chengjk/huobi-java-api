@@ -124,6 +124,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
         try {
             if (text.contains("ping")) {
                 send(text.replace("ping", "pong"));
+                listener.onMessage(null,text);
             } else if (text.contains("pong")) {
                 //ignore
             } else {
@@ -149,7 +150,7 @@ public class HuobiApiAuthWebSocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        listener.onClosed(null, i, s);
+        listener.onClosing(null, i, s);
     }
 
     @Override
