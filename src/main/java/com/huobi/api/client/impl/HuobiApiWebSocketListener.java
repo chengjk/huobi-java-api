@@ -48,9 +48,10 @@ public class HuobiApiWebSocketListener extends WebSocketListener {
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         if (text.contains("ping")) {
-            webSocket.send(text.replace("ping", "pong"));
+            if (webSocket != null) {
+                webSocket.send(text.replace("ping", "pong"));
+            }
             callback.onPing(webSocket, getCloseable(webSocket));
-
         } else if (text.contains("pong")) {
             //ignore
         } else {
