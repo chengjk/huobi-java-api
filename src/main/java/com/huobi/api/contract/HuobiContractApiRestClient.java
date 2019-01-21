@@ -18,5 +18,7 @@ public interface HuobiContractApiRestClient {
 
     List<Interest> openInterest(String symbol, String type, String code);
 
+    Delivery deliveryPrice(String symbol);
+
     Depth marketDepth(String symbol, MergeLevel type);
 }

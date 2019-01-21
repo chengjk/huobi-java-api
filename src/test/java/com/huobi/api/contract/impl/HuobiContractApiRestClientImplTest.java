@@ -57,6 +57,12 @@ public class HuobiContractApiRestClientImplTest {
         List<Interest> btc = client.openInterest("btc", null, null);
     }
 
+    @Test
+    public void deliveryPrice(){
+        Delivery data = client.deliveryPrice("BTC");
+        assert data != null;
+    }
+
 
     @Test
     public void marketDepth() {

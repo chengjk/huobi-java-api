@@ -43,6 +43,11 @@ public class HuobiContractApiRestClientImpl implements HuobiContractApiRestClien
 
 
     @Override
+    public Delivery deliveryPrice(String symbol) {
+        return executeSync(service.deliveryPrice(symbol)).getData();
+    }
+
+    @Override
     public Depth marketDepth(String symbol, MergeLevel type) {
         return executeSync(service.marketDepth(symbol, type.getCode())).getTick();
     }
