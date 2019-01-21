@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class KlineEvent implements WsEvent {
+public class KlineEvent extends WsBaseEvent {
     private String symbol;
     private Resolution period;
     private long from;
@@ -19,7 +19,7 @@ public class KlineEvent implements WsEvent {
     @Override
     public String toSubscribe() {
         String source = "{  \"sub\": \"%s\",  \"id\": \"%s\"}";
-        return String.format(source, getTopic(), "kline_" + symbol.toLowerCase() + "_*");
+        return String.format(source, getTopic(), "kline_" + symbol.toLowerCase() + "_" + period.getCode());
     }
 
 

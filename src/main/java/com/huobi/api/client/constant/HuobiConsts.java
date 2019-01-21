@@ -24,4 +24,12 @@ public interface HuobiConsts {
     DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
     ZoneId ZONE_GMT = ZoneId.of("Z");
 
+
+    interface WsCode {
+        int manualClose = 4999;
+        int autoReconnect = 4998;
+        int pingExpired = 1003;
+    }
+
+
 }

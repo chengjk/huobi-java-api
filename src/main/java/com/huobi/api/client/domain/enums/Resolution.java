@@ -3,6 +3,8 @@ package com.huobi.api.client.domain.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+
 /**
  * created by jacky. 2018/7/23 8:26 PM
  */
@@ -22,5 +24,12 @@ public enum Resolution {
     @JsonValue
     public String getCode() {
         return code;
+    }
+
+    public static Resolution get(String code) {
+        return Arrays.stream(Resolution.values())
+                .filter(f -> f.getCode().equalsIgnoreCase(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("unknown code"));
     }
 }

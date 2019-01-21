@@ -3,6 +3,7 @@ package com.huobi.api.client.domain.event;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * created by jacky. 2018/9/25 4:56 PM
@@ -27,6 +28,10 @@ public class WsNotify {
     @JsonProperty("err-msg")
     private String errMsg;
     private long ts;
+
+    public boolean withData(){
+        return StringUtils.isEmpty(subbed);
+    }
 
 
 

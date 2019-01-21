@@ -13,13 +13,16 @@ public interface WsEvent {
 
     String toSubscribe();
 
-    default String toUnSub() {
-        return String.format("{\"op\":\"unsub\",\"topic\":\"%s\",\"cid\":\"%s\"}", getTopic(), getClientId());
-    }
-
-    default String toReq() {
+    default String toRequest() {
         return null;
     }
 
+    default String toAuth() {
+        return null;
+    }
+
+    default String toUnSub() {
+        return String.format("{\"op\":\"unsub\",\"topic\":\"%s\",\"cid\":\"%s\"}", getTopic(), getClientId());
+    }
 
 }
