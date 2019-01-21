@@ -17,20 +17,29 @@ public class AccountEvent extends WsBaseEvent {
 
     private String clientId;
     private String topic = "accounts";
+    /**
+     * 选填,订阅账户balance类型。
+     * 0 代表可用，即type=trade的balance;
+     * 1 代表 total，即该账户的总余额，包括type=trade 和type=frozen的余额的和。
+     * 当mode缺省时，默认值为0.
+     * 建议：如需同时订阅可用和总余额，需要为 0 和 1 各开启一条 websocket 连接，如果使用同一条连接，后订阅的 topic 会覆盖前一个 topic
+     */
+    private Integer model = 0;
+
     @Override
     public String toSubscribe() {
         String format = "{\n" +
                 "  \"op\": \"sub\",\n" +
                 "  \"cid\": \"%s\",\n" +
+                "  \"model\": \"%s\",\n" +
                 "  \"topic\": \"%s\"\n" +
                 "}";
 
-
-        return String.format(format, clientId,topic);
+        return String.format(format, clientId,model, topic);
     }
 
 
-    public String toAuth(){
+    public String toAuth() {
         String authFormat = "{" +
                 "\"SignatureVersion\":\"%s\"," +
                 "\"op\":\"auth\"," +
