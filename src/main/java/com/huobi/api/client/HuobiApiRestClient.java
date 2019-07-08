@@ -190,4 +190,7 @@ public interface HuobiApiRestClient {
      * 借贷账户详情
      */
     List<MarginAccount> marginBalance(String symbol);
+
+
+    List<ExchangeRate> stableExchangeRate();
 }

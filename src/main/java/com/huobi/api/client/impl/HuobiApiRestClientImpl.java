@@ -252,6 +252,11 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
 
+    @Override
+    public List<ExchangeRate> stableExchangeRate() {
+        return executeSync(service.stableExchangeRate()).getData();
+    }
+
     private String joinList(List<String> types, String delimiter) {
         String result = null;
         if (types != null && !types.isEmpty()) {

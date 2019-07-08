@@ -240,4 +240,10 @@ public class HuobiApiAsyncClientImplTest {
         List<MarginAccount> account = client.marginBalance("btcusdt");
         assert account != null;
     }
+
+    @Test
+    public void stableExchangeRate(){
+        List<ExchangeRate> rates = client.stableExchangeRate();
+        assert rates != null;
+    }
 }

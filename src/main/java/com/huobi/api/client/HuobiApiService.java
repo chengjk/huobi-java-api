@@ -157,6 +157,15 @@ public interface HuobiApiService {
     Call<RespBody<List<DepositWithdraw>>> queryDepositWithdraw(@Query("currency") String currency, @Query("type") String type, @Query("from") String from, @Query("size") Integer size);
 
 
+    /**
+     * 稳定币兑换汇率
+     * @return
+     */
+    @Headers(HuobiConsts.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @GET("/v1/stable_coin/exchange_rate")
+    Call<RespBody<List<ExchangeRate>>> stableExchangeRate();
+
+
     //------杠杆交易----
 
     /**
