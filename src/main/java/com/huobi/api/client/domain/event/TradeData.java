@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Setter
 public class TradeData {
     private String id;
+    private String tradeId;
     private long ts;
     private BigDecimal amount;
     private BigDecimal price;
