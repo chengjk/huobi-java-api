@@ -10,6 +10,7 @@ import com.huobi.api.client.domain.resp.RespBody;
 import com.huobi.api.client.domain.resp.RespTick;
 import com.huobi.api.client.exception.HuobiApiException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -119,7 +120,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type) {
+    public Long place(String accountId, String clientOrderId, String operator, BigDecimal stopPrice, String amount, String price, OrderSource source, String symbol, OrderType type) {
         PlaceOrderRequest req = new PlaceOrderRequest();
         req.setAccountId(accountId);
         req.setAmount(amount);
@@ -127,6 +128,9 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         req.setSource(source == null ? null : source.getCode());
         req.setSymbol(symbol);
         req.setType(type == null ? null : type.getCode());
+        req.setClientOrderId(clientOrderId);
+        req.setStopPrice(stopPrice==null?null:stopPrice.stripTrailingZeros().toPlainString());
+        req.setOperator(operator);
         return executeSync(service.place(req)).getData();
     }
 

@@ -35,4 +35,6 @@ public class Symbol {
     private BigDecimal minOrderValue;
     @JsonProperty("leverage-ratio")
     private Integer leverageRatio;
+    @JsonProperty("super-margin-leverage-ratio")
+    private Integer superMarginLeverageRatio;
 }

@@ -112,7 +112,7 @@ public class HuobiApiAsyncClientImplTest {
     public void getBalance() {
         Account balance = null;
         try {
-            balance = client.balance("5409003");
+            balance = client.balance("2265332");
             balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("btc")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
             balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("usdt")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
             balance.getList().stream().filter(f -> f.getCurrency().equalsIgnoreCase("bch")).findFirst().ifPresent(t -> System.out.println(t.getBalance().toPlainString()));
@@ -124,7 +124,7 @@ public class HuobiApiAsyncClientImplTest {
 
     @Test
     public void place() {
-        Long id = client.place("5409003", "0.001", "177", OrderSource.API, "bchusdt", OrderType.SELL_LIMIT);
+        Long id = client.place("2265332", "ucc-1234", null, null, "0.001", "177", OrderSource.API, "bchusdt", OrderType.SELL_LIMIT);
         assert id != null;
     }
 
@@ -242,7 +242,7 @@ public class HuobiApiAsyncClientImplTest {
     }
 
     @Test
-    public void stableExchangeRate(){
+    public void stableExchangeRate() {
         List<ExchangeRate> rates = client.stableExchangeRate();
         assert rates != null;
     }

@@ -31,21 +31,21 @@ public class HuobiApiWebSocketClientImplTest {
     private String apiSecret = "s";
     private HuobiApiWebSocketClientImpl ws;
     private List<String> symbols = Arrays.asList(
-            "ethbtc",
-            "ltcbtc",
-            "bchbtc",
-            "xmrbtc",
-            "qtumbtc",
-            "xrpbtc",
+//            "ethbtc",
+//            "ltcbtc",
+//            "bchbtc",
+//            "xmrbtc",
+//            "qtumbtc",
+//            "xrpbtc",
+//
+//            "xmreth",
+//            "qtumeth",
 
-            "xmreth",
-            "qtumeth",
-
-            "btcusdt",
-            "ethusdt",
-            "bchusdt",
-            "qtumusdt",
-            "xrpusdt"
+            "btcusdt"
+//            "ethusdt",
+//            "bchusdt",
+//            "qtumusdt",
+//            "xrpusdt"
     );
 
     @Before

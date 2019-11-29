@@ -4,6 +4,7 @@ import com.huobi.api.client.domain.*;
 import com.huobi.api.client.domain.enums.*;
 import com.huobi.api.client.domain.resp.BatchCancelResp;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -104,7 +105,7 @@ public interface HuobiApiRestClient {
      * @return
      */
     List<Order> orders(String symbol, List<OrderType> types, String startDate, String endDate,
-                      List<OrderState> states, String from, String direct, Integer size);
+                       List<OrderState> states, String from, String direct, Integer size);
 
 
     /**
@@ -116,18 +117,20 @@ public interface HuobiApiRestClient {
     /**
      * 下单
      *
-     * @param accountId 账户 ID，使用accounts方法获得。币币交易使用‘spot’账户的accountid；借贷资产交易，请使用‘margin’账户的accountid
-     * @param amount    限价单表示下单数量，市价买单时表示买多少钱，市价卖单时表示卖多少币
-     * @param price     optional
-     * @param source    optional
+     * @param accountId     账户 ID，使用accounts方法获得。币币交易使用‘spot’账户的accountid；借贷资产交易，请使用‘margin’账户的accountid
+     * @param clientOrderId
+     * @param operator
+     * @param stopPrice
+     * @param amount        限价单表示下单数量，市价买单时表示买多少钱，市价卖单时表示卖多少币
+     * @param price         optional
+     * @param source        optional
      * @param symbol
      * @param type
      * @return
      */
-    Long place(String accountId, String amount, String price, OrderSource source, String symbol, OrderType type);
+    Long place(String accountId, String clientOrderId, String operator, BigDecimal stopPrice, String amount, String price, OrderSource source, String symbol, OrderType type);
 
     /**
-     *
      * “account-id” 和 “symbol” 需同时指定或者二者都不指定。如果二者都不指定，返回最多500条尚未成交订单，按订单号降序排列。
      * 查询用户当前未成交订单 (up to 500)
      *
@@ -163,8 +166,8 @@ public interface HuobiApiRestClient {
     List<MatchResult> matchResults(String orderId);
 
     List<MatchResult> matchResults(String symbol, List<OrderType> types,
-                                  String startDate, String endDate,
-                                  String from, String direct, Integer size);
+                                   String startDate, String endDate,
+                                   String from, String direct, Integer size);
 
 
     Long withdraw(String address, String amount, String currency, String fee, String addrTag);
@@ -184,7 +187,7 @@ public interface HuobiApiRestClient {
     Long marginOrderRepay(String orderId, String amount);
 
     List<LoanOrder> loanOrders(String symbol, String startDate, String endDate,
-                              String states, String from, String direct, Integer size);
+                               String states, String from, String direct, Integer size);
 
     /**
      * 借贷账户详情
